@@ -38,3 +38,5 @@ out/
 
 ### dbeaver
 .dbeaver/
+
+.ERD/
