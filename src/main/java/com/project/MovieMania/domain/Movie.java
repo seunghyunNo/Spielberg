@@ -23,12 +23,13 @@ public class Movie extends BaseEntity{
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
-	@Column(unique = true)
+	@Column(unique = true, length = 30)
 	private String movieCode;
 	
-	@Column(nullable = false)
+	@Column(nullable = false, length = 100)
 	private String title;
 	
+	@Column(length = 50)
 	private String directors;
 	
 	private String actors;
@@ -37,8 +38,10 @@ public class Movie extends BaseEntity{
 	
 	private LocalDate openDate;
 	
+	@Column(length = 100)
 	private String genre;
 	
+	@Column(length = 100)
 	private String rateGrade;
 	
 	private String img;

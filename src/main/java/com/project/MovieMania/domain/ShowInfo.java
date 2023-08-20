@@ -21,7 +21,7 @@ public class ShowInfo {
 	private Long id;
 	
 	@Enumerated(EnumType.STRING)
-	@Column(nullable = false)
+	@Column(nullable = false, length = 10)
 	private ShowInfoStatus status;
 	
 	@Column(nullable = false)

@@ -25,11 +25,11 @@ public class User extends BaseEntity{
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
-	@Column(nullable = false, unique = true)
+	@Column(nullable = false, unique = true, length = 50)
 	private String username;
 	
 	@JsonIgnore
-	@Column(nullable = false)
+	@Column(nullable = false, length = 50)
 	private String password;
 	
 	@Transient
@@ -37,13 +37,13 @@ public class User extends BaseEntity{
 	@JsonIgnore
 	private String re_password;
 	
-	@Column(nullable = false)
+	@Column(nullable = false, length = 50)
 	private String name;
 	
 	@Column(nullable = false)
 	private String email;
 	
-	@Column(nullable = false)
+	@Column(nullable = false, length = 20)
 	private String phoneNum;
 	
 	@Column(nullable = false)
@@ -51,12 +51,12 @@ public class User extends BaseEntity{
 	
 	
 	@Enumerated(value = EnumType.STRING)
-	@Column(nullable = false, columnDefinition = "VARCHAR(20) DEFAULT 'ACTIVE'")
+	@Column(nullable = false, columnDefinition = "VARCHAR(10) DEFAULT 'ACTIVE'")
 	private UserStatus status;
 	
 	
 	@Enumerated(value = EnumType.STRING)
-	@Column(nullable = false)
+	@Column(nullable = false, length = 10)
 	private Gender gender;
 	
 	// User:Authority = N:N

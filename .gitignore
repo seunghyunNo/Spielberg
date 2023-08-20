@@ -36,7 +36,8 @@ out/
 ### VS Code ###
 .vscode/
 
-### dbeaver
+### dbeaver ###
 .dbeaver/
 
+### ERD test ###
 .ERD/

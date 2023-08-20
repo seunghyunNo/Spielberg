@@ -17,7 +17,7 @@ public class Report extends BaseEntity{
 	private Long id;
 	
 	@Enumerated(EnumType.STRING)
-	@Column(nullable = false)
+	@Column(nullable = false, length = 10)
 	private ReportType type;
 	
 	@ManyToOne
