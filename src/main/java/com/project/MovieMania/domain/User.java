@@ -18,7 +18,7 @@ import java.util.List;
 @Builder
 @ToString(callSuper = true)
 @EqualsAndHashCode(callSuper = true)
-@Entity(name = "customer")
+@Entity
 public class User extends BaseEntity{
 	
 	@Id
@@ -51,8 +51,7 @@ public class User extends BaseEntity{
 	
 	
 	@Enumerated(value = EnumType.STRING)
-	@Column(nullable = false)
-	@ColumnDefault(value = "ACTIVE")
+	@Column(nullable = false, columnDefinition = "VARCHAR(20) DEFAULT 'ACTIVE'")
 	private UserStatus status;
 	
 	
@@ -60,6 +59,7 @@ public class User extends BaseEntity{
 	@Column(nullable = false)
 	private Gender gender;
 	
+	// User:Authority = N:N
 	@ManyToMany(fetch = FetchType.EAGER)
 	@ToString.Exclude
 	@JsonIgnore
@@ -72,6 +72,7 @@ public class User extends BaseEntity{
 		}
 	}
 	
+	// User:Question = 1:N
 	@OneToMany
 	@JoinColumn(name = "user_id")
 	@ToString.Exclude
@@ -83,5 +84,11 @@ public class User extends BaseEntity{
 			Collections.addAll(this.questions, questions);
 		}
 	}
+	
+	@OneToMany
+	@JoinColumn(name = "user_id")
+	@Builder.Default
+	@ToString.Exclude
+	private List<Recommend> recommends = new ArrayList<>();
 	
 }

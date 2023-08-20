@@ -15,8 +15,8 @@ spring:
 
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/mydb2304?useSSL=false&serverTimezone=Asia/Seoul&allowPublicKeyRetrieval=true
-    username: myuser2304
+    url: jdbc:mysql://localhost:3306/moviedb?useSSL=false&serverTimezone=Asia/Seoul&allowPublicKeyRetrieval=true
+    username: mania
     password: 1234
 
   jpa:
@@ -24,8 +24,8 @@ spring:
     properties:
       hibernate.format_sql: true
 
-  hibernate:
-    ddl-auto: create
+    hibernate:
+      ddl-auto: create
 
 # 페이징 관련 세팅값
 app:

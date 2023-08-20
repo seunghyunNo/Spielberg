@@ -13,7 +13,7 @@ import java.util.List;
 @Builder
 @Entity
 @Table(
-	uniqueConstraints = @UniqueConstraint(columnNames = {"theaterNum", "cinema"})
+	uniqueConstraints = @UniqueConstraint(columnNames = {"theaterNum", "cinema_id"})
 )
 public class Theater {
 	@Id

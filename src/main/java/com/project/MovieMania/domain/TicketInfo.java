@@ -28,11 +28,11 @@ public class TicketInfo extends BaseEntity{
 	private User user;
 	
 	@ManyToOne
-	private Price price;
+	private PriceInfo priceInfo;
 	
 	@OneToMany
 	@Builder.Default
-	@JoinColumn(name = "ticket_id")
+	@JoinColumn(name = "ticket_info_id")
 	private List<Seat> seats = new ArrayList<>();
 	
 	public void addSeats(Seat... seats){

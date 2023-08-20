@@ -3,6 +3,10 @@ package com.project.MovieMania.domain;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -25,9 +29,20 @@ public class Review extends BaseEntity{
 	@ManyToOne
 	private Movie movie;
 	
+	// 리뷰 작성자
 	@ManyToOne
 	private User user;
 	
-	// TODO: recommend 추가하기 (N:N)
+	// Review:Recommend = 1:N
+	@OneToMany
+	@JoinColumn(name = "review_id")
+	@Builder.Default
+	private List<Recommend> recommends = new ArrayList<>();
+	
+	public void addRecommends(Recommend... recommends){
+		if(recommends != null){
+			Collections.addAll(this.recommends, recommends);
+		}
+	}
 	
 }
