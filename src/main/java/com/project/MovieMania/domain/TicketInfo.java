@@ -2,6 +2,7 @@ package com.project.MovieMania.domain;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.springframework.data.repository.cdi.Eager;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -30,8 +31,8 @@ public class TicketInfo extends BaseEntity{
 	
 	@ManyToOne
 	private PriceInfo priceInfo;
-	
-	@OneToMany
+
+	@OneToMany(fetch = FetchType.EAGER)
 	@Builder.Default
 	@JoinColumn(name = "ticket_info_id")
 	private List<Seat> seats = new ArrayList<>();

@@ -37,6 +37,7 @@ public class Review extends BaseEntity{
 	@OneToMany
 	@JoinColumn(name = "review_id")
 	@Builder.Default
+	@ToString.Exclude
 	private List<Recommend> recommends = new ArrayList<>();
 	
 	public void addRecommends(Recommend... recommends){
