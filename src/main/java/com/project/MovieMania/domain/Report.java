@@ -10,6 +10,7 @@ import lombok.*;
 @Builder
 @ToString(callSuper = true)
 @EqualsAndHashCode(callSuper = true)
+@Entity
 public class Report extends BaseEntity{
 	
 	@Id
