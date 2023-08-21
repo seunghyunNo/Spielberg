@@ -12,7 +12,7 @@ public interface UserService {
 
     User findByEmail(String email);
 
-    User findByBirthday(LocalDate birthday);
+    User findByPhoneNum(String phoneNum);
 
     // 회원가입 시 존재 하는지 여부 확인
     boolean isExistUsername(String username);
@@ -27,7 +27,7 @@ public interface UserService {
     int register(User user);
 
     // 회원가입
-    int idCheck(String username);
+    int usernameCheck(String username);
 
     // 회원가입
     int mailCheck(String email);
@@ -43,7 +43,7 @@ public interface UserService {
     // 비밀번호 변경
     String updatePw(User user);
 
-    String rePw(User user);
+    boolean rePw(User user);
 
     int delete(Long id);
 
