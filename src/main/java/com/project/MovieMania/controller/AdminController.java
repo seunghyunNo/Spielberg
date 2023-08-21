@@ -1,6 +1,7 @@
 package com.project.MovieMania.controller;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
@@ -13,12 +14,20 @@ public class AdminController {
 	
 	@RequestMapping("/")
 	public String adminHome(){
-		return "redirect:/admin/movie/";
+		return "redirect:/admin/movie";
 	}
 	
-	@RequestMapping("/admin/movie")
+	@RequestMapping("/movie")
 	public String movieList(){
-		return "movie/list";
+		return "admin/movie/list";
+	}
+	
+	@GetMapping("/movie/register")
+	public void movieRegister(){}
+	
+	@GetMapping("/movie/register/api")
+	public String apiRegister(){
+		return "admin/movie/apiRegister";
 	}
 	
 }
