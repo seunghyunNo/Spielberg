@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -24,20 +25,26 @@ public class TheaterController {
     @Autowired
     private TheaterService theaterService;
 
-    @GetMapping("/theater")
-    public String theater(Model model)
+    @GetMapping("/theater/{movie_id}")
+    public String theater(@PathVariable Long movie_id,Model model)
     {
+        model.addAttribute("movieId",movie_id);
+        model.addAttribute("cinemas",theaterService.cinemaList());
+        model.addAttribute("dates",theaterService.dateList());
+        model.addAttribute("times",theaterService.timeList());
+
         return "ticket/theater";
     }
 
-    @PostMapping("/theater")
-    public void selectTheater(Long showInfoId,String cinemaName,String date,String time,Model model)
+    @PostMapping("/theater/{movie_id}")
+    public void selectTheater(@PathVariable Long movie_id, String cinemaName,String date,String time,Model model)
     {
-        ShowInfo showInfo = theaterService.selectShowInfo(showInfoId);
-        showInfo.getTheater().getCinema().setName(cinemaName);
         String dateTime = date.concat(time);
-        LocalDateTime showDateTime = LocalDateTime.parse(dateTime, DateTimeFormatter.ISO_DATE_TIME);
-        showInfo.setShowDateTime(showDateTime);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy년 MM월 dd일 HH시 mm분 ss초");
+        LocalDateTime showDateTime = LocalDateTime.parse(dateTime,formatter);
+        ShowInfo showInfo = theaterService.selectShowInfo(movie_id,cinemaName,showDateTime);
+        System.out.println(showInfo.getId());
+        model.addAttribute("showInfoId",showInfo.getId());
     }
 
 }
