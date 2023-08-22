@@ -16,5 +16,5 @@ select * from review;
 select * from recommend;
 select * from report;
 select * from question;
-select * from review r 
- 
+select * from review r;
+

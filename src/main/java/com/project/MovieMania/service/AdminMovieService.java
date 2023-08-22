@@ -1,5 +1,9 @@
 package com.project.MovieMania.service;
 
-public interface AdminMovieService {
+import com.project.MovieMania.domain.Movie;
+import org.springframework.stereotype.Service;
 
+public interface AdminMovieService {
+	int register(Movie movie);
+	
 }

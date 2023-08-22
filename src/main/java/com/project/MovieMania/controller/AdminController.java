@@ -1,6 +1,8 @@
 package com.project.MovieMania.controller;
 
 import com.project.MovieMania.domain.Movie;
+import com.project.MovieMania.service.AdminMovieService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,6 +15,13 @@ public class AdminController {
 	
 	public AdminController(){
 		System.out.println("AdminController() 생성");
+	}
+	
+	private AdminMovieService movieService;
+	
+	@Autowired
+	public void setMovieService(AdminMovieService movieService){
+		this.movieService = movieService;
 	}
 	
 	@RequestMapping("/")
@@ -28,11 +37,11 @@ public class AdminController {
 	@GetMapping("/movie/register")
 	public void movieRegister(){}
 	
-	@PostMapping("/register")
+	@PostMapping("/movie/register")
 	public String movieRegisterOk(Movie movie, Model model){
-		
-	
-		return "";
+		System.out.println(movie);
+		model.addAttribute("result", movieService.register(movie));
+		return "admin/movie/registerOk";
 	}
 	
 	@GetMapping("/movie/register/api")
