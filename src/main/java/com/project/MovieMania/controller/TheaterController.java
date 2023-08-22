@@ -8,10 +8,7 @@ import com.project.MovieMania.service.TheaterService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -45,6 +42,12 @@ public class TheaterController {
         ShowInfo showInfo = theaterService.selectShowInfo(movie_id,cinemaName,showDateTime);
         System.out.println(showInfo.getId());
         model.addAttribute("showInfoId",showInfo.getId());
+    }
+
+    @PostMapping("/ticketing")
+    public String ticketing(@RequestParam Long movie_id,@RequestParam Long theater_id,@RequestParam Long user_id, Model model)
+    {
+        return "ticket/ticketing";
     }
 
 }
