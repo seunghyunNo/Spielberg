@@ -1,7 +1,10 @@
 package com.project.MovieMania.controller;
 
+import com.project.MovieMania.domain.Movie;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
@@ -24,6 +27,13 @@ public class AdminController {
 	
 	@GetMapping("/movie/register")
 	public void movieRegister(){}
+	
+	@PostMapping("/register")
+	public String movieRegisterOk(Movie movie, Model model){
+		
+	
+		return "";
+	}
 	
 	@GetMapping("/movie/register/api")
 	public String apiRegister(){

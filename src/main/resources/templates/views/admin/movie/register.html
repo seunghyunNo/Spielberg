@@ -13,8 +13,70 @@
 <body>
 	<div class="container">
 		<th:block th:insert="~{admin/header/navbar::adminNav}"></th:block>
-		<a th:href="@{register/api}" class="btn btn-outline-primary">API로 가져오기</a>
+		<h2 class="my-3">영화 등록하기</h2>
 		
+		<form th:action="@{register}" method="post" name="movieForm" enctype="multipart/form-data">
+			<p>
+				<!-- movieCode -->
+				<label></label>
+			</p>
+			<div class="my-2 row">
+				<label class="col-2 col-form-label">제목 :</label>
+				<div class="col-10">
+					<input name="title" class="form-control" placeholder="제목..." required>
+				</div>
+			</div>
+			<div class="my-2 row">
+				<label class="col-2 col-form-label">감독 :</label>
+				<div class="col-10">
+					<input name="directors" class="form-control" placeholder="감독...">
+				</div>
+			</div>
+			<div class="my-2 row">
+				<label class="col-2 col-form-label">출연 배우 :</label>
+				<div class="col-10">
+					<input name="actors" class="form-control" placeholder="배우...">
+				</div>
+			</div>
+			<div class="my-2 row">
+				<label class="col-2 col-form-label">런타임 :</label>
+				<div class="col-10">
+					<input name="showTime" class="form-control" placeholder="런타임...">
+				</div>
+			</div>
+			<div class="my-2 row">
+				<label class="col-2 col-form-label">개봉일 :</label>
+				<div class="col-10">
+					<input name="openDate" class="form-control" placeholder="개봉일...">
+				</div>
+			</div>
+			<div class="my-2 row">
+				<label class="col-2 col-form-label">장르 :</label>
+				<div class="col-10">
+					<input name="genre" class="form-control" placeholder="장르...">
+				</div>
+			</div>
+			<div class="my-2 row">
+				<label class="col-2 col-form-label">심의 등급 :</label>
+				<div class="col-10">
+					<input name="rateGrade" class="form-control" placeholder="심의등급...">
+				</div>
+			</div>
+			<div class="my-2 row">
+				<label class="col-2 col-form-label">포스터 이미지 링크 :</label>
+				<div class="col-10">
+					<input name="img" class="form-control" placeholder="포스터...">
+				</div>
+			</div>
+			<div class="my-2 row justify-content-end">
+				<div class="col-auto">
+					<a th:href="@{register/api}" class="btn btn-outline-dark">API로 가져오기</a>
+				</div>
+				<div class="col-auto">
+					<button type="submit" class="btn btn-primary">등록하기</button>
+				</div>
+			</div>
+		</form>
 	</div>
 </body>
 </html>
