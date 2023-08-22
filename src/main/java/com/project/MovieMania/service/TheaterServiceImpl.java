@@ -85,22 +85,5 @@ public class TheaterServiceImpl implements TheaterService{
         return times;
     }
 
-    @Override
-    public ShowInfo selectShowInfo(Long movieId,String cinemaName,LocalDateTime showDateTime) {
-        Movie movie = movieRepository.findById(movieId).orElse(null);
-        Cinema cinema = cinemaRepository.findByName(cinemaName);
-        ShowInfo showInfoTime = showinfoRepoisotry.findByShowDateTime(showDateTime);
 
-        ShowInfo showInfo = ShowInfo.builder()
-                .movie(movie)
-                .theater(showInfoTime.getTheater())
-                .showDateTime(showDateTime)
-                .status(ShowInfoStatus.NOW)
-                .build();
-
-        showinfoRepoisotry.saveAndFlush(showInfo);
-
-        System.out.println(showInfo);
-        return showInfo;
-    }
 }

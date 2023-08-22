@@ -18,5 +18,4 @@ public interface TheaterService {
     List<LocalTime> timeList();
 
 
-    ShowInfo selectShowInfo(Long movieId,String cinemaName,LocalDateTime showDateTime);
 }
