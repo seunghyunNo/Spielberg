@@ -12,9 +12,15 @@
 </head>
 <body>
     <div class="container mt-3">
-        <div class="row" th:each="sRow:#numbers.sequence(1,${seatMaxRow})">
-            <span class="seat" th:text="sRow+'행'"></span>
-        </div>
+        <form th:action="@{/ticket/ticketing}" name="ticketingFrm" method="post" enctype="multipart/form-data">
+            <input type="hidden" name="showInfoId" th:value="${showInfoId}">
+
+            <div class="column" th:each="sColumn:${seatColumnList}">
+                <div class="row" th:each="sRow:${seatRowList}">
+                    <span class="seat" th:text="|${sColumn}열${sRow}행|">좌석</span>
+                </div>
+            </div>
+        </form>
     </div>
 </body>
 </html>

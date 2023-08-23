@@ -19,6 +19,8 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
 
 @Controller
 @RequestMapping("/ticket")
@@ -56,11 +58,17 @@ public class TheaterController {
         showInfoService.writeShowInfo(movie_id,cinemaName,showDateTime,model);
     }
 
+    @GetMapping("/ticketing")
+    public void getTicket()
+    {
+
+    }
+
     @PostMapping("/ticketing")
-    public String ticketing(@RequestParam Long show_info_id,@RequestParam Long user_id,@RequestParam Long price_id,
+    public String ticketing(@RequestParam Long showInfoId,@RequestParam Long userId,@RequestParam Long priceId,
                             Integer seatRow,Integer seatColumn, Model model)
     {
-        TicketInfo ticketInfo = ticketingService.writeTicket(show_info_id,user_id,price_id);
+        TicketInfo ticketInfo = ticketingService.writeTicket(showInfoId,userId,priceId);
 
 
         int result = seatService.findSeat(seatRow,seatColumn);
@@ -68,9 +76,24 @@ public class TheaterController {
         {
             model.addAttribute("full",seatService.writeSeat(ticketInfo,seatRow,seatColumn));
         }
-        model.addAttribute("seatMaxRow",showInfoService.findById(show_info_id).getTheater().getMaxSeatRow());
-        model.addAttribute("seatMaxColumn",showInfoService.findById(show_info_id).getTheater().getMaxSeatColumn());
-        model.addAttribute("theaterNum",showInfoService.findById(show_info_id).getTheater().getTheaterNum());
+
+        // 로그인한 유저 정보 모델로 넘기기 TODO
+        model.addAttribute("showInfoId",ticketInfo.getShowInfo().getId());
+        int seatMaxRow = showInfoService.findById(showInfoId).getTheater().getMaxSeatRow();
+        List<Integer> seatRowList = new ArrayList<>();
+        for(int i = 1; i <= seatMaxRow; i++)
+        {
+            seatRowList.add(i);
+        }
+        model.addAttribute("seatMaxRow",seatRowList);
+        int seatMaxColumn = showInfoService.findById(showInfoId).getTheater().getMaxSeatColumn();
+        List<Integer> seatColumnList = new ArrayList<>();
+        for(int i = 1 ; i <= seatMaxColumn; i++)
+        {
+            seatColumnList.add(i);
+        }
+        model.addAttribute("seatMaxColumn",seatColumnList);
+        model.addAttribute("theaterNum",showInfoService.findById(showInfoId).getTheater().getTheaterNum());
 
         return "ticket/ticketing";
     }

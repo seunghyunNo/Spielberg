@@ -8,10 +8,12 @@ import com.project.MovieMania.repository.CinemaRepository;
 import com.project.MovieMania.repository.MovieRepository;
 import com.project.MovieMania.repository.ShowinfoRepoisotry;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 
 import java.time.LocalDateTime;
 
+@Service
 public class ShowInfoServiceImpl implements ShowInfoService{
 
     private MovieRepository movieRepository;
