@@ -112,7 +112,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<Authority> findAuthorityById(Long id) {
-
+        
 
         // 해당 유저의 Authority 를 담아옴
         return authorityRepository.findAuthorityById(id);

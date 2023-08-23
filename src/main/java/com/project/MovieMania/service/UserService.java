@@ -47,5 +47,6 @@ public interface UserService {
 
     int delete(Long id);
 
+    // 로그인 유저의 id로 해당 유저의 authority 가져오기
     List<Authority> findAuthorityById(Long id);
 }
