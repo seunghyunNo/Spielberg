@@ -50,8 +50,10 @@ public class UserController {
 
     @PostMapping("/register")
     public String registerOk(@Valid User user
-                             ,@RequestParam("authCodeInput") String authCodeInput
-                             ,@RequestParam("code") String code
+                             ,@RequestParam("emailCodeInput") String emailCodeInput
+                             ,@RequestParam("emailCode") String emailCode
+                             ,@RequestParam("pnCodeInput") String pnCodeInput
+                             ,@RequestParam("pnCode") String pnCode
                              , BindingResult result      // 유효성 검사결과 담김
                              , Model model
                              , RedirectAttributes redirectAttributes
@@ -77,8 +79,10 @@ public class UserController {
         if(result.hasErrors()) {
             redirectAttributes.addFlashAttribute("username",user.getUsername());
             redirectAttributes.addFlashAttribute("name",user.getName());
-            redirectAttributes.addFlashAttribute("authCodeInput",authCodeInput);
-            redirectAttributes.addFlashAttribute("code",code);
+            redirectAttributes.addFlashAttribute("emailCodeInput",emailCodeInput);
+            redirectAttributes.addFlashAttribute("emailCode",emailCode);
+            redirectAttributes.addFlashAttribute("pnCodeInput",pnCodeInput);
+            redirectAttributes.addFlashAttribute("pnCode",pnCode);
 
             List<FieldError> errorList = result.getFieldErrors();
             for (FieldError err : errorList){

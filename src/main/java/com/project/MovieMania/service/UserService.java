@@ -2,10 +2,12 @@ package com.project.MovieMania.service;
 
 import com.project.MovieMania.domain.Authority;
 import com.project.MovieMania.domain.User;
+import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.List;
 
+@Service
 public interface UserService {
 
     User findByUsername(String username);

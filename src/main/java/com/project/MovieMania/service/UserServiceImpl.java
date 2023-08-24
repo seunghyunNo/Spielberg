@@ -6,10 +6,12 @@ import com.project.MovieMania.repository.AuthorityRepository;
 import com.project.MovieMania.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.List;
 
+@Service
 public class UserServiceImpl implements UserService {
 
     private UserRepository userRepository;
@@ -19,6 +21,18 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private PasswordEncoder passwordEncoder;
+
+    @Autowired
+    public void setUserRepository(UserRepository userRepository){
+        this.userRepository=userRepository;
+    }
+
+    @Autowired
+    public void setAuthorityRepository(AuthorityRepository authorityRepository){
+        this.authorityRepository = authorityRepository;
+    }
+
+
 
 
     @Override
@@ -64,11 +78,11 @@ public class UserServiceImpl implements UserService {
 
         // 암호화해서 저장
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-        userRepository.save(user);
+        userRepository.register(user);
 
         Authority authority = authorityRepository.findByName("ROLE_MEMBER");
         user.addAuthorities(authority);
-        userRepository.save(user);
+        userRepository.register(user);
         return 1;
     }
 

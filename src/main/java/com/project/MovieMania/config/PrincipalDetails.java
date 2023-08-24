@@ -11,8 +11,10 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+// 로그인 한 유저의 정보를 가져오는 것
 public class PrincipalDetails implements UserDetails {
-    private UserService userService;
+
+    UserService userService;
 
     public void setUserService(UserService userService){
         this.userService = userService;
@@ -30,8 +32,8 @@ public class PrincipalDetails implements UserDetails {
         this.user = user;
     }
 
-    // 해당 User 권한들 리턴
 
+    // 해당 User 권한들 리턴
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities(){
         Collection<GrantedAuthority> collection = new ArrayList<>();
