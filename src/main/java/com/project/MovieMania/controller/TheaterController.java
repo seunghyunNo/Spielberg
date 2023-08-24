@@ -50,12 +50,16 @@ public class TheaterController {
     }
 
     @PostMapping("/theater/{movie_id}")
-    public void selectTheater(@PathVariable Long movie_id, String cinemaName,String date,String time,Model model)
+    public String selectTheater(@PathVariable Long movie_id, @RequestParam String cinemaName,@RequestParam String date,@RequestParam String time,Model model)
     {
+        time = " "+time;
         String dateTime = date.concat(time);
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy년 MM월 dd일 HH시 mm분 ss초");
+        System.out.println("영화번호"+movie_id+"이름"+cinemaName+"날짜"+date+"시간"+time);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
         LocalDateTime showDateTime = LocalDateTime.parse(dateTime,formatter);
         showInfoService.writeShowInfo(movie_id,cinemaName,showDateTime,model);
+
+        return "ticket/ticketing";
     }
 
     @GetMapping("/ticketing")
@@ -80,6 +84,7 @@ public class TheaterController {
         // 로그인한 유저 정보 모델로 넘기기 TODO
         model.addAttribute("showInfoId",ticketInfo.getShowInfo().getId());
         int seatMaxRow = showInfoService.findById(showInfoId).getTheater().getMaxSeatRow();
+        System.out.println("좌석최대로우"+seatMaxRow);
         List<Integer> seatRowList = new ArrayList<>();
         for(int i = 1; i <= seatMaxRow; i++)
         {
@@ -87,6 +92,7 @@ public class TheaterController {
         }
         model.addAttribute("seatMaxRow",seatRowList);
         int seatMaxColumn = showInfoService.findById(showInfoId).getTheater().getMaxSeatColumn();
+        System.out.println("좌석최대컬럼"+seatMaxColumn);
         List<Integer> seatColumnList = new ArrayList<>();
         for(int i = 1 ; i <= seatMaxColumn; i++)
         {

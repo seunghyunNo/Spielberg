@@ -3,10 +3,12 @@ package com.project.MovieMania.service;
 import com.project.MovieMania.domain.Cinema;
 import com.project.MovieMania.domain.Movie;
 import com.project.MovieMania.domain.ShowInfo;
+import com.project.MovieMania.domain.Theater;
 import com.project.MovieMania.domain.type.ShowInfoStatus;
 import com.project.MovieMania.repository.CinemaRepository;
 import com.project.MovieMania.repository.MovieRepository;
 import com.project.MovieMania.repository.ShowinfoRepoisotry;
+import com.project.MovieMania.repository.TheaterRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
@@ -21,6 +23,13 @@ public class ShowInfoServiceImpl implements ShowInfoService{
     private ShowinfoRepoisotry showinfoRepoisotry;
 
     private CinemaRepository cinemaRepository;
+
+    private TheaterRepository theaterRepository;
+
+    @Autowired
+    public void setTheaterRepository(TheaterRepository theaterRepository) {
+        this.theaterRepository = theaterRepository;
+    }
 
     @Autowired
     public void setMovieRepository(MovieRepository movieRepository) {
@@ -41,11 +50,11 @@ public class ShowInfoServiceImpl implements ShowInfoService{
     public ShowInfo writeShowInfo(Long movieId, String cinemaName, LocalDateTime showDateTime, Model model) {
         Movie movie = movieRepository.findById(movieId).orElse(null);
         Cinema cinema = cinemaRepository.findByName(cinemaName);
-        ShowInfo showInfoTime = showinfoRepoisotry.findByShowDateTime(showDateTime);
+        Theater theater = theaterRepository.findByCinemaId(cinema.getId());
 
         ShowInfo showInfo = ShowInfo.builder()
                 .movie(movie)
-                .theater(showInfoTime.getTheater())
+                .theater(theater)
                 .showDateTime(showDateTime)
                 .status(ShowInfoStatus.NOW)
                 .build();
@@ -61,6 +70,7 @@ public class ShowInfoServiceImpl implements ShowInfoService{
     @Override
     public ShowInfo findById(Long showInfoId) {
         ShowInfo showInfo = showinfoRepoisotry.findById(showInfoId).orElse(null);
+        System.out.println(showInfo);
         return showInfo;
     }
 }
