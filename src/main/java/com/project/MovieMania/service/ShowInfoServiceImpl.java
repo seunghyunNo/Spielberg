@@ -59,17 +59,23 @@ public class ShowInfoServiceImpl implements ShowInfoService{
                 .status(ShowInfoStatus.NOW)
                 .build();
 
-        showinfoRepoisotry.saveAndFlush(showInfo);
+        ShowInfo result =showinfoRepoisotry.findByMovieIdAndTheaterIdAndShowDateTime(movie.getId(),theater.getId(),showDateTime);
 
-        model.addAttribute("showInfoId",showInfo.getId());
+        if(result != null)
+        {
+            model.addAttribute("showInfoId",result.getId());
+            System.out.println(showInfo);
+            return result;
+        }
 
-        System.out.println(showInfo);
-        return showInfo;
+
+        return null;
     }
 
     @Override
-    public ShowInfo findById(Long showInfoId) {
+    public ShowInfo findById(Long showInfoId,Model model) {
         ShowInfo showInfo = showinfoRepoisotry.findById(showInfoId).orElse(null);
+        model.addAttribute("showInfoId",showInfo.getId());
         System.out.println(showInfo);
         return showInfo;
     }

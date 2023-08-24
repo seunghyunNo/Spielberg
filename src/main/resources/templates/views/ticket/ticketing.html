@@ -12,14 +12,11 @@
 </head>
 <body>
     <div class="container mt-3">
-        <form th:action="@{/ticket/ticketing}" name="ticketingFrm" method="post" enctype="multipart/form-data">
+        <form th:action="@{|/ticket/ticketing/${showInfoId}|}" name="ticketingFrm" method="post" enctype="multipart/form-data">
             <input type="hidden" name="showInfoId" th:value="${showInfoId}">
-
-            <div class="column" th:each="sColumn:${seatColumnList}">
-                <div class="row" th:each="sRow:${seatRowList}">
-                    <span class="seat" th:text="|${sColumn}열${sRow}행|">좌석</span>
-                </div>
-            </div>
+            <th:block th:each="sColumn:${seatMaxColumn}">
+                <span class="seat" th:text="|${sColumn}열${sRow}행|">좌석</span>
+            </th:block>
         </form>
     </div>
 </body>

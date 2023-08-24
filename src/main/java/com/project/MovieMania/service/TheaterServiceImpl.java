@@ -18,7 +18,9 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Service
 public class TheaterServiceImpl implements TheaterService{
@@ -60,9 +62,9 @@ public class TheaterServiceImpl implements TheaterService{
     }
 
     @Override
-    public List<LocalDate> dateList() {
+    public Set<LocalDate> dateList() {
         List<ShowInfo> showInfos = showinfoRepoisotry.findAll();
-        List<LocalDate> dates =new ArrayList<>();
+        Set<LocalDate> dates =new HashSet<>();
 
         for(int i = 0; i < showInfos.size(); i++)
         {
@@ -73,9 +75,9 @@ public class TheaterServiceImpl implements TheaterService{
     }
 
     @Override
-    public List<LocalTime> timeList() {
+    public Set<LocalTime> timeList() {
         List<ShowInfo> showInfos = showinfoRepoisotry.findAll();
-        List<LocalTime> times =new ArrayList<>();
+        Set<LocalTime> times =new HashSet<>();
 
         for(int i = 0; i < showInfos.size(); i++)
         {

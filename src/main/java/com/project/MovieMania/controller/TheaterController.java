@@ -57,19 +57,38 @@ public class TheaterController {
         System.out.println("영화번호"+movie_id+"이름"+cinemaName+"날짜"+date+"시간"+time);
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
         LocalDateTime showDateTime = LocalDateTime.parse(dateTime,formatter);
-        showInfoService.writeShowInfo(movie_id,cinemaName,showDateTime,model);
+        ShowInfo showInfo =showInfoService.writeShowInfo(movie_id,cinemaName,showDateTime,model);
+
+        return "redirect:/ticket/ticketing/"+showInfo.getId();
+    }
+
+    @GetMapping("/ticketing/{showInfoId}")
+    public String getTicket(@PathVariable Long showInfoId,Model model)
+    {
+        ShowInfo showInfo = showInfoService.findById(showInfoId,model);
+        System.out.println("TICKET");
+        int seatMaxRow = showInfo.getTheater().getMaxSeatRow();
+        System.out.println("좌석최대로우"+seatMaxRow);
+        List<Integer> seatRowList = new ArrayList<>();
+        for(int i = 1; i <= seatMaxRow; i++)
+        {
+            seatRowList.add(i);
+        }
+        model.addAttribute("seatMaxRow",seatRowList);
+        int seatMaxColumn = showInfo.getTheater().getMaxSeatColumn();
+        System.out.println("좌석최대컬럼"+seatMaxColumn);
+        List<Integer> seatColumnList = new ArrayList<>();
+        for(int i = 1 ; i <= seatMaxColumn; i++)
+        {
+            seatColumnList.add(i);
+        }
+        model.addAttribute("seatMaxColumn",seatColumnList);
 
         return "ticket/ticketing";
     }
 
-    @GetMapping("/ticketing")
-    public void getTicket()
-    {
-
-    }
-
-    @PostMapping("/ticketing")
-    public String ticketing(@RequestParam Long showInfoId,@RequestParam Long userId,@RequestParam Long priceId,
+    @PostMapping("/ticketing/{showInfoId}")
+    public String ticketing(@PathVariable Long showInfoId,@RequestParam Long userId,@RequestParam Long priceId,
                             Integer seatRow,Integer seatColumn, Model model)
     {
         TicketInfo ticketInfo = ticketingService.writeTicket(showInfoId,userId,priceId);
@@ -83,23 +102,10 @@ public class TheaterController {
 
         // 로그인한 유저 정보 모델로 넘기기 TODO
         model.addAttribute("showInfoId",ticketInfo.getShowInfo().getId());
-        int seatMaxRow = showInfoService.findById(showInfoId).getTheater().getMaxSeatRow();
-        System.out.println("좌석최대로우"+seatMaxRow);
-        List<Integer> seatRowList = new ArrayList<>();
-        for(int i = 1; i <= seatMaxRow; i++)
-        {
-            seatRowList.add(i);
-        }
-        model.addAttribute("seatMaxRow",seatRowList);
-        int seatMaxColumn = showInfoService.findById(showInfoId).getTheater().getMaxSeatColumn();
-        System.out.println("좌석최대컬럼"+seatMaxColumn);
-        List<Integer> seatColumnList = new ArrayList<>();
-        for(int i = 1 ; i <= seatMaxColumn; i++)
-        {
-            seatColumnList.add(i);
-        }
-        model.addAttribute("seatMaxColumn",seatColumnList);
-        model.addAttribute("theaterNum",showInfoService.findById(showInfoId).getTheater().getTheaterNum());
+        ShowInfo showInfo = showInfoService.findById(showInfoId,model);
+
+
+        model.addAttribute("theaterNum",showInfo.getTheater().getTheaterNum());
 
         return "ticket/ticketing";
     }

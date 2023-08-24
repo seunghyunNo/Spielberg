@@ -8,14 +8,15 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
+import java.util.Set;
 
 public interface TheaterService {
 
     List<Cinema> cinemaList();
 
-    List<LocalDate> dateList();
+    Set<LocalDate> dateList();
 
-    List<LocalTime> timeList();
+    Set<LocalTime> timeList();
 
 
 }

@@ -7,4 +7,6 @@ import java.time.LocalDateTime;
 
 public interface ShowinfoRepoisotry extends JpaRepository<ShowInfo, Long> {
     ShowInfo findByShowDateTime(LocalDateTime showDateTime);
+
+    ShowInfo findByMovieIdAndTheaterIdAndShowDateTime(Long movieId,Long theaterId,LocalDateTime showDateTime);
 }

@@ -8,5 +8,5 @@ import java.time.LocalDateTime;
 public interface ShowInfoService {
     ShowInfo writeShowInfo(Long movieId, String cinemaName, LocalDateTime showDateTime, Model model);
 
-    ShowInfo findById(Long showInfoId);
+    ShowInfo findById(Long showInfoId,Model model);
 }
