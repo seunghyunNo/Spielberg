@@ -16,5 +16,12 @@ select * from review;
 select * from recommend;
 select * from report;
 select * from question;
-select * from review r 
+select * from review r;
+
+select * from user;
+
+INSERT INTO moviedb.`user`
+(birthday, created_at, updated_at, gender, phone_num, name, password, username, email, status)
+VALUES('2000-05-03', NOW(), NOW(), 'MALE', '00011112222', '나', 'ㅇㅇㅇㅇㅇ', '나', 'PPP@VVV.COM', 'ACTIVE');
+
  

@@ -25,6 +25,7 @@ public class Question extends BaseEntity{
 	private String answer;
 	
 	@ManyToOne
+	@ToString.Exclude
 	private User user;
 	
 }

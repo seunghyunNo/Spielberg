@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<th:block th:fragment="pagination">
+    <!-- pagination -->
+    <div>
+        <ul>
+            <!--/* << 표시 여부 */-->
+            <li th:if="${page > 1}"><a th:href="${url }" title="처음"></a></li>
+
+            <!--/* < 표시 여부 */-->
+            <li th:if="${startPage > 1 }"><a th:href="@{${url }(page=${startPage - 1 })}"></a></li>
+
+            <!--/* 페이징 안의 '숫자' 표시 */-->
+            <th:block th:if="${totalPage > 1 }">
+                <th:block th:each="k: ${#numbers.sequence(startPage, endPage)}">
+                    <li th:unless="${k == page }"><a th:href="@{${url }(page=${k})}" th:text="${k}"></a></li>
+                    <li th:if="${k == page }"><a href="javascript:void(0);" th:text="${k}"></a></li>
+                </th:block>
+            </th:block>
+
+            <!--/* > 표시 여부 */-->
+            <li th:if="${totalPage > endPage }"><a th:href="@{${url }(page=${endPage + 1 })}"></a></li>
+
+            <!--/* >> 표시 여부 */-->
+            <li th:if="${page < totalPage }"><a th:href="@{${url }(page=${totalPage })}"></a></li>
+
+        </ul>
+    </div>
+    <!-- pagination -->
+</th:block>
+
+</html>
