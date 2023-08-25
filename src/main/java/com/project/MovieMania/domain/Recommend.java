@@ -14,6 +14,14 @@ import lombok.NoArgsConstructor;
 public class Recommend {
 	@EmbeddedId
 	private RecommendPK recommendPK;
+
+	@ManyToOne
+	@MapsId("user_id")
+	private User user;
+
+	@ManyToOne
+	@MapsId("review_id")
+	private Review review;
 	
 	
 }

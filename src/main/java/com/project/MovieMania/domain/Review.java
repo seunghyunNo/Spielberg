@@ -1,5 +1,6 @@
 package com.project.MovieMania.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -32,12 +33,14 @@ public class Review extends BaseEntity{
 	// 리뷰 작성자
 	@ManyToOne
 	private User user;
+
+	@OneToMany(mappedBy = "review", cascade = CascadeType.REMOVE)
+	private List<Report> reports;
 	
 	// Review:Recommend = 1:N
-	@OneToMany
+	@OneToMany(cascade = CascadeType.REMOVE)
 	@JoinColumn(name = "review_id")
 	@Builder.Default
-	@ToString.Exclude
 	private List<Recommend> recommends = new ArrayList<>();
 	
 	public void addRecommends(Recommend... recommends){
