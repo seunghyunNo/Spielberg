@@ -3,8 +3,8 @@
 SELECT TABLE_NAME FROM information_schema.TABLES
 WHERE TABLE_SCHEMA = 'moviedb';
 
-SELECT * FROM user;
-SELECT * FROM user_authorities;
+SELECT * FROM customer;
+SELECT * FROM customer_authorities;
 select * from movie;
 select * from cinema;
 select * from theater;
@@ -16,7 +16,7 @@ select * from review;
 select * from recommend;
 select * from report;
 select * from question;
- 
+
 INSERT INTO movie
 (open_date, show_time, audi_cnt, movie_code, directors, genre, rate_grade, title, actors, img)
 VALUES('20240822', 0, 0, '0', '1', '1', '1', '1', '1', '1');
@@ -66,7 +66,7 @@ VALUES
   (1, NOW(), 1, NOW(), 4, '웩'),
   (5, NOW(), 1, NOW(), 5, '훌륭해요'),
   (3, NOW(), 1, NOW(), 6, '그냥그럼');
- 
+
 INSERT INTO `user`
 (birthday, created_at, updated_at, gender, phone_num, name, password, username, email, status)
 VALUES
