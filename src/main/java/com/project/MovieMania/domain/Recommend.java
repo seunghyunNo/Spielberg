@@ -1,10 +1,8 @@
 package com.project.MovieMania.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Data
 @NoArgsConstructor
@@ -17,10 +15,12 @@ public class Recommend {
 
 	@ManyToOne
 	@MapsId("user_id")
+	@JsonIgnore
 	private User user;
 
 	@ManyToOne
 	@MapsId("review_id")
+	@JsonIgnore
 	private Review review;
 	
 	

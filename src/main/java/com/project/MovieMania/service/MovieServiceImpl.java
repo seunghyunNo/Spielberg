@@ -315,8 +315,10 @@ public class MovieServiceImpl implements MovieService {
         // 리뷰 User 에 담기
         reviewDTO.setUser(userDTO);
 
-        // 리뷰 count 가져오기
+
+        // Recommend 가져오기
         reviewDTO.setRecommendCount(review.getRecommends().size());
+        reviewDTO.setRecommends(recommendRepository.findByReview(review));
 
         return reviewDTO;
     }

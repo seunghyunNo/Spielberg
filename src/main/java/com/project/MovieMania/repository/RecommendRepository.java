@@ -12,4 +12,6 @@ public interface RecommendRepository extends JpaRepository<Recommend, Long> {
     Recommend findByUserAndReview(User user, Review review);
 
     void deleteByUserAndReview(User user, Review review);
+
+    List<Recommend> findByReview(Review review);
 }

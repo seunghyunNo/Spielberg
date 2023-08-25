@@ -54,7 +54,6 @@ $(function(){
       const reviewId = $(this).attr('thumb-reviewId');
 
       findRecommend(userId, reviewId);
-      getReview();
   });
 
   // 삭제 버튼 클릭 시 삭제 동작 수행
@@ -112,12 +111,18 @@ function buildReview(data){
     let date = new Date(element.createdAt);
     let createTime = getTimeAgo(date);
 
-    const delBtn = (userId !== element.user.id) ? ''
+    const btn = (userId !== element.user.id) ?
+      `<li><button class="dropdown-item report_spoiler" spoil-reviewId=${reviewId}>스포일러 신고</button></li>
+       <li><button class="dropdown-item report_badword" badword-reviewId=${reviewId}>욕.비방 신고</button></li>`
       : `<li><button class="dropdown-item delete" delete-reviewId=${reviewId}>삭제</button></li>`;
 
-    const reportBtn = (userId === element.user.id) ? ''
-      : `<li><button class="dropdown-item report_spoiler" spoil-reviewId=${reviewId}>스포일러 신고</button></li>
-         <li><button class="dropdown-item report_badword" badword-reviewId=${reviewId}>욕.비방 신고</button></li>`;
+    let recommendArray = element.recommends;
+    const thumbUp = activeThumbUp(userId, reviewId, recommendArray);
+//    recommendArray.forEach(recommend => {
+//      thumbUp = (userId !== recommend.recommendPK.user_id)?
+//        `<i class="fa-regular fa-thumbs-up fa-xl" thumb-reviewId=${reviewId}></i>`
+//        : `<i class="fa-solid fa-thumbs-up fa-xl" thumb-reviewId=${reviewId}></i>`;
+//    })
 
     const row = `
         <div class="d-flex flex-column justify-content-center align-items-center col-md-1">
@@ -133,7 +138,7 @@ function buildReview(data){
               <td class="col-md-8 d-flex align-items-center"><span>${content}</span></td>
               <td class="col-md-1 d-flex justify-content-center align-items-center">
                 <span class="text-xs m-2">${recommendCount}</span>
-                <i class="fa-regular fa-thumbs-up fa-xl" thumb-reviewId=${reviewId}></i>
+                ${thumbUp}
               </td>
               <td class="col-md-1 d-flex justify-content-center align-items-center">
                 <div class="dropdown">
@@ -141,8 +146,7 @@ function buildReview(data){
                     <i class="fa-solid fa-bars"></i>
                   </button>
                   <ul class="dropdown-menu">
-                    ${delBtn}
-                    ${reportBtn}
+                    ${btn}
                   </ul>
                 </div>
               </td>
@@ -158,6 +162,15 @@ function buildReview(data){
 
   $("#reviewList").html(result.join("\n"));
 
+}
+
+function activeThumbUp(userId, reviewId,recommends){
+  recommends.forEach(recommend => {
+    if(userId == recommend.recommendPK.user_id){
+      return `<i class="fa-solid fa-thumbs-up fa-xl" thumb-reviewId=${reviewId}></i>`;
+    }
+  })
+  return `<i class="fa-regular fa-thumbs-up fa-xl" thumb-reviewId=${reviewId}></i>`;
 }
 
 // 시간 변환 메소드

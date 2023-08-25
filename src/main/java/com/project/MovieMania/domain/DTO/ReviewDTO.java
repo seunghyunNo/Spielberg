@@ -17,5 +17,6 @@ public class ReviewDTO {
     private int score;
     private UserDTO user;
     private LocalDateTime createdAt;
-    private long recommendCount;;
+    private long recommendCount;
+    private List<Recommend> recommends;
 }
