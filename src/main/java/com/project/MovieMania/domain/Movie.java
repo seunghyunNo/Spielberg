@@ -3,6 +3,9 @@ package com.project.MovieMania.domain;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -16,6 +19,8 @@ import java.util.List;
 @Builder
 @ToString(callSuper = true)
 @EqualsAndHashCode(callSuper = true)
+@DynamicInsert
+@DynamicUpdate
 @Entity
 public class Movie extends BaseEntity{
 	
@@ -36,6 +41,7 @@ public class Movie extends BaseEntity{
 	
 	private Integer showTime;
 	
+	@DateTimeFormat(pattern = "MM/dd/yyyy")
 	private LocalDate openDate;
 	
 	@Column(length = 100)
@@ -61,7 +67,5 @@ public class Movie extends BaseEntity{
 			Collections.addAll(this.showInfos, showInfos);
 		}
 	}
-	
-	
 	
 }

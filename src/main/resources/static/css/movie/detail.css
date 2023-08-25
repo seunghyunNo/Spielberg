@@ -1,0 +1,22 @@
+.custom-lighter-bg {
+  background-color: #f0f0f0; /* 임의의 밝은 색상 */
+}
+
+.click-line {
+  border-top: 1px solid #000;
+  border-left: 1px solid #000;
+  border-right: 1px solid #000;
+}
+
+.under-line {
+  border-bottom: 1px solid #000;
+}
+
+.link {
+  text-decoration: none;
+  color: #000;
+}
+
+.navBar {
+  height: 50px;
+}
