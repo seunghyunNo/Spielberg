@@ -78,18 +78,18 @@ public class UserServiceImpl implements UserService {
 
         // 암호화해서 저장
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-        userRepository.register(user);
+        userRepository.save(user);
 
         Authority authority = authorityRepository.findByName("ROLE_MEMBER");
         user.addAuthorities(authority);
-        userRepository.register(user);
+        userRepository.save(user);
         return 1;
     }
 
 
     @Override
-    public int usernameCheck(String username) {
-        return userRepository.usernameCheck(username);
+    public int findByUsername(String username) {
+        return userRepository.findByUsername(username);
     }
 
     @Override
@@ -115,7 +115,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public boolean rePw(User user) {
-        String encodePassword = userRepository.getEncodePassword(user);
+        User user = userRepository.findById(user)
         return passwordEncoder.matches(user.getPassword(),encodePassword);
     }
 

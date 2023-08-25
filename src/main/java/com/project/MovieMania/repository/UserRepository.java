@@ -24,7 +24,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     String updatePw(User user);
 
-    String getEncodePassword(User user);
 
     int deleteUser(Long id);
 

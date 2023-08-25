@@ -21,10 +21,10 @@ public class SecurityConfig{
     @Autowired
     private PrincipalDetailsService principalDetailsService;
 
-    @Bean
-    public PasswordEncoder encoder(){
-        return new BCryptPasswordEncoder();
-    }
+//    @Bean
+//    public PasswordEncoder encoder(){
+//        return new BCryptPasswordEncoder();
+//    }
 
     //
     @Bean
