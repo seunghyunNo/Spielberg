@@ -6,10 +6,7 @@ import com.project.MovieMania.domain.TicketInfo;
 import com.project.MovieMania.repository.CinemaRepository;
 import com.project.MovieMania.repository.ShowinfoRepoisotry;
 import com.project.MovieMania.repository.TheaterRepository;
-import com.project.MovieMania.service.SeatService;
-import com.project.MovieMania.service.ShowInfoService;
-import com.project.MovieMania.service.TheaterService;
-import com.project.MovieMania.service.TicketingService;
+import com.project.MovieMania.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -37,6 +34,9 @@ public class TheaterController {
 
     @Autowired
     private ShowInfoService showInfoService;
+
+    @Autowired
+    private PriceService priceService;
 
     @GetMapping("/theater/{movie_id}")
     public String theater(@PathVariable Long movie_id,Model model)
@@ -88,17 +88,24 @@ public class TheaterController {
     }
 
     @PostMapping("/ticketing/{showInfoId}")
-    public String ticketing(@PathVariable Long showInfoId,@RequestParam Long userId,@RequestParam Long priceId,
+    public String ticketing(@PathVariable Long showInfoId,@RequestParam Long userId,
+                            Integer adult,Integer student,
                             Integer seatRow,Integer seatColumn, Model model)
     {
-        TicketInfo ticketInfo = ticketingService.writeTicket(showInfoId,userId,priceId);
 
-
-        int result = seatService.findSeat(seatRow,seatColumn);
-        if(result == 0)
+        Long priceId = 0L;
+        TicketInfo ticketInfo = new TicketInfo();
+        for(int i = 0; i < adult; i++)
         {
-            model.addAttribute("full",seatService.writeSeat(ticketInfo,seatRow,seatColumn));
+            priceId = priceService.findById(1L,model).getId();
+            ticketInfo = ticketingService.writeTicket(showInfoId,userId,priceId);
         }
+        for(int i = 0; i < student; i++)
+        {
+            priceId = priceService.findById(2L,model).getId();
+            ticketInfo = ticketingService.writeTicket(showInfoId,userId,priceId);
+        }
+
 
         // 로그인한 유저 정보 모델로 넘기기 TODO
         model.addAttribute("showInfoId",ticketInfo.getShowInfo().getId());

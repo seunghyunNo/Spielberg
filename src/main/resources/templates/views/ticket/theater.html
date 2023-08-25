@@ -15,7 +15,7 @@
     <div class="container mt-3">
         <form th:action="@{|/ticket/theater/${movieId}|}" name="theaterFrm" method="post" enctype="multipart/form-data">
             <input type="hidden" name="showInfoId" th:value="${showInfoId}">
-            <input type="hidden" name="movieId" th:value="${movieID}">
+            <input type="hidden" name="movieId" th:value="${movieId}">
 
             <div class="container ml-2">
                 <select name="cinemaName" title="cinemaList">

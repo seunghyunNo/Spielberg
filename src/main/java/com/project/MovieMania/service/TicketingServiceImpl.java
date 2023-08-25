@@ -53,7 +53,7 @@ public class TicketingServiceImpl implements TicketingService{
         String ticketCode = "";
 
         if(ticket.getTicketCode().isEmpty()) {
-            String.valueOf((char) ((int) random.nextInt(26)) + 'A');
+            ticketCode = String.valueOf((char) ((int) random.nextInt(26)) + 'A');
         }
         else
         {
