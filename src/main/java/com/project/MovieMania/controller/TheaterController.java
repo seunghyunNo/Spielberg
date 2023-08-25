@@ -100,11 +100,15 @@ public class TheaterController {
             priceId = priceService.findById(1L,model).getId();
             ticketInfo = ticketingService.writeTicket(showInfoId,userId,priceId);
         }
+        model.addAttribute("priceId",priceId);
+
         for(int i = 0; i < student; i++)
         {
             priceId = priceService.findById(2L,model).getId();
             ticketInfo = ticketingService.writeTicket(showInfoId,userId,priceId);
         }
+        model.addAttribute("priceId",priceId);
+
 
 
         // 로그인한 유저 정보 모델로 넘기기 TODO

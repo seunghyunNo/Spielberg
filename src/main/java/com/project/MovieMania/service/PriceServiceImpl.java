@@ -19,7 +19,6 @@ public class PriceServiceImpl implements PriceService {
     @Override
     public PriceInfo findById(Long priceId,Model model) {
         PriceInfo priceInfo = priceInfoRepository.findById(priceId).orElse(null);
-        model.addAttribute("priceId",priceInfo.getId());
         return priceInfo;
     }
 }

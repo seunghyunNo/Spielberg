@@ -38,6 +38,7 @@
             <h2 style="text-align:center">SCREEN</h2>
             <input type="hidden" id="showInfoId" name="showInfoId" th:value="${showInfoId}">
 <!--            <input type="hidden" id="userId" name="userId" th:value="${userId}">-->
+            <input type="hidden" id="priceId" name="priceId" th:value="${priceId}">
             <th:block th:each="sColumn:${seatMaxColumn}">
                 <div th:data-seat-column="${sColumn}"></div>
                 <th:block th:each="sRow:${seatMaxRow}" >
