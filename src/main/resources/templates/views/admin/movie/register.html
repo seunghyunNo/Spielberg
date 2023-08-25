@@ -20,10 +20,12 @@
 		<h2 class="my-3">영화 등록하기</h2>
 		
 		<form name="movieForm" enctype="multipart/form-data" method="post" th:action="@{register}">
-			<p>
-				<!-- movieCode -->
-				<label></label>
-			</p>
+			<div class="my-2 row">
+				<label class="col-2 col-form-label">영화 코드 :</label>
+				<div class="col=10">
+					<input name="movieCode" class="form-control" placeholder="영화 코드 (API)" type="text">
+				</div>
+			</div>
 			<div class="my-2 row">
 				<label class="col-2 col-form-label">제목 :</label>
 				<div class="col-10">
