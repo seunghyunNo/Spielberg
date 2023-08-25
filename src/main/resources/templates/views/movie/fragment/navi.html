@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<th:block th:fragment="navigation">
+  <nav class="navbar navbar-expand-md navbar-light bg-light mt-2">
+    <div class="collapse navbar-collapse justify-content-center">
+      <ul class="navbar-nav mr-auto row" style="width: 100%;">
+        <a class="nav-link active col-md-4" th:href="@{'/movie/detail/' + ${movieId}}">
+          <li class="nav-item d-flex justify-content-center">영화 정보</li>
+        </a>
+        <a class="nav-link col-md-4" th:href="@{'/movie/review/' + ${movieId}}">
+          <li class="nav-item d-flex justify-content-center">관람평</li>
+        </a>
+        <a class="nav-link col-md-4" th:href="@{'/movie/trailer/' + ${movieId}}">
+          <li class="nav-item d-flex justify-content-center">스틸컷 / 예고편</li>
+        </a>
+      </ul>
+    </div>
+  </nav>
+</th:block>
+</html>
