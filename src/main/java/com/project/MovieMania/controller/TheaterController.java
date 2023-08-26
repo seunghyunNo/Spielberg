@@ -88,26 +88,25 @@ public class TheaterController {
     }
 
     @PostMapping("/ticketing/{showInfoId}")
-    public String ticketing(@PathVariable Long showInfoId,@RequestParam Long userId,
+    public void ticketing(@PathVariable Long showInfoId,@RequestParam Long userId,
                             Integer adult,Integer student,
                             Integer seatRow,Integer seatColumn, Model model)
     {
 
         Long priceId = 0L;
         TicketInfo ticketInfo = new TicketInfo();
-        for(int i = 0; i < adult; i++)
-        {
-            priceId = priceService.findById(1L,model).getId();
-            ticketInfo = ticketingService.writeTicket(showInfoId,userId,priceId);
-        }
-        model.addAttribute("priceId",priceId);
-
-        for(int i = 0; i < student; i++)
-        {
-            priceId = priceService.findById(2L,model).getId();
-            ticketInfo = ticketingService.writeTicket(showInfoId,userId,priceId);
-        }
-        model.addAttribute("priceId",priceId);
+        System.out.println(adult+"명"+student+"명");
+//        for(int i = 0; i < adult; i++)
+//        {
+//            priceId = priceService.findById(1L,model).getId();
+//            ticketInfo = ticketingService.writeTicket(showInfoId,userId,priceId);
+//        }
+//
+//        for(int i = 0; i < student; i++)
+//        {
+//            priceId = priceService.findById(2L,model).getId();
+//            ticketInfo = ticketingService.writeTicket(showInfoId,userId,priceId);
+//        }
 
 
 
@@ -118,7 +117,6 @@ public class TheaterController {
 
         model.addAttribute("theaterNum",showInfo.getTheater().getTheaterNum());
 
-        return "ticket/ticketing";
     }
 
 }

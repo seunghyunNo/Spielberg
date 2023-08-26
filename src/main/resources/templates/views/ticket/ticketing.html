@@ -16,7 +16,7 @@
     <div class="container mt-5">
         <form th:action="@{|/ticket/ticketing/${showInfoId}|}" name="ticketingFrm" method="post" enctype="multipart/form-data">
             <p>성인</p>
-            <select name="adult" id="adult" title="adultList">
+            <select name="adult" id="adult" title="adultList" >
                 <option value="0">0명</option>
                 <option value="1">1명</option>
                 <option value="2">2명</option>
@@ -42,10 +42,12 @@
             <th:block th:each="sColumn:${seatMaxColumn}">
                 <div th:data-seat-column="${sColumn}"></div>
                 <th:block th:each="sRow:${seatMaxRow}" >
-                    <input type="hidden" name="seatRow" th:value="${sRow}">
-                    <input type="hidden" name="seatColumn" th:value="${sColumn}">
-                    <span th:data-seat-row="${sRow}"></span>
-                    <button type="button" class="seat m-4" th:data-column-row="|${sColumn}${sRow}|" th:text="|${sColumn}열${sRow}행|">좌석</button>
+                    <span>
+                        <input type="hidden" name="seatRow" th:value="${sRow}">
+                        <input type="hidden" name="seatColumn" th:value="${sColumn}">
+                        <span th:data-seat-row="${sRow}"></span>
+                        <button type="button" class="seat m-4" th:data-column-row="|${sColumn}${sRow}|" th:text="|${sColumn}열${sRow}행|">좌석</button>
+                    </span>
                 </th:block>
                 <hr>
             </th:block>

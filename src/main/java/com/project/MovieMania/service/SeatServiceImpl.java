@@ -26,6 +26,8 @@ public class SeatServiceImpl implements SeatService{
                 .seatColumn(seatColumn)
                 .build();
 
+        seatRepository.saveAndFlush(seat);
+
         if(seat != null)
         {
             result = 1;
@@ -36,7 +38,7 @@ public class SeatServiceImpl implements SeatService{
     }
 
     @Override
-    public int findSeat(Integer seatRow, Integer seatColumn) {
+    public int checkSeat(Integer seatRow, Integer seatColumn) {
 
         Seat seat = seatRepository.findBySeatRowAndSeatColumn(seatRow,seatColumn);
 
@@ -44,7 +46,20 @@ public class SeatServiceImpl implements SeatService{
         {
             return 0;
         }
+        return 1;
+    }
 
+    @Override
+    public Seat findSeat(Integer seatRow, Integer seatColumn) {
+
+        Seat seat = seatRepository.findBySeatRowAndSeatColumn(seatRow,seatColumn);
+
+        return seat;
+    }
+
+    @Override
+    public int deleteSeat(Seat seat) {
+        seatRepository.delete(seat);
         return 1;
     }
 }
