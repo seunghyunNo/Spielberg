@@ -80,6 +80,7 @@ public class TheaterController {
             seatRowList.add(i);
         }
         model.addAttribute("seatMaxRow",seatRowList);
+        model.addAttribute("maxRow",seatMaxRow);
         int seatMaxColumn = showInfo.getTheater().getMaxSeatColumn();
         System.out.println("좌석최대컬럼"+seatMaxColumn);
         List<Integer> seatColumnList = new ArrayList<>();
@@ -97,21 +98,9 @@ public class TheaterController {
                             Integer adult,Integer student,
                             Integer seatRow,Integer seatColumn, Model model)
     {
-
-        Long priceId = 0L;
         TicketInfo ticketInfo = new TicketInfo();
         System.out.println(adult+"명"+student+"명");
-//        for(int i = 0; i < adult; i++)
-//        {
-//            priceId = priceService.findById(1L,model).getId();
-//            ticketInfo = ticketingService.writeTicket(showInfoId,userId,priceId);
-//        }
-//
-//        for(int i = 0; i < student; i++)
-//        {
-//            priceId = priceService.findById(2L,model).getId();
-//            ticketInfo = ticketingService.writeTicket(showInfoId,userId,priceId);
-//        }
+
 
 
 

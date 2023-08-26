@@ -41,16 +41,16 @@
 <!--            <input type="hidden" id="userId" name="userId" th:value="${userId}">-->
             <input type="hidden" id="priceId" name="priceId" th:value="${priceId}">
             <th:block th:each="sColumn:${seatMaxColumn}">
-                <div th:data-seat-column="${sColumn}"></div>
+                <div th:data-seat-column="${sColumn}">
                 <th:block th:each="sRow:${seatMaxRow}" >
-                    <span>
+                    <span th:data-max-seatRow="${seatMaxRow}">
                         <input type="hidden" name="seatRow" th:value="${sRow}">
                         <input type="hidden" name="seatColumn" th:value="${sColumn}">
-                        <span th:data-seat-row="${sRow}"></span>
-                        <button type="button" class="seat m-4" th:data-column-row="|${sColumn}${sRow}|" th:text="|${sColumn}열${sRow}행|">좌석</button>
+                        <p style="display:inline" th:data-seat-row="${sRow}"></p>
+                        <button type="button"  class="seat m-4" th:data-column-row="|${sColumn}${sRow}|" th:text="|${sColumn}열${sRow}행|">좌석</button>
                     </span>
                 </th:block>
-                <hr>
+                </div>
             </th:block>
 
             <button type="button" id="purchaseBtn">결제하기</button>

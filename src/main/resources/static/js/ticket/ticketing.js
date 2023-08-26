@@ -21,10 +21,44 @@ $(function () {
     // 처음 예약 좌석 / 미예약 좌석 확인
 
     // 예약된 좌석이면 버튼 클릭시 경고출력
+    var maxRow = $("span").attr("data-max-seatRow");
 
+    alert(maxRow.length);
+
+    let nowColumn;
+    $("input").siblings("div").each(function(){
+        nowColumn = $(this).attr("data-seat-column");
+         $(this).find("p").each(function(){
+             let nowRow = $(this).attr("data-seat-row");
+             const current = $(this).siblings("button");
+             console.log(nowColumn+"열"+nowRow+"행");
+             $.ajax({
+                 url: "/seat/check",
+                 type: "POST",
+                 cache: false,
+                 data: {
+                     "seatRow": nowRow,
+                     "seatColumn": nowColumn
+                 },
+                 success: function (data) {
+                     if (data.count == 1) {
+                         current.removeClass("seat");
+                         current.addClass("selectSeat");
+                         current.disabled = true;
+                     }
+                     else {
+
+                     }
+                 },
+             });
+         });
+    });
+
+
+    // 좌석 클릭 시
     $("[data-column-row]").click(function () {
-        let row = $(this).siblings("span").attr("data-seat-row");
-        let column = $(this).parent().siblings("div").attr("data-seat-column");
+        let row = $(this).siblings("p").attr("data-seat-row");
+        let column = $(this).parents("div").attr("data-seat-column");
         let crnObj = $(this);
         console.log(row);
         console.log(column);
@@ -46,6 +80,7 @@ $(function () {
                 else {
                     crnObj.removeClass("seat");
                     crnObj.addClass("selectSeat");
+
                     cnt++;
                     console.log("카운트"+cnt);
                     saveSeat(column, row, showInfoId);
@@ -104,3 +139,5 @@ function deleteSeat(seatColumn, seatRow) {
 
     });
 }
+
+
