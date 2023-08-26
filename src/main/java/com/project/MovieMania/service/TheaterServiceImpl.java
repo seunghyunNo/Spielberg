@@ -87,5 +87,12 @@ public class TheaterServiceImpl implements TheaterService{
         return times;
     }
 
+    @Override
+    public Theater findById(Long theaterId) {
+        Theater theater = theaterRepository.findById(theaterId).orElse(null);
+
+        return theater;
+    }
+
 
 }

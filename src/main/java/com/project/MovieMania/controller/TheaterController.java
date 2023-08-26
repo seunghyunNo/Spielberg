@@ -42,6 +42,7 @@ public class TheaterController {
     public String theater(@PathVariable Long movie_id,Model model)
     {
         model.addAttribute("movieId",movie_id);
+//        model.addAttribute("theaterNum",theaterService.findById(theater_id).getTheaterNum());
         model.addAttribute("cinemas",theaterService.cinemaList());
         model.addAttribute("dates",theaterService.dateList());
         model.addAttribute("times",theaterService.timeList());
@@ -50,14 +51,16 @@ public class TheaterController {
     }
 
     @PostMapping("/theater/{movie_id}")
-    public String selectTheater(@PathVariable Long movie_id, @RequestParam String cinemaName,@RequestParam String date,@RequestParam String time,Model model)
+    public String selectTheater(@PathVariable Long movie_id, @RequestParam String cinemaName,
+            @RequestParam String date,@RequestParam String time,Model model)
     {
+
         time = " "+time;
         String dateTime = date.concat(time);
         System.out.println("영화번호"+movie_id+"이름"+cinemaName+"날짜"+date+"시간"+time);
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
         LocalDateTime showDateTime = LocalDateTime.parse(dateTime,formatter);
-        ShowInfo showInfo =showInfoService.writeShowInfo(movie_id,cinemaName,showDateTime,model);
+        ShowInfo showInfo =showInfoService.findShowInfo(movie_id,cinemaName,showDateTime,model);
 
         return "redirect:/ticket/ticketing/"+showInfo.getId();
     }
@@ -67,6 +70,8 @@ public class TheaterController {
     {
         ShowInfo showInfo = showInfoService.findById(showInfoId,model);
         System.out.println("TICKET");
+        model.addAttribute("theaterNum",showInfo.getTheater().getTheaterNum());
+
         int seatMaxRow = showInfo.getTheater().getMaxSeatRow();
         System.out.println("좌석최대로우"+seatMaxRow);
         List<Integer> seatRowList = new ArrayList<>();

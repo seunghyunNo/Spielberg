@@ -18,5 +18,7 @@ public interface TheaterService {
 
     Set<LocalTime> timeList();
 
+    Theater findById(Long theaterId);
+
 
 }

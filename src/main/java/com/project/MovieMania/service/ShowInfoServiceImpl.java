@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Service
 public class ShowInfoServiceImpl implements ShowInfoService{
@@ -47,29 +48,26 @@ public class ShowInfoServiceImpl implements ShowInfoService{
     }
 
     @Override
-    public ShowInfo writeShowInfo(Long movieId, String cinemaName, LocalDateTime showDateTime, Model model) {
+    public ShowInfo findShowInfo(Long movieId, String cinemaName, LocalDateTime showDateTime, Model model) {
         Movie movie = movieRepository.findById(movieId).orElse(null);
         Cinema cinema = cinemaRepository.findByName(cinemaName);
-        Theater theater = theaterRepository.findByCinemaId(cinema.getId());
-
-        ShowInfo showInfo = ShowInfo.builder()
-                .movie(movie)
-                .theater(theater)
-                .showDateTime(showDateTime)
-                .status(ShowInfoStatus.NOW)
-                .build();
-
-        ShowInfo result =showinfoRepoisotry.findByMovieIdAndTheaterIdAndShowDateTime(movie.getId(),theater.getId(),showDateTime);
-
-        if(result != null)
+        List<ShowInfo> showInfoList =showinfoRepoisotry.findByMovieIdAndShowDateTime(movie.getId(),showDateTime);
+        ShowInfo showInfo = new ShowInfo();
+        int theaterNum = 0;
+        for(int i = 0 ; i < showInfoList.size() ; i++)
         {
-            model.addAttribute("showInfoId",result.getId());
-            System.out.println(showInfo);
-            return result;
+            String name = showInfoList.get(i).getTheater().getCinema().getName();
+
+            if(name.equals(cinemaName))
+            {
+               theaterNum = showInfoList.get(i).getTheater().getTheaterNum();
+                System.out.println("상영관번호"+theaterNum);
+               showInfo = showInfoList.get(i);
+            }
         }
-
-
-        return null;
+            model.addAttribute("showInfoId",showInfo.getId());
+            System.out.println(showInfo);
+            return showInfo;
     }
 
     @Override
