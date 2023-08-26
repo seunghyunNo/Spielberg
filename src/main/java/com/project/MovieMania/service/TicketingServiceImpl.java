@@ -68,6 +68,8 @@ public class TicketingServiceImpl implements TicketingService{
                 .ticketCode(ticketCode)
                 .build();
 
+        ticketInfoRepository.saveAndFlush(ticketInfo);
+
         return ticketInfo;
     }
 

@@ -1,5 +1,6 @@
 package com.project.MovieMania.controller;
 
+import com.project.MovieMania.domain.PriceInfo;
 import com.project.MovieMania.domain.Seat;
 import com.project.MovieMania.domain.ShowInfo;
 import com.project.MovieMania.domain.TicketInfo;
@@ -94,14 +95,25 @@ public class TheaterController {
     }
 
     @PostMapping("/ticketing/{showInfoId}")
-    public void ticketing(@PathVariable Long showInfoId,@RequestParam Long userId,
+    public void ticketing(@PathVariable Long showInfoId,
                             Integer adult,Integer student,
                             Integer seatRow,Integer seatColumn, Model model)
     {
         TicketInfo ticketInfo = new TicketInfo();
+        PriceInfo priceInfo = new PriceInfo();
         System.out.println(adult+"명"+student+"명");
 
+        for (int i = 0; i < adult; i++)
+        {
+           priceInfo = priceService.checkAdultNum();
+           ticketingService.writeTicket(showInfoId,1L,priceInfo.getId());
+        }
 
+        for(int i = 0; i < student; i++)
+        {
+            priceInfo = priceService.checkStudentNum();
+            ticketingService.writeTicket(showInfoId,1L,priceInfo.getId());
+        }
 
 
         // 로그인한 유저 정보 모델로 넘기기 TODO

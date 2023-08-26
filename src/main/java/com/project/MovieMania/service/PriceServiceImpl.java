@@ -16,9 +16,20 @@ public class PriceServiceImpl implements PriceService {
         this.priceInfoRepository = priceInfoRepository;
     }
 
+
     @Override
-    public PriceInfo findById(Long priceId,Model model) {
-        PriceInfo priceInfo = priceInfoRepository.findById(priceId).orElse(null);
+    public PriceInfo checkAdultNum() {
+
+        PriceInfo priceInfo = priceInfoRepository.findById(1L).orElse(null);
+
+        return priceInfo;
+    }
+
+    @Override
+    public PriceInfo checkStudentNum() {
+
+        PriceInfo priceInfo = priceInfoRepository.findById(2L).orElse(null);
+
         return priceInfo;
     }
 }
