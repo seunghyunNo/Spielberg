@@ -35,7 +35,12 @@ public class AdminController {
 	}
 	
 	@GetMapping("/movie/register")
-	public void movieRegister(){}
+	public void movieRegister(
+			@RequestParam(required = false, name = "movieCode") String movieCode
+			, Model model
+	){
+			model.addAttribute("movieCode", movieCode);
+	}
 	
 	@PostMapping("/movie/register")
 	public String movieRegisterOk(Movie movie, Model model){

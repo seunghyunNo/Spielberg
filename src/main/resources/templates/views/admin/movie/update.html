@@ -23,12 +23,14 @@
 		<form name="movieForm" enctype="multipart/form-data" method="post" th:action="@{/admin/movie/update}">
 			<div class="my-2 row">
 				<label class="col-2 col-form-label">ID :</label>
-				<input name="movieId" class="col-10 border bg-light rounded p-2" th:value="${movie.id}" type="text"/>
+				<div class="col-10">
+					<input name="movieId" class="form-control" th:value="${movie.id}" type="text" disabled readonly/>
+				</div>
 			</div>
-			<p>
+			<div>
 				<!-- movieCode -->
 				<label></label>
-			</p>
+			</div>
 			<div class="my-2 row">
 				<label class="col-2 col-form-label">제목 :</label>
 				<div class="col-10">

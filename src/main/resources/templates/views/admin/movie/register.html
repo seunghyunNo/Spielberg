@@ -13,6 +13,7 @@
     <link href="https://unpkg.com/gijgo@1.9.14/css/gijgo.min.css" rel="stylesheet" type="text/css" />
 	
 	<title>Admin - Movie Register</title>
+	<script th:src="@{/js/admin/movie/register.js}"></script>
 </head>
 <body>
 	<div class="container">
@@ -22,8 +23,9 @@
 		<form name="movieForm" enctype="multipart/form-data" method="post" th:action="@{register}">
 			<div class="my-2 row">
 				<label class="col-2 col-form-label">영화 코드 :</label>
-				<div class="col=10">
-					<input name="movieCode" class="form-control" placeholder="영화 코드 (API)" type="text">
+				<div class="col-10">
+					<input name="movieCode" class="form-control" placeholder="영화 코드 (API)" type="text"
+					       th:value="${movieCode} ? ${movieCode} : ''" disabled>
 				</div>
 			</div>
 			<div class="my-2 row">
