@@ -116,10 +116,17 @@ public class UserController {
 //
 //    // 아이디 찾기
     @PostMapping("/findUsernameId")
-    public @ResponseBody String  findUsernameIdOk(@RequestParam("email")String email,
+    public String findUsernameIdOk(@RequestParam("email")String email,
                                                @RequestParam("name") String name,
-                                               @RequestParam("birthday") LocalDate birthday){
-        return userService.findUsernameId(email,name,birthday);
+                                               @RequestParam("birthday") LocalDate birthday,
+                                                Model model
+
+        ){
+       User user = userService.findUsernameId(name,email,birthday);
+       String username = user.getUsername();
+       model.addAttribute("username",username);
+//       model.addAttribute("username",userService.findUsernameId(email, name, birthday).getUsername());
+        return "/user/findUsernameIdOk";
     }
 //
     // 비밀번호 찾기
@@ -128,11 +135,46 @@ public class UserController {
     public void findPw(){}
 
     @PostMapping("/findPw")
-    public @ResponseBody String findPwOk(@RequestParam("username") String username,
+    public String findPwOk(@RequestParam("username") String username,
                                       @RequestParam("name") String name,
-                                      @RequestParam("email") String email){
-        return userService.findPw(username,name,email);
+                                      @RequestParam("email") String email,
+                                        Model model
+    ){
+       User user = userService.findPw(username,name,email);
+
+       if(user != null){
+           model.addAttribute("user",user);
+           return "/user/changePw";
+       }
+       return "/user/findPw";
     }
+
+    //비밀번호 변경
+    @PostMapping("/changePw")
+    public String changePw(@RequestParam("userId") Long userId,
+                           @RequestParam("password") String password,
+                           @RequestParam("re_password")String re_password,
+                           Model model){
+        System.out.println(userId);
+        System.out.println(password);
+        System.out.println(re_password);
+        if(password.equals(re_password)){
+            System.out.println("success");
+            model.addAttribute("result",1);
+            User user = userService.changePw(userId,password);
+            return "/user/changePwOk";
+        }else {
+            System.out.println("fail");
+            User user = userService.findByUserId(userId);
+            model.addAttribute("user",user);
+            return "/user/changePw";
+        }
+
+
+    }
+
+
+
 //
 //    // 비밀번호 변경
 //    @PostMapping("/updatePw")

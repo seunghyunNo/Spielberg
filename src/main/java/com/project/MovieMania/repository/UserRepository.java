@@ -13,11 +13,11 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     User findByPhoneNum(String phoneNum);
 
-    // 아이디 찾기
-    String findByNameAndEmailAndBirthday(String name, String email, LocalDate birthday);
+    // 아이디(유저) 찾기
+    User findByNameAndEmailAndBirthday(String name, String email, LocalDate birthday);
 
     // 비밀번호 찾기
-    String findByNameAndUsernameAndEmail(String name,String username, String email);
+    User findByNameAndUsernameAndEmail(String name,String username, String email);
 
 
 }

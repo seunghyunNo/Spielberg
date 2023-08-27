@@ -29,7 +29,7 @@ public class User extends BaseEntity{
 	private String username;
 	
 	@JsonIgnore
-	@Column(nullable = false, length = 50)
+	@Column(nullable = false, length = 200)
 	private String password;
 	
 	@Transient

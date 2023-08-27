@@ -6,6 +6,7 @@ import com.project.MovieMania.domain.type.UserStatus;
 import com.project.MovieMania.repository.AuthorityRepository;
 import com.project.MovieMania.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,6 +21,13 @@ public class UserServiceImpl implements UserService {
 
     private AuthorityRepository authorityRepository;
 
+
+    private PasswordEncoder passwordEncoder;
+
+    @Autowired
+    public void setPasswordEncoder(PasswordEncoder passwordEncoder) {
+        this.passwordEncoder = passwordEncoder;
+    }
 
     @Autowired
     public void setAuthorityRepository(AuthorityRepository authorityRepository) {
@@ -71,6 +79,8 @@ public class UserServiceImpl implements UserService {
 
         user.setStatus(UserStatus.ACTIVE);
 
+        user.setPassword(passwordEncoder.encode(user.getPassword()));   // 비밀번호를 가져와서 암호화
+
         User user1 = userRepository.save(user);
 
 
@@ -85,13 +95,16 @@ public class UserServiceImpl implements UserService {
     // 유저 entity 넘겨주는
     @Override
 //    @Transactional
-    public String findUsernameId(String name, String email, LocalDate birthday) {
-        return userRepository.findByNameAndEmailAndBirthday(name, email, birthday);
+    public User findUsernameId(String name, String email, LocalDate birthday){
+        User user =  userRepository.findByNameAndEmailAndBirthday(name, email, birthday);
+        return user;
     }
 
     @Override
-    public String findPw(String username, String name, String email) {
-        return userRepository.findByNameAndUsernameAndEmail(name,username,email);
+    public User findPw(String username, String name, String email) {
+
+        User user = userRepository.findByNameAndUsernameAndEmail(name,username,email);
+        return user;
     }
 
     @Override
@@ -104,6 +117,25 @@ public class UserServiceImpl implements UserService {
         return user.getAuthorities();
     }
 
+    @Override
+    public User changePw(Long userId, String password){
+
+        User user = userRepository.findById(userId).orElseThrow();
+
+        user.setPassword(passwordEncoder.encode(password));
+
+        return userRepository.save(user);
+
+
+    }
+
+    @Override
+    public User findByUserId(Long userId) {
+
+        User user= userRepository.findById(userId).orElseThrow();
+
+        return user;
+    }
 
 
 }

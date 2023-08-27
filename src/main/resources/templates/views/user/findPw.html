@@ -8,6 +8,8 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+
     <title>비밀번호 찾기</title>
 </head>
 <body>
@@ -25,7 +27,7 @@
             </div>
             <div class="row mt-5">
                 <div class="form-group col-auto container-sm mt-3">
-                    <form method="POST" th:action="@{/user/changePw}">
+                    <form method="POST" th:action="@{/user/findPw}">
                         <div id="auth" class="row">
                             <div class="form-group mt-3">
                                 <label for="name">이름</label>
@@ -40,12 +42,12 @@
                             <div class="form-group mt-3">
                                 <label for="email">이메일</label>
                                 <input type="text" class="form-control" id="email" name="email" placeholder="이메일" th:value="${email}">
-                                    <div class="btn btn-primary" id="emilCheckBtn">인증번호 받기</div>
-                                    <div id="emailCodeCheck" style="display:none;">
-                                        <input type="text" id="emailCode" name="emailCode" placeholder="인증번호 입력" th:value="${emailCode}">
-                                        <div class="btn btn-primary" id="emailCodeCheckBtn">확인</div>
-                                    </div>
-                                    <div id="email_exist"></div>
+<!--                                    <div class="btn btn-primary" id="emilCheckBtn">인증번호 받기</div>-->
+<!--                                    <div id="emailCodeCheck" style="display:none;">-->
+<!--                                        <input type="text" id="emailCode" name="emailCode" placeholder="인증번호 입력" th:value="${emailCode}">-->
+<!--                                        <div class="btn btn-primary" id="emailCodeCheckBtn">확인</div>-->
+<!--                                    </div>-->
+<!--                                    <div id="email_exist"></div>-->
                             </div>
 
                             <button type="submit" class="w-150 btn btn-lg btn-primary mt-3" src="@{/user/updatePw}">인증 완료</button>

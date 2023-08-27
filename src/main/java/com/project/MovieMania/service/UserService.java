@@ -22,11 +22,15 @@ public interface UserService {
 
 
     // 아이디 찾기
-    String findUsernameId(String email, String name, LocalDate birthday);
+    User findUsernameId(String email, String name, LocalDate birthday);
 
     // 비밀번호 찾기
-    String findPw(String username,String name, String email);
+    User findPw(String username,String name, String email);
 
     List<Authority> findAuthorityById(Long id);
 
+
+    User changePw(Long userId, String password);
+
+    User findByUserId(Long userId);
 }
