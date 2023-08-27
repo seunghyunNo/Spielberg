@@ -24,6 +24,8 @@ INSERT INTO moviedb.`user`
 (birthday, created_at, updated_at, gender, phone_num, name, password, username, email, status)
 VALUES('2000-05-03', NOW(), NOW(), 'MALE', '00011112222', '나', 'ㅇㅇㅇㅇㅇ', '나', 'PPP@VVV.COM', 'ACTIVE');
 
+insert into theater(cinema_Id,theater_num,max_seat_column,max_seat_row)
+values(1,5,10,10);
  
 
 INSERT INTO movie

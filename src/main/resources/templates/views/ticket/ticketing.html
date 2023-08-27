@@ -39,13 +39,12 @@
             <h2 style="text-align:center">SCREEN</h2>
             <input type="hidden" id="showInfoId" name="showInfoId" th:value="${showInfoId}">
 <!--            <input type="hidden" id="userId" name="userId" th:value="${userId}">-->
-            <input type="hidden" id="priceId" name="priceId" th:value="${priceId}">
             <th:block th:each="sColumn:${seatMaxColumn}">
                 <div th:data-seat-column="${sColumn}">
                 <th:block th:each="sRow:${seatMaxRow}" >
-                    <span th:data-max-seatRow="${seatMaxRow}">
-                        <input type="hidden" name="seatRow" th:value="${sRow}">
-                        <input type="hidden" name="seatColumn" th:value="${sColumn}">
+                    <input type="hidden" name="seatColumn" th:value="${writeSeat.seatColumn}">
+                    <span>
+                        <input type="hidden" name="seatRow" th:value="${writeSeat.seatRow}">
                         <p style="display:inline" th:data-seat-row="${sRow}"></p>
                         <button type="button"  class="seat m-4" th:data-column-row="|${sColumn}${sRow}|" th:text="|${sColumn}열${sRow}행|">좌석</button>
                     </span>

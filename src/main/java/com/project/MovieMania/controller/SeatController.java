@@ -24,42 +24,59 @@ public class SeatController {
     private TicketingService ticketingService;
 
     @PostMapping("/check")
-    public QryResult check(@RequestParam String seatRow,@RequestParam String seatColumn)
+    public QryResult check(@RequestParam String seatRow,@RequestParam String seatColumn,@RequestParam Long userId,@RequestParam Long showInfoId)
     {
         int row = Integer.parseInt(seatRow);
         int column = Integer.parseInt(seatColumn);
+        Long ticketId = 0L;
+        List<TicketInfo> ticketInfo = ticketingService.findTicket(showInfoId,userId);
+        if(!ticketInfo.isEmpty())
+        {
+            ticketId = ticketInfo.get(0).getId();
+        }
 
+        System.out.println(showInfoId+"상영정보"+userId);
+        System.out.println(ticketInfo+"개수");
+
+        System.out.println(seatService.checkSeat(ticketId,row,column));
 
         QryResult result = QryResult.builder()
-                .count(seatService.checkSeat(row,column))
+                .count(seatService.checkSeat(ticketId,row,column))
                 .status("OK")
                 .build();
 
         return result;
     }
 
-    @PostMapping("/save")
-    public QryResult save(@RequestParam String seatRow,@RequestParam String seatColumn,@RequestParam Long userId,@RequestParam Long showInfoId)
+//    @PostMapping("/save")
+//    public QryResult save(@RequestParam String seatRow,@RequestParam String seatColumn,@RequestParam Long userId,@RequestParam Long showInfoId)
+//    {
+//        int row = Integer.parseInt(seatRow);
+//        int column = Integer.parseInt(seatColumn);
+//        Long ticketId = 0L;
+//        List<TicketInfo> ticketInfo = ticketingService.findTicket(showInfoId,userId);
+//        if(!ticketInfo.isEmpty())
+//        {
+//            ticketId = ticketInfo.get(0).getId();
+//        }
+//
+//
+//        QryResult result = QryResult.builder()
+//                .count(seatService.writeSeat(ticketId,row,column))
+//                .status("OK")
+//                .build();
+//
+//        return result;
+//    }
+
+    @PostMapping("/delete")
+    public QryResult delete(@RequestParam String seatRow,@RequestParam String seatColumn,@RequestParam Long userId,@RequestParam Long showInfoId)
     {
         int row = Integer.parseInt(seatRow);
         int column = Integer.parseInt(seatColumn);
         List<TicketInfo> ticketInfo = ticketingService.findTicket(showInfoId,userId);
 
-        QryResult result = QryResult.builder()
-                .count(seatService.writeSeat(ticketInfo.get(0),row,column))
-                .status("OK")
-                .build();
-
-        return result;
-    }
-
-    @PostMapping("/delete")
-    public QryResult delete(@RequestParam String seatRow,@RequestParam String seatColumn)
-    {
-        int row = Integer.parseInt(seatRow);
-        int column = Integer.parseInt(seatColumn);
-
-        Seat seat = seatService.findSeat(row,column);
+        Seat seat = seatService.findSeat(ticketInfo.get(0).getId(),row,column);
 
         QryResult result = QryResult.builder()
                 .count(seatService.deleteSeat(seat))

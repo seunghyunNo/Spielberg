@@ -44,6 +44,7 @@ public class TheaterController {
     {
         model.addAttribute("movieId",movie_id);
 //        model.addAttribute("theaterNum",theaterService.findById(theater_id).getTheaterNum());
+
         model.addAttribute("cinemas",theaterService.cinemaList());
         model.addAttribute("dates",theaterService.dateList());
         model.addAttribute("times",theaterService.timeList());
@@ -69,6 +70,9 @@ public class TheaterController {
     @GetMapping("/ticketing/{showInfoId}")
     public String getTicket(@PathVariable Long showInfoId,Model model)
     {
+        Seat seat = new Seat();
+        model.addAttribute("writeSeat",seat);
+
         ShowInfo showInfo = showInfoService.findById(showInfoId,model);
         System.out.println("TICKET");
         model.addAttribute("theaterNum",showInfo.getTheater().getTheaterNum());
@@ -106,7 +110,8 @@ public class TheaterController {
         for (int i = 0; i < adult; i++)
         {
            priceInfo = priceService.checkAdultNum();
-           ticketingService.writeTicket(showInfoId,1L,priceInfo.getId());
+           ticketInfo = ticketingService.writeTicket(showInfoId,1L,priceInfo.getId());
+           seatService.writeSeat(ticketInfo,seatRow,seatColumn);
         }
 
         for(int i = 0; i < student; i++)
