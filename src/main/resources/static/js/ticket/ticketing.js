@@ -23,8 +23,11 @@ $(function () {
     // 예약된 좌석이면 버튼 클릭시 경고출력
 
     let nowColumn;
+    let ticketId = 0;
     $("input").siblings("div").each(function () {
         nowColumn = $(this).attr("data-seat-column");
+        ticketId++;
+        console.log(ticketId);
         $(this).find("p").each(function () {
             let nowRow = $(this).attr("data-seat-row");
             const current = $(this).siblings("button");
@@ -40,19 +43,21 @@ $(function () {
                     "userId": "1",
                 },
                 success: function (data) {
-                    if (data.count == 1) {
-                        current.removeClass("seat");
-                        current.addClass("selectSeat");
-                        current.attr("disabled",true);
-                    }
-                    else {
-
+                    for(var i = 0; i < data.length; i++)
+                    {
+                        if (data[i].count == 1) {
+                            current.removeClass("seat");
+                            current.addClass("selectSeat");
+                            current.attr("disabled",true);
+                        }
                     }
                 },
             });
         });
     });
 
+    let checkRow = 0;
+    let checkColumn = 0;
 
     // 좌석 클릭 시
     $("[data-column-row]").click(function () {
@@ -78,16 +83,31 @@ $(function () {
                     crnObj.removeClass("selectSeat");
                     crnObj.addClass("seat");
                     cnt--;
-                    deleteSeat(column, row,showInfoId,userId);
                 }
                 else {
-                    crnObj.removeClass("seat");
-                    crnObj.addClass("selectSeat");
-                    cnt++;
-                    console.log("카운트" + cnt);
-                    writeRow.val(row);
-                    writeColumn.val(column);
-                    console.log(writeRow.val()+writeColumn.val());
+                    alert(checkRow+checkColumn);
+                    if(checkRow == row && checkColumn == column)
+                    {
+                        crnObj.removeClass("selectSeat");
+                        crnObj.addClass("seat");
+                        cnt--;
+                        console.log("카운트" + cnt);
+                        checkRow = 0;
+                        checkColumn = 0;
+                    }
+                    else
+                    {
+                        checkRow = row;
+                        checkColumn = column;
+                        crnObj.removeClass("seat");
+                        crnObj.addClass("selectSeat");
+                        cnt++;
+                        console.log("카운트" + cnt);
+                        writeRow.val(row);
+                        writeColumn.val(column);
+                    }
+
+
                 }
             },
         });
@@ -106,42 +126,4 @@ $(function () {
     });
 
 });
-
-//
-//function saveSeat(seatColumn, seatRow, showInfoId,userId) {
-//    $.ajax({
-//        url: "/seat/save",
-//        type: "POST",
-//        cache: false,
-//        data: {
-//            "seatRow": seatRow,
-//            "seatColumn": seatColumn,
-//            "showInfoId": showInfoId,
-//            "userId": userId,
-//        },
-//        success: function (data) {
-//
-//        },
-//
-//    });
-//}
-//
-function deleteSeat(seatColumn, seatRow,showInfoId,userId) {
-    $.ajax({
-        url: "/seat/delete",
-        type: "POST",
-        cache: false,
-        data: {
-            "seatRow": seatRow,
-            "seatColumn": seatColumn,
-            "showInfoId": showInfoId,
-            "userId": userId,
-        },
-        success: function (data) {
-
-        },
-
-    });
-}
-
 

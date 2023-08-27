@@ -18,7 +18,9 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Controller
 @RequestMapping("/ticket")
@@ -59,7 +61,6 @@ public class TheaterController {
 
         time = " "+time;
         String dateTime = date.concat(time);
-        System.out.println("영화번호"+movie_id+"이름"+cinemaName+"날짜"+date+"시간"+time);
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
         LocalDateTime showDateTime = LocalDateTime.parse(dateTime,formatter);
         ShowInfo showInfo =showInfoService.findShowInfo(movie_id,cinemaName,showDateTime,model);
@@ -74,11 +75,9 @@ public class TheaterController {
         model.addAttribute("writeSeat",seat);
 
         ShowInfo showInfo = showInfoService.findById(showInfoId,model);
-        System.out.println("TICKET");
         model.addAttribute("theaterNum",showInfo.getTheater().getTheaterNum());
 
         int seatMaxRow = showInfo.getTheater().getMaxSeatRow();
-        System.out.println("좌석최대로우"+seatMaxRow);
         List<Integer> seatRowList = new ArrayList<>();
         for(int i = 1; i <= seatMaxRow; i++)
         {
@@ -87,7 +86,6 @@ public class TheaterController {
         model.addAttribute("seatMaxRow",seatRowList);
         model.addAttribute("maxRow",seatMaxRow);
         int seatMaxColumn = showInfo.getTheater().getMaxSeatColumn();
-        System.out.println("좌석최대컬럼"+seatMaxColumn);
         List<Integer> seatColumnList = new ArrayList<>();
         for(int i = 1 ; i <= seatMaxColumn; i++)
         {
@@ -99,19 +97,54 @@ public class TheaterController {
     }
 
     @PostMapping("/ticketing/{showInfoId}")
-    public void ticketing(@PathVariable Long showInfoId,
+    public String ticketing(@PathVariable Long showInfoId,
                             Integer adult,Integer student,
-                            Integer seatRow,Integer seatColumn, Model model)
+                            @RequestParam List<Integer> seatRow,@RequestParam List<Integer> seatColumn, Model model)
     {
         TicketInfo ticketInfo = new TicketInfo();
         PriceInfo priceInfo = new PriceInfo();
-        System.out.println(adult+"명"+student+"명");
+        Set<Integer> rowList = new HashSet<>();
+        rowList.addAll(seatRow);
+        seatRow.clear();
+        Set<Integer> columnList = new HashSet<>();
+        columnList.addAll(seatColumn);
+        seatColumn.clear();
+
+        seatRow.addAll(rowList);
+        seatColumn.addAll(columnList);
+
+
+
+        for(int y = 0; y < seatColumn.size(); y++)
+        {
+            for(int x = 0; x < seatRow.size(); x++)
+            {
+                if(seatColumn.get(y) == 0)
+                {
+                    seatColumn.remove(y);
+                }
+                if(seatRow.get(x) == 0)
+                {
+                    seatRow.remove(x);
+                }
+            }
+        }
+
+        System.out.println(seatRow);
+        System.out.println(seatColumn);
 
         for (int i = 0; i < adult; i++)
         {
            priceInfo = priceService.checkAdultNum();
-           ticketInfo = ticketingService.writeTicket(showInfoId,1L,priceInfo.getId());
-           seatService.writeSeat(ticketInfo,seatRow,seatColumn);
+           for(int x = 0 ; x < seatColumn.size(); x++)
+           {
+               for(int y = 0 ; y < seatRow.size(); y++)
+               {
+                   ticketInfo = ticketingService.writeTicket(showInfoId,1L,priceInfo.getId());
+                   seatService.writeSeat(ticketInfo,seatRow.get(y),seatColumn.get(x));
+               }
+           }
+
         }
 
         for(int i = 0; i < student; i++)
@@ -128,6 +161,7 @@ public class TheaterController {
 
         model.addAttribute("theaterNum",showInfo.getTheater().getTheaterNum());
 
+        return "ticket/purchase";
     }
 
 }

@@ -44,6 +44,8 @@ public class SeatServiceImpl implements SeatService{
 
         List<Seat> seat = seatRepository.findBySeatRowAndSeatColumn(seatRow,seatColumn);
         Seat useSeat = new Seat();
+
+
         if(!seat.isEmpty()) {
             for (int i = 0; i < seat.size(); i++) {
                 if (seat.get(i).getTicketInfo().getId() == ticketId) {
@@ -52,32 +54,13 @@ public class SeatServiceImpl implements SeatService{
             }
         }
 
-
-
         if(useSeat.getId() == null)
         {
             return 0;
         }
+
         return 1;
     }
 
-    @Override
-    public Seat findSeat(Long ticketId,Integer seatRow, Integer seatColumn) {
 
-        List<Seat> seat = seatRepository.findBySeatRowAndSeatColumn(seatRow,seatColumn);
-        Seat useSeat = new Seat();
-        for(int i = 0 ; i < seat.size(); i++) {
-            if (seat.get(i).getTicketInfo().getId() == ticketId) {
-                useSeat = seat.get(i);
-            }
-        }
-
-        return useSeat;
-    }
-
-    @Override
-    public int deleteSeat(Seat seat) {
-        seatRepository.delete(seat);
-        return 1;
-    }
 }
