@@ -2,11 +2,12 @@ package com.project.MovieMania.service;
 
 import com.project.MovieMania.domain.Authority;
 import com.project.MovieMania.domain.User;
+import com.project.MovieMania.domain.type.UserStatus;
 import com.project.MovieMania.repository.AuthorityRepository;
 import com.project.MovieMania.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -16,23 +17,20 @@ public class UserServiceImpl implements UserService {
 
     private UserRepository userRepository;
 
-    //AuthorityRepository 작성
+
     private AuthorityRepository authorityRepository;
 
-    @Autowired
-    private PasswordEncoder passwordEncoder;
 
     @Autowired
-    public void setUserRepository(UserRepository userRepository){
-        this.userRepository=userRepository;
-    }
-
-    @Autowired
-    public void setAuthorityRepository(AuthorityRepository authorityRepository){
+    public void setAuthorityRepository(AuthorityRepository authorityRepository) {
         this.authorityRepository = authorityRepository;
     }
 
 
+    @Autowired
+    public  void setUserRepository(UserRepository userRepository){
+        this.userRepository = userRepository;
+    }
 
 
     @Override
@@ -41,94 +39,71 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User findByEmail(String email) {
-        return userRepository.findByEmail(email);
-    }
-
-    @Override
-    public  User findByPhoneNum(String phoneNum){
-        return userRepository.findByPhoneNum(phoneNum);
-    }
-    @Override
     public boolean isExistUsername(String username) {
-
-        User user = findByUsername(username);
-
-        return (user!=null)? true: false;
+       User user =userRepository.findByUsername(username);
+       if(user != null){
+           return true;
+       }
+       return false;
     }
 
     @Override
     public boolean isExistEmail(String email) {
-
-        User user = findByEmail(email);
-
-        return (user!=null)?true:false;
+        User user= userRepository.findByEmail(email);
+        if(user !=null){
+            return true;
+        }
+        return false;
     }
 
     @Override
     public boolean isExistPhoneNum(String phoneNum) {
-
-        User user = findByPhoneNum(phoneNum);
-
-        return (user!=null)? true:false;
+        User user = userRepository.findByPhoneNum(phoneNum);
+        if(user != null){
+            return true;
+        }
+        return false;
     }
 
     @Override
+    @Transactional
     public int register(User user) {
 
-        // 암호화해서 저장
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
-        userRepository.save(user);
+        user.setStatus(UserStatus.ACTIVE);
 
-        Authority authority = authorityRepository.findByName("ROLE_MEMBER");
-        user.addAuthorities(authority);
-        userRepository.save(user);
-        return 1;
+        User user1 = userRepository.save(user);
+
+
+        User user2 = userRepository.findById(user1.getId()).orElseThrow();
+
+        if(user1 != null){
+            return 1;
+        }
+        return 0;
     }
 
-
+    // 유저 entity 넘겨주는
     @Override
-    public int findByUsername(String username) {
-        return userRepository.findByUsername(username);
-    }
-
-    @Override
-    public int mailCheck(String email) {
-        return userRepository.mailCheck(email);
-    }
-
-    @Override
-    public String findUsername(String name, String email, LocalDate birthday) {
-        return userRepository.findUsername(name,email,birthday);
+//    @Transactional
+    public String findUsernameId(String name, String email, LocalDate birthday) {
+        return userRepository.findByNameAndEmailAndBirthday(name, email, birthday);
     }
 
     @Override
-    public String findPw(String name, String email, String username) {
-        return userRepository.findPw(name,email,username);
-    }
-
-    @Override
-    public String updatePw(User user) {
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
-        return userRepository.updatePw(user);
-    }
-
-    @Override
-    public boolean rePw(User user) {
-        User user = userRepository.findById(user)
-        return passwordEncoder.matches(user.getPassword(),encodePassword);
-    }
-
-    @Override
-    public int delete(Long id) {
-        return userRepository.deleteUser(id);
+    public String findPw(String username, String name, String email) {
+        return userRepository.findByNameAndUsernameAndEmail(name,username,email);
     }
 
     @Override
     public List<Authority> findAuthorityById(Long id) {
-        
 
-        // 해당 유저의 Authority 를 담아옴
-        return authorityRepository.findAuthorityById(id);
+        User user = userRepository.findById(id).orElseThrow();
+
+//        List<Authority> authorityList = user.getAuthorities();
+
+        return user.getAuthorities();
     }
+
+
+
 }

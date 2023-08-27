@@ -67,6 +67,7 @@ public class PrincipalDetails implements UserDetails {
     }
 
     // 확인 필요함
+
     public String getPhoneNum(){
         return user.getPhoneNum();
     }

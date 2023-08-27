@@ -8,6 +8,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+
 @Service
 public class PrincipalDetailsService implements UserDetailsService {
 
@@ -17,7 +19,7 @@ public class PrincipalDetailsService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException{
 
-        // login 한 username 을 user 에 넣는다
+        // db 조회
         User user = userService.findByUsername(username);
 
         if(user != null){
@@ -28,5 +30,6 @@ public class PrincipalDetailsService implements UserDetailsService {
 
         throw new UsernameNotFoundException(username);
     }
+
 
 }

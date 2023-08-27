@@ -33,7 +33,7 @@ public class CustomLoginSuccessHandler extends SavedRequestAwareAuthenticationSu
         }
 
         if(ip==null||ip.length()==0||"unknown".equalsIgnoreCase(ip)){
-            ip=request.getHeader("HTTP_X_FORWARED_FOR");
+            ip=request.getHeader("HTTP_X_FORWARDED_FOR");
         }
 
         if(ip==null||ip.length()==0||"unknown".equalsIgnoreCase(ip)){

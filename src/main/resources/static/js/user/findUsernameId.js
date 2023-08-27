@@ -39,9 +39,9 @@ $(document).ready(function(){
                     $('#username_exist').html('아이디가 없습니다');
                     $('#username_exist').html('border border-3 p-3');
                 }else{
-
+                                                         // *
                     $('#username_exist').html('아이디는'+$("#username")+'입니다');
-                    
+
                     $('#username_exist').addClass('border border-3 p-3');
                 }
             },
@@ -50,4 +50,6 @@ $(document).ready(function(){
             }
         })
     })
+
+   //
 })

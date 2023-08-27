@@ -11,7 +11,7 @@
     <title>로그인 페이지</title>
 </head>
 <body>
-    <!--블록 헤드 넣기-->
+<th:block th:insert="~{/header::header}"></th:block>
     <div>
         <form th:action="@{/user/login}" method="POST">
             <h2>로그인</h2>
@@ -27,16 +27,16 @@
             </div>
 
             <div>
-                <a href="@{user/findUsername}">아이디 찾기</a>
+                <a th:href="@{/user/findUsernameId}">아이디 찾기</a>
                 <b> / </b>
-                <a href="@{user/findPw}">비밀번호 찾기</a>
+                <a th:href="@{/user/findPw}">비밀번호 찾기</a>
             </div>
 
 
             <!--로그인 실패 시 -->
             <div class="text danger mt-3" th:text="${errorMessage}"></div>
-            <button>로그인</button>
-            <a th:href="@{/user/register}"}>회원가입</a>
+            <button class="btn btn-primary mt-3 col-5">로그인</button>
+            <a class="btn btn-primary mt-3 col-5" th:href="@{/user/register}">회원가입</a>
 
         </form>
     </div>

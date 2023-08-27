@@ -12,19 +12,12 @@ public interface UserRepository extends JpaRepository<User, Long> {
     User findByEmail(String email);
 
     User findByPhoneNum(String phoneNum);
-    int register(User user);
 
-    int usernameCheck(String username);
+    // 아이디 찾기
+    String findByNameAndEmailAndBirthday(String name, String email, LocalDate birthday);
 
-    int mailCheck(String email);
+    // 비밀번호 찾기
+    String findByNameAndUsernameAndEmail(String name,String username, String email);
 
-    String findUsername(String name, String email, LocalDate birthday);
-
-    String findPw(String name,String username, String email);
-
-    String updatePw(User user);
-
-
-    int deleteUser(Long id);
 
 }

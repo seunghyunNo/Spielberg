@@ -10,6 +10,5 @@ public interface AuthorityRepository extends JpaRepository<Authority, Long> {
     // 특정 이름의 권한 읽어오기
     Authority findByName(String name);
 
-    List<Authority> findAuthorityById(Long id);
 
 }
