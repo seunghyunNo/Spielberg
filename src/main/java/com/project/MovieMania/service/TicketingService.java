@@ -9,4 +9,6 @@ public interface TicketingService {
     TicketInfo writeTicket(Long showInfoId,Long userId,Long priceId);
 
     List<TicketInfo> findTicket(Long showInfoId, Long userId);
+
+    List<TicketInfo> findShowInfoTicket(Long showInfoId);
 }

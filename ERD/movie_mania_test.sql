@@ -18,15 +18,33 @@ select * from report;
 select * from question;
 select * from review r;
 
+delete from seat where ticket_info_id = 12;
+
 select * from user;
+
+    select
+        t1_0.id,
+        t1_0.created_at,
+        t1_0.price_info_id,
+        t1_0.show_info_id,
+        t1_0.ticket_code,
+        t1_0.updated_at,
+        t1_0.user_id 
+    from
+        ticket_info t1_0 
+    where
+        t1_0.user_id=1
+        and t1_0.show_info_id=15;
 
 INSERT INTO moviedb.`user`
 (birthday, created_at, updated_at, gender, phone_num, name, password, username, email, status)
 VALUES('2000-05-03', NOW(), NOW(), 'MALE', '00011112222', '나', 'ㅇㅇㅇㅇㅇ', '나', 'PPP@VVV.COM', 'ACTIVE');
 
 insert into theater(cinema_Id,theater_num,max_seat_column,max_seat_row)
-values(1,5,10,10);
+values(2,1,10,10);
  
+
+
 
 INSERT INTO movie
 (open_date, show_time, audi_cnt, movie_code, directors, genre, rate_grade, title, actors, img)
@@ -34,7 +52,7 @@ VALUES('20240822', 0, 0, '0', '1', '1', '1', '1', '1', '1');
 
 INSERT INTO show_info
 (movie_id, show_date_time, theater_id, status)
-VALUES(2, '20240823110000', 1, 'NOW');
+VALUES(1, '20240823110000', 6, 'NOW');
 
 INSERT INTO ticket_info
 (price_info_id, show_info_id, user_id, ticket_code)

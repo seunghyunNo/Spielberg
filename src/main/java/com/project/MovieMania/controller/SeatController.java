@@ -42,7 +42,26 @@ public class SeatController {
             resultList.add(result);
         }
 
+        return resultList;
+    }
 
+    @PostMapping("/loadSeat")
+    public List<QryResult> load(@RequestParam String seatRow,@RequestParam String seatColumn,
+                                @RequestParam Long showInfoId)
+    {
+        int row = Integer.parseInt(seatRow);
+        int column = Integer.parseInt(seatColumn);
+        Long ticketId = 0L;
+        List<TicketInfo> ticketInfo = ticketingService.findShowInfoTicket(showInfoId);
+        List<QryResult> resultList = new ArrayList<>();
+        for(int i = 0 ; i < ticketInfo.size(); i++) {
+            ticketId = ticketInfo.get(i).getId();
+            QryResult result = QryResult.builder()
+                    .count(seatService.checkSeat(ticketId,row,column))
+                    .status("OK")
+                    .build();
+            resultList.add(result);
+        }
 
         return resultList;
     }

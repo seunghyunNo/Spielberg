@@ -53,13 +53,30 @@ public class TicketingServiceImpl implements TicketingService{
         Random random = new Random();
         String ticketCode = "";
 
-        for(int i = 0; i < ticket.size(); i++) {
-            if (ticket.get(i).getTicketCode().isEmpty()) {
-                ticketCode = String.valueOf((char) ((int) random.nextInt(26)) + 'A');
-            } else {
-                ticketCode = ticket.get(i).getTicketCode();
+
+        if(!ticket.isEmpty()) {
+            ticketCode = ticket.get(0).getTicketCode();
+        }
+        else
+        {
+//            ticketCode = String.valueOf((char) ((int) random.nextInt(26)) + 'A');
+            for(int i = 0 ; i < 7; i ++)
+            {
+                char code = (char)((Math.random() * 26)+65);
+                ticketCode +=code;
+            }
+            List<TicketInfo> codeCheck = ticketInfoRepository.findByTicketCode(ticketCode);
+            if(!codeCheck.isEmpty())
+            {
+                for(int i = 0 ; i < 7; i ++)
+                {
+                    char code = (char)((Math.random() * 26)+65);
+                    ticketCode +=code;
+                }
             }
         }
+
+
 
         TicketInfo ticketInfo = TicketInfo.builder()
                 .showInfo(showInfo)
@@ -79,6 +96,13 @@ public class TicketingServiceImpl implements TicketingService{
         ShowInfo showInfo = showinfoRepoisotry.findById(showInfoId).orElse(null);
         List<TicketInfo> ticketInfo = ticketInfoRepository.findByUserAndShowInfo(user,showInfo);
 
+        return ticketInfo;
+    }
+
+    @Override
+    public List<TicketInfo> findShowInfoTicket(Long showInfoId) {
+        ShowInfo showInfo = showinfoRepoisotry.findById(showInfoId).orElse(null);
+        List<TicketInfo> ticketInfo = ticketInfoRepository.findByShowInfo(showInfo);
         return ticketInfo;
     }
 }

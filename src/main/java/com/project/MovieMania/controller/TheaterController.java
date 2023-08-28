@@ -150,7 +150,15 @@ public class TheaterController {
         for(int i = 0; i < student; i++)
         {
             priceInfo = priceService.checkStudentNum();
-            ticketingService.writeTicket(showInfoId,1L,priceInfo.getId());
+            for(int x = 0 ; x < seatColumn.size(); x++)
+            {
+                for(int y = 0 ; y < seatRow.size(); y++)
+                {
+                    ticketInfo = ticketingService.writeTicket(showInfoId,1L,priceInfo.getId());
+                    seatService.writeSeat(ticketInfo,seatRow.get(y),seatColumn.get(x));
+                }
+            }
+
         }
 
 

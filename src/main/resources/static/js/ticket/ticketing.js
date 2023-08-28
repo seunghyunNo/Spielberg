@@ -33,14 +33,13 @@ $(function () {
             const current = $(this).siblings("button");
             console.log(nowColumn + "열" + nowRow + "행");
             $.ajax({
-                url: "/seat/check",
+                url: "/seat/loadSeat",
                 type: "POST",
                 cache: false,
                 data: {
                     "seatRow": nowRow,
                     "seatColumn": nowColumn,
                     "showInfoId": showInfoId,
-                    "userId": "1",
                 },
                 success: function (data) {
                     for(var i = 0; i < data.length; i++)
