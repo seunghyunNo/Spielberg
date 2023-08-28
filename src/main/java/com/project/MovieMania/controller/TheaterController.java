@@ -132,44 +132,98 @@ public class TheaterController {
 
         System.out.println(seatRow);
         System.out.println(seatColumn);
-
-        for (int i = 0; i < adult; i++)
-        {
-           priceInfo = priceService.checkAdultNum();
-           for(int x = 0 ; x < seatColumn.size(); x++)
-           {
-               for(int y = 0 ; y < seatRow.size(); y++)
-               {
-                   ticketInfo = ticketingService.writeTicket(showInfoId,1L,priceInfo.getId());
-                   seatService.writeSeat(ticketInfo,seatRow.get(y),seatColumn.get(x));
-               }
-           }
-
-        }
-
-        for(int i = 0; i < student; i++)
-        {
-            priceInfo = priceService.checkStudentNum();
-            for(int x = 0 ; x < seatColumn.size(); x++)
-            {
-                for(int y = 0 ; y < seatRow.size(); y++)
-                {
-                    ticketInfo = ticketingService.writeTicket(showInfoId,1L,priceInfo.getId());
-                    seatService.writeSeat(ticketInfo,seatRow.get(y),seatColumn.get(x));
+        if(adult > 0 && student == 0) {         // 성인만 선택
+            for (int i = 0; i < adult; i++) {
+                priceInfo = priceService.checkAdultNum();
+                for (int x = 0; x < seatColumn.size(); x++) {
+                    for (int y = 0; y < seatRow.size(); y++) {
+                        ticketInfo = ticketingService.writeTicket(showInfoId, 1L, priceInfo.getId());
+                        seatService.writeSeat(ticketInfo, seatRow.get(y), seatColumn.get(x));
+                    }
                 }
             }
+        }
+        else if(student > 0 && adult == 0) {    // 학생만 선택
+            for (int i = 0; i < student; i++) {
+                priceInfo = priceService.checkStudentNum();
+                for (int x = 0; x < seatColumn.size(); x++) {
+                    for (int y = 0; y < seatRow.size(); y++) {
+                        ticketInfo = ticketingService.writeTicket(showInfoId, 1L, priceInfo.getId());
+                        seatService.writeSeat(ticketInfo, seatRow.get(y), seatColumn.get(x));
+                    }
+                }
+            }
+        }
+        else if(student > 0 && adult > 0)   // 성인 학생 각각 1명이상 선택
+        {
+            int total = student + adult;
+            int count = 0;
+            int adultCnt = 0;
+            int studentCnt = 0;
+                    for (int x = 0; x < seatColumn.size(); x++) {
+                        for (int y = 0; y < seatRow.size(); y++) {
+                            if(adultCnt != adult)
+                            {
+                                priceInfo = priceService.checkAdultNum();
+                                ticketInfo = ticketingService.writeTicket(showInfoId, 1L, priceInfo.getId());
+                                seatService.writeSeat(ticketInfo, seatRow.get(y), seatColumn.get(x));
+                                adultCnt++;
+                            }
+                            else if(student != studentCnt)
+                            {
+                                priceInfo = priceService.checkStudentNum();
+                                ticketInfo = ticketingService.writeTicket(showInfoId, 1L, priceInfo.getId());
+                                seatService.writeSeat(ticketInfo, seatRow.get(y), seatColumn.get(x));
+                                studentCnt++;
+                            }
+                        }
+                    }
+
 
         }
 
 
         // 로그인한 유저 정보 모델로 넘기기 TODO
-        model.addAttribute("showInfoId",ticketInfo.getShowInfo().getId());
+//        model.addAttribute("showInfoId",ticketInfo.getShowInfo().getId());
         ShowInfo showInfo = showInfoService.findById(showInfoId,model);
 
 
-        model.addAttribute("theaterNum",showInfo.getTheater().getTheaterNum());
+//        model.addAttribute("theaterNum",showInfo.getTheater().getTheaterNum());
+
+        return "redirect:/ticket/purchase/"+showInfo.getId();
+    }
+
+    @GetMapping("/purchase/{showInfoId}")
+    public String getPurchase(@PathVariable Long showInfoId,Model model)
+    {
+        List<TicketInfo> buyList = ticketingService.findShowInfoTicket(showInfoId);
+        int cost = 0;
+        int adultCnt = 0;
+        int studentCnt = 0;
+        for(int i = 0 ; i < buyList.size(); i++)
+        {
+            if(buyList.get(i).getPriceInfo().getName().equals("성인"))
+            {
+                cost += buyList.get(i).getPriceInfo().getPrice();
+            }
+            else if (buyList.get(i).getPriceInfo().getName().equals("아동"))
+            {
+                cost += buyList.get(i).getPriceInfo().getPrice();
+            }
+        }
+
+        ShowInfo showInfo = showInfoService.findById(showInfoId,model);
+        model.addAttribute("cost",cost);
+        model.addAttribute("movieName",showInfo.getMovie().getTitle());
+        model.addAttribute("adultCnt",adultCnt);
+        model.addAttribute("studentCnt",studentCnt);
 
         return "ticket/purchase";
     }
+    @PostMapping("/purchase/{showInfoId}")
+    public String purchase(@PathVariable Long showInfoId,Model model)
+    {
 
+        return null;
+    }
 }
