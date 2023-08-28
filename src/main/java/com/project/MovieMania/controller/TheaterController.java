@@ -194,9 +194,9 @@ public class TheaterController {
     }
 
     @GetMapping("/purchase/{showInfoId}")
-    public String getPurchase(@PathVariable Long showInfoId,Model model)
+    public String getPurchase(@PathVariable Long showInfoId,Long userId,Model model)
     {
-        List<TicketInfo> buyList = ticketingService.findShowInfoTicket(showInfoId);
+        List<TicketInfo> buyList = ticketingService.findTicket(showInfoId,1L);
         int cost = 0;
         int adultCnt = 0;
         int studentCnt = 0;
@@ -205,10 +205,12 @@ public class TheaterController {
             if(buyList.get(i).getPriceInfo().getName().equals("성인"))
             {
                 cost += buyList.get(i).getPriceInfo().getPrice();
+                adultCnt++;
             }
-            else if (buyList.get(i).getPriceInfo().getName().equals("아동"))
+            if (buyList.get(i).getPriceInfo().getName().equals("학생"))
             {
                 cost += buyList.get(i).getPriceInfo().getPrice();
+                studentCnt++;
             }
         }
 
