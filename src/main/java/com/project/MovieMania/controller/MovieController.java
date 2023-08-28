@@ -29,7 +29,6 @@ public class MovieController {
     @GetMapping("/detail/{id}")
     public String movieDetail(@PathVariable Long id, Model model) {
 
-        model.addAttribute("movieId", id);
         model.addAttribute("movie", movieService.findById(id));
         model.addAttribute("rate", movieService.reserveRate(id));
         model.addAttribute("audinum", movieService.audiNum(id));
@@ -43,7 +42,6 @@ public class MovieController {
 
     @GetMapping("/review/{id}")
     public String movieReview(@PathVariable Long id, Model model){
-        model.addAttribute("movieId", id);
         model.addAttribute("userId", 1);
 
         model.addAttribute("movie", movieService.findById(id));
@@ -55,7 +53,6 @@ public class MovieController {
 
     @GetMapping("/trailer/{id}")
     public String movieTrailer(@PathVariable Long id, Model model){
-        model.addAttribute("movieId", id);
         model.addAttribute("movie", movieService.findById(id));
         model.addAttribute("rate", movieService.reserveRate(id));
         model.addAttribute("audinum", movieService.audiNum(id));
@@ -64,7 +61,8 @@ public class MovieController {
     }
 
     @GetMapping("/getReview/{id}")
-    public @ResponseBody List<ReviewDTO> getReview(@PathVariable Long id){
+    @ResponseBody
+    public List<ReviewDTO> getReview(@PathVariable Long id){
         return movieService.getReview(id);
     }
 
@@ -130,5 +128,18 @@ public class MovieController {
     public long countRecommend(@RequestParam Long reviewId){
         return movieService.countRecommend(reviewId);
     }
+
+    @GetMapping("/getReviewByScore/{id}")
+    @ResponseBody
+    public List<ReviewDTO> getReviewByScore(@PathVariable Long id){
+        return movieService.getReviewByScore(id);
+    }
+
+    @GetMapping("/getReviewByRecommend/{id}")
+    @ResponseBody
+    public List<ReviewDTO> getReviewByRecommend(@PathVariable Long id){
+        return movieService.getReviewByRecommend(id);
+    }
+
 
 }

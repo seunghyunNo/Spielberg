@@ -5,3 +5,7 @@
 .fa-thumbs-up{
     cursor: pointer;
 }
+
+#reviewUnderLine{
+  text-decoration: underline;
+}

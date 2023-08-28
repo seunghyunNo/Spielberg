@@ -16,8 +16,10 @@
   <script th:src="@{/js/movie/review.js}"></script>
 
   <script th:inline="javascript">
-		const movieId = [[${movieId}]];
-		const userId = [[${userId}]];
+		const movieId = [[${movie.id}]];
+		const movieTitle = [[${movie.title}]];
+<!--		const userId = [[${userId}]];-->
+		const userId = 3
   </script>
 
   <link rel="stylesheet" type="text/css" th:href="@{/css/movie/review.css}">
@@ -61,6 +63,13 @@
           </div>
         </div>
       </div>
+    </div>
+    <div class="col-md-12 d-flex justify-content-end">
+      <div class="btn" id="orderByDate">최신순</div>
+      <div class="p-1"> | </div>
+      <div class="btn" id="orderByScore">평점순</div>
+      <div class="p-1"> | </div>
+      <div class="btn" id="orderByRecommend">추천순</div>
     </div>
     <div class="row m-3 justify-content-center" id="reviewList"></div>
   </div>

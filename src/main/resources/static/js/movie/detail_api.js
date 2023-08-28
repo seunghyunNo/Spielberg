@@ -1,8 +1,10 @@
 $(function () {
   const apiKey = "25930c0ce8107734d85ee82311f96b0d";
-  const movieTitle = "범죄도시";
+//  const movieTitle = "범죄도시";
 
   getMovieId(apiKey, movieTitle);
+  $("#showMoreButton").hide();
+  $("#closeButton").hide();
 
 });
 
@@ -66,7 +68,7 @@ function getMovieDetail(apiKey, movieId){
         }
       }
 
-      $("#closeButton").hide();
+      $("#showMoreButton").show();
       addActors(0, actorLimit);
 
       // 더 보기 버튼 클릭 시

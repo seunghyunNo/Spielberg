@@ -13,18 +13,35 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
 
   <script th:src="@{/js/movie/header_api.js}"></script>
+  <script th:src="@{/js/movie/trailer_api.js}"></script>
 
   <script th:inline="javascript">
-		const movieId = [[${movieId}]];
+		const movieId = [[${movie.id}]];
+		const movieTitle = [[${movie.title}]];
   </script>
 
+  <link rel="stylesheet" type="text/css" th:href="@{/css/movie/trailer.css}">
 
-  <title>스틸컷/예고</title>
+  <title>스틸컷/트레일러</title>
 </head>
 <body>
   <th:block th:insert="~{movie/fragment/header::header}"></th:block>
-  <div class="container mt-5 custom-lighter-bg">
+  <div class="container mt-5 custom-lighter-bg mb-5">
     <th:block th:insert="~{movie/fragment/navi::navigation}"></th:block>
+    <div>
+      <h2 class="mt-3">트레일러</h2>
+      <div class="row d-flex justify-content-center align-items-center">
+        <i class="fa-solid fa-arrow-right fa-rotate-180 fa-2xl prev-btn col-md-2"></i>
+        <div class="videos col-md-8 "></div>
+        <i class="fa-solid fa-arrow-right fa-2xl next-btn col-md-2"></i>
+      </div>
+      <div class="row mt-5 mb-5">
+        <h2 class="col-md-12">스틸컷</h2>
+        <div id="stillCut" class="row d-flex justify-content-center"></div>
+        <button id="showMoreButton" class="btn btn-primary mt-3">스틸컷 더보기</button>
+        <button id="closeButton" class="btn btn-primary mt-3 mb-5">닫기</button>
+      </div>
+    </div>
   </div>
 </body>
 </html>

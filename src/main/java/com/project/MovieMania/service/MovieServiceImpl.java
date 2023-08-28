@@ -107,7 +107,7 @@ public class MovieServiceImpl implements MovieService {
         // 분모가 0인 상황 예외처리
         String reserveRate;
         if(allTicketSeats != 0) {
-            reserveRate = new DecimalFormat("0.00").format((double) ticketSeats / allTicketSeats * 100);
+            reserveRate = new DecimalFormat("0.0").format((double) ticketSeats / allTicketSeats * 100);
         } else{
             reserveRate = "0";
         }
@@ -441,6 +441,26 @@ public class MovieServiceImpl implements MovieService {
         Review review = reviewRepository.findById(reviewId).orElseThrow(null);
         List<Recommend> recommends = review.getRecommends();
         return recommends.size();
+    }
+
+    @Override
+    public List<ReviewDTO> getReviewByScore(Long id) {
+        // 영화 조회
+        Movie movie = findById(id);
+
+        // review 들 가져오기
+        List<Review> reviews = reviewRepository.findByMovieOrderByScoreDesc(movie);
+        return reviews.stream().map(this::convertReviewDTO).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<ReviewDTO> getReviewByRecommend(Long id) {
+        // 영화 조회
+        Movie movie = findById(id);
+
+        // review 들 가져오기
+        List<Review> reviews = reviewRepository.findReviewOrderByRecommendCountDesc(movie.getId());
+        return reviews.stream().map(this::convertReviewDTO).collect(Collectors.toList());
     }
 
 

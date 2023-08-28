@@ -7,14 +7,14 @@
   <nav class="navbar navbar-expand-md navbar-light bg-light mt-2">
     <div class="collapse navbar-collapse justify-content-center">
       <ul class="navbar-nav mr-auto row" style="width: 100%;">
-        <a class="nav-link active col-md-4" th:href="@{'/movie/detail/' + ${movieId}}">
-          <li class="nav-item d-flex justify-content-center">영화 정보</li>
+        <a class="nav-link active col-md-4" id="movieDetail" th:href="@{'/movie/detail/' + ${movie.id}}">
+          <li class="nav-item d-flex justify-content-center" id="movieDetailUnderLine">영화 정보</li>
         </a>
-        <a class="nav-link col-md-4" th:href="@{'/movie/review/' + ${movieId}}">
-          <li class="nav-item d-flex justify-content-center">관람평</li>
+        <a class="nav-link col-md-4" id="reviewTag" th:href="@{'/movie/review/' + ${movie.id}}">
+          <li class="nav-item d-flex justify-content-center" id="reviewUnderLine">관람평</li>
         </a>
-        <a class="nav-link col-md-4" th:href="@{'/movie/trailer/' + ${movieId}}">
-          <li class="nav-item d-flex justify-content-center">스틸컷 / 예고편</li>
+        <a class="nav-link col-md-4" id="trailerTag" th:href="@{'/movie/trailer/' + ${movie.id}}">
+          <li class="nav-item d-flex justify-content-center" id="trailerDetailUnderLine">스틸컷 / 트레일러</li>
         </a>
       </ul>
     </div>
