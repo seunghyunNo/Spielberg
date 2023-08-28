@@ -1,11 +1,17 @@
 package com.project.MovieMania.controller;
 
+import com.project.MovieMania.config.PrincipalDetails;
 import com.project.MovieMania.domain.User;
 import com.project.MovieMania.domain.UserValidator;
 import com.project.MovieMania.service.UserService;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -134,6 +140,7 @@ public class UserController {
     @GetMapping("/findPw")
     public void findPw(){}
 
+    // 비밀번호 찾기
     @PostMapping("/findPw")
     public String findPwOk(@RequestParam("username") String username,
                                       @RequestParam("name") String name,
@@ -173,6 +180,32 @@ public class UserController {
 
     }
 
+//    @GetMapping("/delete")
+//    public void delete(Model model){
+//        PrincipalDetails userDetails = (PrincipalDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+//        User user =userDetails.getUser();
+//
+//        model.addAttribute("username",user.getUsername());
+//        model.addAttribute("email",user.getUsername());
+//    }
+//
+//    @PostMapping("/delete")
+//    public String deleteOk(User user, Model model, HttpServletRequest request, HttpServletResponse response,RedirectAttributes redirectAttributes){
+//        User user = userService (User)
+//    }
+
+    @PostMapping("/delete")
+    public String deleteOk(@RequestParam String password, Model model, Authentication authentication){
+        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+        boolean result = userService.pwCheck(Long.valueOf(userDetails.getUsername()),password);
+
+        if (result){
+            return "redirect:/user/deleteOk";
+        } else {
+            model.addAttribute("password", password);
+            return "/user/delete";
+        }
+    }
 
 
 //

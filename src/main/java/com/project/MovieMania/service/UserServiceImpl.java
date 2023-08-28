@@ -137,5 +137,18 @@ public class UserServiceImpl implements UserService {
         return user;
     }
 
+    @Override
+    public boolean pwCheck(Long userId, String password) {
+        User user = userRepository.findById(userId).orElseThrow();
+
+        if (passwordEncoder.matches(password, user.getPassword())) {
+            userRepository.delete(user);
+            return true;
+        } else {
+            return false;
+        }
+
+    }
+
 
 }
