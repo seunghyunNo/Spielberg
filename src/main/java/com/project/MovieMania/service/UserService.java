@@ -33,4 +33,14 @@ public interface UserService {
     User changePw(Long userId, String password);
 
     User findByUserId(Long userId);
+
+    User profileUpdate(Long userId,String name,String username,String email,String phoneNum,String password);
+
+
+    // 회원탈툇 시 비밀번호 확인
+    boolean pwCheck(Long userId, String password);
+
+
+
+
 }

@@ -3,7 +3,7 @@
 SELECT TABLE_NAME FROM information_schema.TABLES
 WHERE TABLE_SCHEMA = 'moviedb';
 
-SELECT * FROM customer;
+SELECT * FROM user;
 SELECT * FROM customer_authorities;
 select * from movie;
 select * from cinema;

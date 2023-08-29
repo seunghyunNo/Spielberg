@@ -1,11 +1,19 @@
 package com.project.MovieMania.controller;
 
+import com.project.MovieMania.config.PrincipalDetails;
 import com.project.MovieMania.domain.User;
 import com.project.MovieMania.domain.UserValidator;
 import com.project.MovieMania.service.UserService;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.neo4j.Neo4jProperties;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -149,22 +157,20 @@ public class UserController {
        return "/user/findPw";
     }
 
-    //비밀번호 변경
+    //비밀번호 찾기에서 비밀번호 변경
     @PostMapping("/changePw")
     public String changePw(@RequestParam("userId") Long userId,
                            @RequestParam("password") String password,
                            @RequestParam("re_password")String re_password,
                            Model model){
-        System.out.println(userId);
-        System.out.println(password);
-        System.out.println(re_password);
+
         if(password.equals(re_password)){
-            System.out.println("success");
+
             model.addAttribute("result",1);
             User user = userService.changePw(userId,password);
             return "/user/changePwOk";
         }else {
-            System.out.println("fail");
+
             User user = userService.findByUserId(userId);
             model.addAttribute("user",user);
             return "/user/changePw";
@@ -172,6 +178,72 @@ public class UserController {
 
 
     }
+
+
+
+    // 프로필업데이트(비밀번호 변경)
+
+    @PostMapping("/profileUpdate")
+    public String profileUpdate(@RequestParam("userId")Long userId,
+                                @RequestParam("username") String username,
+                                @RequestParam("name") String name,
+                                @RequestParam("email") String email,
+                                @RequestParam("phoneNum") String phoneNum,
+                                @RequestParam("password") String password,
+                                @RequestParam("re_password") String re_password,
+                                Model model
+                                ){
+        if(password.equals(re_password)){
+            model.addAttribute("result",1);
+            User user = userService.profileUpdate(userId, name, username, email, phoneNum, password);
+            return "/user/profileUpdateOk";
+        }else{
+            User user = userService.findByUserId(userId);
+            model.addAttribute("user",user);
+            return "/user/profileUpdate";
+        }
+
+    }
+
+
+    @GetMapping("/delete")
+    public void delete(Model model){
+        PrincipalDetails userDetails = (PrincipalDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        User user = userDetails.getUser();
+
+        model.addAttribute("userId",user.getId());
+
+    }
+
+    @PostMapping("/delete")
+    public String deleteOk(@RequestParam("userId") Long userId,
+                           @RequestParam("password") String password,
+                           Model model){
+
+        boolean isPasswordCorrect = userService.pwCheck(userId,password);
+
+        if(isPasswordCorrect){
+            model.addAttribute("result",1);
+
+        }else {
+            model.addAttribute("result",0);
+        }
+            return "/user/deleteOk";
+    }
+
+
+
+    @GetMapping("/myPage")
+    public void myPage(Model model){
+        PrincipalDetails userDetails = (PrincipalDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        User user =userDetails.getUser();
+        System.out.println(user.getAuthorities());
+        model.addAttribute("id",user.getId());
+        model.addAttribute("username",user.getUsername());
+        model.addAttribute("authority",user.getAuthorities());
+    }
+
 
 
 

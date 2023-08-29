@@ -68,6 +68,8 @@ public class PrincipalDetails implements UserDetails {
 
     // 확인 필요함
 
+    public String getName(){return  user.getName();}
+
     public String getPhoneNum(){
         return user.getPhoneNum();
     }

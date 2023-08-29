@@ -32,7 +32,7 @@ public class SecurityConfig{
         return  http
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
-//                        .requestMatchers("/user/changePw","/user/update","/user/myPage").hasAnyRole("MEMBER","ADMIN")
+//                        .requestMatchers("/user/changePw","/user/profileUpdate","/user/myPage").hasAnyRole("MEMBER","ADMIN")
                         .requestMatchers("/user/login","/user/register","user/findUsername","user/findPw").anonymous()
                         .anyRequest().permitAll()
                 )
