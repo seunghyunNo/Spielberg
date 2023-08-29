@@ -40,7 +40,7 @@ public interface UserService {
     // 회원탈툇 시 비밀번호 확인
     boolean pwCheck(Long userId, String password);
 
-
+    int delete(Long userId);
 
 
 }

@@ -7,7 +7,7 @@
 
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 
-  <script th:src="@{/js/user/delete.js}"></script>
+<!--  <script th:src="@{/js/user/delete.js}"></script>-->
 
   <title>회원탈퇴 비밀번호 입력창</title>
 </head>
@@ -25,7 +25,7 @@
       <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
       <span  th:text="${message}"></span>
     </div>
-    <form method="POST" name="frmDelete" th:action="@{/user/delete}">
+    <form method="POST" name="frmDelete" th:action="@{/user/delete}" onsubmit="return checkForm()">
       <input type="hidden" class="form-control" id="id" name="userId" th:value="${userId}">
       <div class="form-group mt-3">
         <label for="password">비밀번호</label>
@@ -40,6 +40,6 @@
     </form>
   </div>
 </div>
-
+<script th:src="@{/js/user/delete.js}"></script>
 </body>
 </html>

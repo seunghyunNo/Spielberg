@@ -27,7 +27,7 @@
       <form method="POST" th:action="@{/user/profileUpdate}">
         <div class="form-group mt-3">
 
-          <input type="hidden" th:value="${user.id}" name="userId">
+          <input type="hidden" th:value="${userId}" name="userId">
 
           <label for="name">이름</label>
           <input type="text" class="form-control bg-light" id="name" name="name" th:value="${name}" readonly>

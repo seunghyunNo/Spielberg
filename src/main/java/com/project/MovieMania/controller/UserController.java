@@ -180,9 +180,22 @@ public class UserController {
     }
 
 
+    @GetMapping("/profileUpdate")
+    public void profileUpdate(Model model){
+        PrincipalDetails userDetails = (PrincipalDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        User user =userDetails.getUser();
+        System.out.println(user.getAuthorities());
+        model.addAttribute("authority",user.getAuthorities());
+        model.addAttribute("userId",user.getId());
+        model.addAttribute("name",user.getName());
+        model.addAttribute("username",user.getUsername());
+        model.addAttribute("email",user.getEmail());
+        model.addAttribute("phoneNum",user.getPhoneNum());
+        model.addAttribute("password",user.getPassword());
+    }
 
     // 프로필업데이트(비밀번호 변경)
-
     @PostMapping("/profileUpdate")
     public String profileUpdate(@RequestParam("userId")Long userId,
                                 @RequestParam("username") String username,
@@ -202,7 +215,6 @@ public class UserController {
             model.addAttribute("user",user);
             return "/user/profileUpdate";
         }
-
     }
 
 
@@ -219,16 +231,17 @@ public class UserController {
     public String deleteOk(@RequestParam("userId") Long userId,
                            @RequestParam("password") String password,
                            Model model){
-
         boolean isPasswordCorrect = userService.pwCheck(userId,password);
 
         if(isPasswordCorrect){
             model.addAttribute("result",1);
-
-        }else {
-            model.addAttribute("result",0);
-        }
+            // 하기전에 시큐리티 로그아웃
+            userService.delete(userId);
             return "/user/deleteOk";
+        }else {
+            model.addAttribute("result", 0);
+            return "redirect:/user/delete";
+        }
     }
 
 

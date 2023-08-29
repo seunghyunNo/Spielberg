@@ -170,12 +170,20 @@ public class UserServiceImpl implements UserService {
 
         // 비밀번호가 일치하면 아이디 삭제
         if(passwordEncoder.matches(password,getPassword)){
-            userRepository.delete(user);// 타입이 안맞아서 void != boolean
+//            userRepository.delete(user);    // 타입이 안맞아서 void != boolean
             return true;
         }else {
             return false;
         }
 
+    }
+
+    @Override
+    public int delete(Long userId) {
+        User user = userRepository.findById(userId).orElseThrow();
+
+//        userRepository.delete(user);
+        return 1;
     }
 
 
