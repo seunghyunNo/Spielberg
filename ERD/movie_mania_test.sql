@@ -18,7 +18,13 @@ select * from report;
 select * from question;
 select * from review r;
 
-delete from seat where ticket_info_id = 12;
+delete from ticket_info where  id  = 58;
+
+delete from seat where ticket_info_id =58;
+
+update price_info 
+set name = "학생"
+where id = 2;
 
 select * from user;
 

@@ -200,6 +200,7 @@ public class TheaterController {
         int cost = 0;
         int adultCnt = 0;
         int studentCnt = 0;
+        int ticketCnt = buyList.size();
         for(int i = 0 ; i < buyList.size(); i++)
         {
             if(buyList.get(i).getPriceInfo().getName().equals("성인"))
@@ -219,13 +220,11 @@ public class TheaterController {
         model.addAttribute("movieName",showInfo.getMovie().getTitle());
         model.addAttribute("adultCnt",adultCnt);
         model.addAttribute("studentCnt",studentCnt);
+        model.addAttribute("ticketCnt",ticketCnt);
+        // 로그인된 유저 아이디 모델로 넘기기
+
 
         return "ticket/purchase";
     }
-    @PostMapping("/purchase/{showInfoId}")
-    public String purchase(@PathVariable Long showInfoId,Model model)
-    {
 
-        return null;
-    }
 }
