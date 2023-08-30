@@ -1,24 +1,79 @@
+// 초기값
+let currentSorting = 'latest';
+
 $(function(){
+  $("#reviewTag").addClass("active");
+  $("#movieDetail").removeClass("active");
+  $("#trailerTag").removeClass("active");
   getReview();
 
-  // 댓글 점수 달기
-  $(".star").click(function() {
-    const score = parseInt($(this).attr("score"));
-    $('#score').val(score);
-    $(".score-star").addClass("fa-regular").removeClass("fa-solid");
-
-    // 현재 선택한 별과 그 이전 별들을 색칠
-    $(this).find(".fa-star").addClass("fa-solid").removeClass("fa-regular");
-    $(this).prevAll(".star").find(".fa-star").addClass("fa-solid").removeClass("fa-regular");
-
-    // 현재 선택한 별 다음 별들은 색칠 해제
-    $(this).nextAll(".star").find(".fa-star").addClass("fa-regular").removeClass("fa-solid");
-
+  $("#orderByDate").click(function() {
+    currentSorting = 'latest';
+    getReview();
   });
+
+  $("#orderByScore").click(function() {
+    currentSorting = 'score';
+    getReviewByScore();
+  });
+
+  $("#orderByRecommend").click(function() {
+    currentSorting = 'recommend';
+    getReviewByRecommend();
+  });
+
+  $("#textBox").on('input', function(){
+    const text = $(this).val();
+    const length = text.length;
+    $('#textCount').text(length);
+  })
+
+  // 댓글 점수 달기
+  $(".star").on("click", starClickHandler);
+
+  // 댓글 작성
+  $("#submitScore").on("click", submitScoreHandler);
+
+  // 추천 눌렀을때
+  $(document).on('click', '.fa-thumbs-up', function() {
+      const reviewId = $(this).attr('thumb-reviewId');
+
+      findRecommend(userId, reviewId);
+  });
+
+  // 삭제 버튼 클릭 시 삭제 동작 수행
+  $(document).on('click', '.delete', function() {
+      const reviewId = $(this).attr('delete-reviewId');
+      let answer = confirm("리뷰를 삭제하시겠습니까?");
+      if (answer) {
+          deleteReview(reviewId);
+          $("#submitScore").on("click");
+          $("#textBox").prop("disabled", false);
+          $("#textBox").attr("placeholder", "평점을 써주세요.");
+          $("#submitScore").on("click", submitScoreHandler);
+          $(".star").on("click", starClickHandler);
+      }
+  });
+
+  // 스포일러 신고 버튼 클릭 시 신고 동작 수행
+  $(document).on('click', '.report_spoiler', function() {
+      const reviewId = $(this).attr('spoil-reviewId');
+      findReport(userId, reviewId, "SPOILER");
+  });
+
+  // 욕.비방 신고 버튼 클릭 시 신고 동작 수행
+  $(document).on('click', '.report_badword', function() {
+      const reviewId = $(this).attr('badword-reviewId');
+      findReport(userId, reviewId, "BADWORD");
+  });
+})
 
   $('#submitScore').click(function(){
     const score = $("#score").val();
     const content = $("#textBox").val().trim().replaceAll('\n','<br>');
+    const text = $(this).val();
+    const length = text.length;
+    if(length > 100){ return; }
 
     const data = {
       "movieId": movieId,
@@ -49,36 +104,72 @@ $(function(){
     })
   });
 
-  // 추천 눌렀을때
-  $(document).on('click', '.fa-thumbs-up', function() {
-      const reviewId = $(this).attr('thumb-reviewId');
+// 별점 누르는 핸들러
+function starClickHandler() {
+  const score = parseInt($(this).attr("score"));
+  $('#score').val(score);
+  $(".score-star").addClass("fa-regular").removeClass("fa-solid");
 
-      findRecommend(userId, reviewId);
-  });
+  // 현재 선택한 별과 그 이전 별들을 색칠
+  $(this).find(".fa-star").addClass("fa-solid").removeClass("fa-regular");
+  $(this).prevAll(".star").find(".fa-star").addClass("fa-solid").removeClass("fa-regular");
 
-  // 삭제 버튼 클릭 시 삭제 동작 수행
-  $(document).on('click', '.delete', function() {
-      const reviewId = $(this).attr('delete-reviewId');
-      let answer = confirm("리뷰를 삭제하시겠습니까?");
-      if (answer) {
-          deleteReview(reviewId);
+  // 현재 선택한 별 다음 별들은 색칠 해제
+  $(this).nextAll(".star").find(".fa-star").addClass("fa-regular").removeClass("fa-solid");
+}
+
+
+// 리뷰작성 핸들러
+function submitScoreHandler() {
+  const score = $("#score").val();
+  const content = $("#textBox").val().trim().replaceAll('\n', '<br>');
+  const text = $("#textBox").val();
+  const length = text.length;
+  if (length > 100) {
+    alert("100자 이상 작성할 수 없습니다.");;
+    return;
+  } else if(score === ""){
+    alert("별점 입력은 필수입니다.");
+    return;
+  } else if(length === 0){
+    alert("리뷰 내용 입력은 필수입니다.");
+    $("#textBox").focus();
+    return;
+  }
+
+  const data = {
+    "movieId": movieId,
+    "score": score,
+    "content": content,
+    "userId": userId
+  };
+
+  $.ajax({
+    url: "/movie/review/write",
+    type: "POST",
+    data: data,
+    cache: false,
+    success: function (data, status) {
+      if (status !== "success") {
+        alert(data.status);
+        return;
       }
+      if (data === 1) {
+        alert("댓글이 등록되었습니다");
+        getReview();
+        return;
+      } else {
+        alert("댓글이 등록에 실패하였습니다");
+        return;
+      }
+    }
   });
+}
 
-  // 스포일러 신고 버튼 클릭 시 신고 동작 수행
-  $(document).on('click', '.report_spoiler', function() {
-      const reviewId = $(this).attr('spoil-reviewId');
-      findReport(userId, reviewId, "SPOILER");
-  });
 
-  // 욕.비방 신고 버튼 클릭 시 신고 동작 수행
-  $(document).on('click', '.report_badword', function() {
-      const reviewId = $(this).attr('badword-reviewId');
-      findReport(userId, reviewId, "BADWORD");
-  });
-})
-
+// review 최신날짜작성순으로 가져오기
 function getReview(){
+
   fetch("/movie/getReview/" + movieId)
   .then(response => {
     if (response.ok) {
@@ -89,11 +180,83 @@ function getReview(){
   })
   .then(data => {
     buildReview(data);
+    data.forEach(data =>{
+      if(data.user.id == userId){
+        $("#textBox").prop("disabled", true);
+        $("#textBox").attr("placeholder", "이미 평점을 작성하셨습니다.");
+        $("#textBox").val("");
+        $('#textCount').text("0");
+        $('#score').val("");
+        $('.score-star').addClass("fa-regular").removeClass("fa-solid");
+        $(".star").off("click", starClickHandler);
+        $("#submitScore").off("click", submitScoreHandler);
+        return;
+      }
+    })
   })
   .catch(error => {
     console.error('Fetch error:', error);
   });
 }
+
+// review 평점순으로 가져오기
+function getReviewByScore(){
+  fetch("/movie/getReviewByScore/" + movieId)
+  .then(response => {
+    if (response.ok) {
+      return response.json();
+    } else {
+      throw new Error('Network response was not ok.');
+    }
+  })
+  .then(data => {
+    buildReview(data);
+    if(data.user.id == userId){
+      $("#textBox").prop("disabled", true);
+      $("#textBox").attr("placeholder", "이미 평점을 작성하셨습니다.");
+      $("#textBox").val("");
+      $('#textCount').text("0");
+      $('#score').val("");
+      $('.score-star').addClass("fa-regular").removeClass("fa-solid");
+      $(".star").off("click", starClickHandler);
+      $("#submitScore").off("click", submitScoreHandler);
+      return;
+    }
+  })
+  .catch(error => {
+    console.error('Fetch error:', error);
+  });
+}
+
+// review 추천순으로 가져오기
+function getReviewByRecommend(){
+  fetch("/movie/getReviewByRecommend/" + movieId)
+  .then(response => {
+    if (response.ok) {
+      return response.json();
+    } else {
+      throw new Error('Network response was not ok.');
+    }
+  })
+  .then(data => {
+    buildReview(data);
+    if(data.user.id == userId){
+      $("#textBox").prop("disabled", true);
+      $("#textBox").attr("placeholder", "이미 평점을 작성하셨습니다.");
+      $("#textBox").val("");
+      $('#textCount').text("0");
+      $('#score').val("");
+      $('.score-star').addClass("fa-regular").removeClass("fa-solid");
+      $(".star").off("click", starClickHandler);
+      $("#submitScore").off("click", submitScoreHandler);
+      return;
+    }
+  })
+  .catch(error => {
+    console.error('Fetch error:', error);
+  });
+}
+
 
 function buildReview(data){
   const result = [];
@@ -118,16 +281,12 @@ function buildReview(data){
 
     let recommendArray = element.recommends;
     const thumbUp = activeThumbUp(userId, reviewId, recommendArray);
-//    recommendArray.forEach(recommend => {
-//      thumbUp = (userId !== recommend.recommendPK.user_id)?
-//        `<i class="fa-regular fa-thumbs-up fa-xl" thumb-reviewId=${reviewId}></i>`
-//        : `<i class="fa-solid fa-thumbs-up fa-xl" thumb-reviewId=${reviewId}></i>`;
-//    })
+
 
     const row = `
         <div class="d-flex flex-column justify-content-center align-items-center col-md-1">
-          <i class="fa-regular fa-circle-user fa-2xl"></i>
-          <div class="mt-3">${username}</div>
+          <i class="fa-regular fa-circle-user fa-2xl mt-5"></i>
+          <div class="mt-4">${username}</div>
         </div>
         <div class="col-md-11 d-flex justify-content-center card p-5 mt-3">
           <table class="card-body">
@@ -164,14 +323,19 @@ function buildReview(data){
 
 }
 
-function activeThumbUp(userId, reviewId,recommends){
-  recommends.forEach(recommend => {
-    if(userId == recommend.recommendPK.user_id){
-      return `<i class="fa-solid fa-thumbs-up fa-xl" thumb-reviewId=${reviewId}></i>`;
+function activeThumbUp(userId, reviewId, recommends) {
+  let iconHtml = `<i class="fa-regular fa-thumbs-up fa-xl" thumb-reviewId="${reviewId}"></i>`;
+
+  for (const recommend of recommends) {
+    if (userId == recommend.recommendPK.user_id) {
+      iconHtml = `<i class="fa-solid fa-thumbs-up fa-xl" thumb-reviewId="${reviewId}"></i>`;
+      break; // 이미 좋아요한 경우, 더 이상 반복할 필요가 없으므로 반복문 종료
     }
-  })
-  return `<i class="fa-regular fa-thumbs-up fa-xl" thumb-reviewId=${reviewId}></i>`;
+  }
+
+  return iconHtml;
 }
+
 
 // 시간 변환 메소드
 function getTimeAgo(previousTime) {
@@ -240,7 +404,13 @@ function deleteRecommend(userId, reviewId){
     success: function(data, status){
       if(status == "success"){
         alert("리뷰 추천을 취소하셨습니다");
-        getReview();
+        if(currentSorting === 'latest'){
+          getReview();
+        } else if(currentSorting === 'score'){
+          getReviewByScore();
+        } else if(currentSorting === 'recommend'){
+          getReviewByRecommend();
+        }
       }
     }
   })
@@ -261,7 +431,13 @@ function addRecommend(userId, reviewId){
     success: function(data, status){
       if(status == "success"){
         alert("리뷰 추천을 하셨습니다");
-        getReview();
+        if(currentSorting === 'latest'){
+          getReview();
+        } else if(currentSorting === 'score'){
+          getReviewByScore();
+        } else if(currentSorting === 'recommend'){
+          getReviewByRecommend();
+        }
       }
     }
   })
@@ -306,7 +482,6 @@ function addReport(userId, reviewId, reportType) {
     cache: false,
     success: function(data, status) {
       if (status === "success") {
-        console.log(data);
         if(data.reportType === "SPOILER"){
           alert("스포일러성 리뷰를 신고하셨습니다.");
         } else {
@@ -332,7 +507,13 @@ function deleteReview(reviewId){
       if(status == "success"){
         if(data === 0){
           alert("리뷰를 삭제하셨습니다.");
-          getReview();
+          if(currentSorting === 'latest'){
+            getReview();
+          } else if(currentSorting === 'score'){
+            getReviewByScore();
+          } else if(currentSorting === 'recommend'){
+            getReviewByRecommend();
+          }
         } else{
           alert("삭제할 리뷰가 없습니다.");
         }
@@ -340,4 +521,3 @@ function deleteReview(reviewId){
     }
   })
 }
-

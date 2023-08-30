@@ -1,8 +1,9 @@
 package com.project.MovieMania.config;
 
 import com.project.MovieMania.domain.Authority;
+import com.project.MovieMania.domain.User;
+import com.project.MovieMania.service.UserService;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.ArrayList;
@@ -11,6 +12,12 @@ import java.util.List;
 
 public class PrincipalDetails implements UserDetails {
 
+
+    UserService userService;
+
+    public void setUserService(UserService userService) {
+        this.userService = userService;
+    }
 
     private User user;
 

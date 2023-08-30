@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
@@ -83,4 +84,19 @@ public class HomeServiceImpl implements HomeService {
 
         return movieList;
     }
+
+    @Override
+    public List<Movie> search(String keyword) {
+        List<Movie> movieList = movieRepository.findByTitleContaining(keyword);
+        return movieList;
+    }
+
+
+//    @Override
+//    public Page<Movie> search(String keyword, Pageable pageable) {
+//        Page<Movie> movies = movieRepository.findByTitleContaining(keyword, pageable);
+//        return null;
+//    }
+
+
 }

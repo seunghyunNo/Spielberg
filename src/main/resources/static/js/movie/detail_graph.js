@@ -1,4 +1,8 @@
 $(function () {
+  $("#reviewTag").removeClass("active");
+  $("#movieDetail").addClass("active");
+  $("#trailerTag").removeClass("active");
+
   // 일별 관객수
   var audiPerDayData = JSON.parse(document.getElementById("audiPerDay").getAttribute("dataAudiPerDay"));
   var labels = []; // 최근 5일에 해당하는 라벨
@@ -31,16 +35,30 @@ $(function () {
     },
     options: {
       scales: {
-        y: {
-          display: false,
-          beginAtZero: true,
-        },
-        x: {
-          grid: {
-            display: false,
-          },
-        },
-      },
+       xAxes: [{
+         gridLines: { //A축 gridLines 지우는 옵션
+           display: false,
+           drawBorder: false,
+         },
+         ticks: {
+           fontSize: 13,
+           fontColor: 'black'
+         }
+       }],
+       yAxes: [{
+         gridLines: { //Y축 gridLines 지우는 옵션
+           drawBorder: false,
+           display: false,
+         },
+         ticks: {
+           beginAtZero: true,
+           fontSize: 10,
+           fontColor: 'lightgrey',
+           maxTicksLimit: 5,
+           padding: 25,
+         }
+       }]
+     },
       // 위에 라벨 없애기
       legend: {
         display: false,
@@ -50,7 +68,9 @@ $(function () {
   var ageChart = new Chart(ageCtx, ageChartConfig);
 
   // 성별별 예매율 그래프 생성
-  var genderRateData = JSON.parse(document.getElementById("genderRateData").getAttribute("dataGenderRate"));
+  var genderData = JSON.parse(document.getElementById("genderRateData").getAttribute("dataGenderRate"));
+  var totalGender = genderData[0] + genderData[1];
+  var genderRateData =  [ Math.floor(genderData[0] / totalGender * 100) , Math.floor(genderData[1] / totalGender * 100)]
   var genderCtx = document.getElementById("genderChart").getContext("2d");
   var genderPieChart = new Chart(genderCtx, {
     type: "doughnut",
@@ -80,7 +100,14 @@ $(function () {
   });
 
   // 연령별 예매율 그래프 생성
-  var ageRateData = JSON.parse(document.getElementById("ageRateData").getAttribute("dataAgeRate"));
+  var ageData = JSON.parse(document.getElementById("ageRateData").getAttribute("dataAgeRate"));
+  var totalAge = ageData[0] + ageData[1] + ageData[2]+ ageData[3]+ ageData[4]
+  var ageRateData = [ Math.floor(ageData[0] / totalAge * 100),
+                      Math.floor(ageData[1] / totalAge * 100),
+                      Math.floor(ageData[2] / totalAge * 100),
+                      Math.floor(ageData[3] / totalAge * 100),
+                      Math.floor(ageData[4] / totalAge * 100) ]
+
   var ageCtx = document.getElementById("ageChart").getContext("2d");
   var ageChartConfig = {
     type: "bar",
@@ -98,15 +125,29 @@ $(function () {
     },
     options: {
       scales: {
-        y: {
-          display: false,
-          beginAtZero: true,
-        },
-        x: {
-          grid: {
+        xAxes: [{
+          gridLines: { //A축 gridLines 지우는 옵션
+            display: false,
+            drawBorder: false,
+          },
+          ticks: {
+            fontSize: 13,
+            fontColor: 'black'
+          }
+        }],
+        yAxes: [{
+          gridLines: { //Y축 gridLines 지우는 옵션
+            drawBorder: false,
             display: false,
           },
-        },
+          ticks: {
+            beginAtZero: true,
+            fontSize: 10,
+            fontColor: 'lightgrey',
+            maxTicksLimit: 5,
+            padding: 25,
+          }
+        }]
       },
       // 위에 라벨 없애기
       legend: {

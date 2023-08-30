@@ -23,9 +23,11 @@
                             <span> | </span>
                             <span>예매율 [[${rate}]] </span>
                             <span> | </span>
+                            <span>총 누적관객수 [[${movie.audiCnt}]]</span>
+                            <span> | </span>
                             <span>누적관객수 [[${audinum}]]</span>
                         </b>
-                        <a class = "btn btn-primary col-md-3" th:href="@{'/ticket/theater/' + ${movieId}}">예매하기</a>
+                        <a class = "btn btn-primary col-md-3" th:href="@{'/ticket/theater/' + ${movie.id}}">예매하기</a>
                     </div>
                 </div>
             </div>
