@@ -73,6 +73,9 @@ public class TheaterServiceImpl implements TheaterService{
     public Set<LocalDate> dateList(Long movieId) {
         Movie movie = movieRepository.findById(movieId).orElse(null);
         List<ShowInfo> showInfos = showInfoRepository.findByMovie(movie);
+
+
+
         Set<LocalDate> dates =new HashSet<>();
 
         for(int i = 0; i < showInfos.size(); i++)

@@ -17,21 +17,21 @@
             <input type="hidden" name="showInfoId" th:value="${showInfoId}">
             <input type="hidden" name="movieId" th:value="${movieId}">
             <div class="container ml-2">
-                <select name="cinemaName" title="cinemaList">
+                <select name="cinemaName" id="cinemaName" title="cinemaList">
                     <option>극장 선택</option>
                     <th:block th:each="cinema:${cinemas}">
                         <option th:value="${cinema.name}" th:utext="${cinema.name}" th:selected="cinemaName==${cinema.name}"></option>
                     </th:block>
                 </select>
 
-                <select th:name="date" title="dateList">
+                <input type="hidden" id="movieDate" th:value="${dates}">
+                <select th:name="date" id="date" title="dateList">
                     <option selected>날짜 선택</option>
-                    <option th:each="day:${dates}" th:value="${day}" th:utext="${day}"></option>
                 </select>
 
-                <select th:name="time" title="timeList">
+                <input type="hidden" id="movieTime" th:value="${times}">
+                <select th:name="time" id="time" title="timeList">
                     <option selected>시간 선택</option>
-                    <option th:each="t:${times}" th:value="${t}" th:utext="${t}"></option>
                 </select>
             </div>
 

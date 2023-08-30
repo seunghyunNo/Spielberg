@@ -1,4 +1,9 @@
 $(function(){
+	$("#cinemaName").change(function(){
+
+	});
+
+
 	$("#theaterBtn").click(function(){
 	    var name = $("[name='cinemaName']").val();
 	    alert(name);
