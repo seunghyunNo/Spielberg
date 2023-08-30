@@ -11,6 +11,6 @@ public interface MyPageService {
 
 //    public List<Question> QuestionList(Model model,Integer page,long id);
 
-    public List<TicketInfo> TICKET_INFOS(Model model,Integer page, long id);
+//    public List<TicketInfo> TICKET_INFOS(Model model,Integer page, long id);
 
 }

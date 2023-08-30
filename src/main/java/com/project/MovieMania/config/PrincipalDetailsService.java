@@ -13,8 +13,12 @@ import java.time.LocalDate;
 @Service
 public class PrincipalDetailsService implements UserDetailsService {
 
-    @Autowired
     private UserService userService;
+
+    @Autowired
+    public void setUserService(UserService userService) {
+        this.userService = userService;
+    }
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException{
