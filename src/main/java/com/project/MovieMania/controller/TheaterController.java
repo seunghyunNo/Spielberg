@@ -37,13 +37,12 @@ public class TheaterController {
     private PriceService priceService;
 
     @GetMapping("/theater/{movie_id}")
-    public String theater(@PathVariable Long movie_id, Model model) {
-        model.addAttribute("movieId", movie_id);
-//        model.addAttribute("theaterNum",theaterService.findById(theater_id).getTheaterNum());
-
-        model.addAttribute("cinemas", theaterService.cinemaList());
-        model.addAttribute("dates", theaterService.dateList());
-        model.addAttribute("times", theaterService.timeList());
+    public String theater(@PathVariable Long movie_id,Model model)
+    {
+        model.addAttribute("movieId",movie_id);
+        model.addAttribute("cinemas",theaterService.cinemaList());
+        model.addAttribute("dates",theaterService.dateList());
+        model.addAttribute("times",theaterService.timeList());
 
         return "ticket/theater";
     }

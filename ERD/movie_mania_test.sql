@@ -22,7 +22,7 @@ delete from ticket_info where  id  = 12;
 
 delete from seat where ticket_info_id =12;
 
-update price_info 
+update price_info
 set name = "학생"
 where id = 2;
 
@@ -35,9 +35,9 @@ select * from user;
         t1_0.show_info_id,
         t1_0.ticket_code,
         t1_0.updated_at,
-        t1_0.user_id 
+        t1_0.user_id
     from
-        ticket_info t1_0 
+        ticket_info t1_0
     where
         t1_0.user_id=1
         and t1_0.show_info_id=15;
@@ -46,9 +46,14 @@ INSERT INTO moviedb.`user`
 (birthday, created_at, updated_at, gender, phone_num, name, password, username, email, status)
 VALUES('2000-05-03', NOW(), NOW(), 'MALE', '00011112222', '나', 'ㅇㅇㅇㅇㅇ', '나', 'PPP@VVV.COM', 'ACTIVE');
 
+INSERT INTO theater (cinema_id, theater_num, max_seat_column, max_seat_row)
+VALUES(1, 2, 10, 10),
+(2, 1, 15, 15),
+(2, 2, 13, 13),
+(1, 3, 12, 12);
 insert into theater(cinema_Id,theater_num,max_seat_column,max_seat_row)
 values(2,1,10,10);
- 
+
 
 
 
@@ -58,6 +63,8 @@ VALUES('20240822', 0, 0, '0', '1', '1', '1', '1', '1', '1');
 
 INSERT INTO show_info
 (movie_id, show_date_time, theater_id, status)
+VALUES(6, '20230923143000', 1, 'SOON');
+DELETE FROM show_info WHERE id=4;
 VALUES(1, '20240823110000', 6, 'NOW');
 
 INSERT INTO ticket_info

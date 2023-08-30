@@ -8,6 +8,7 @@ import com.project.MovieMania.domain.type.UserStatus;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -32,7 +33,7 @@ class DataBaseTest {
 	private TheaterRepository theaterRepository;
 
 	@Autowired
-	private ShowInfoRepository showInfoRepository;
+	private ShowInfoRepository showinfoRepository;
 
 	@Autowired
 	private TicketInfoRepository ticketInfoRepository;
@@ -158,8 +159,8 @@ class DataBaseTest {
 				.showDateTime(LocalDateTime.of(2023, 8, 20, 11, 00))
 				.build();
 
-		showInfoRepository.saveAndFlush(showInfo);
-		showInfoRepository.findAll().forEach(System.out::println);
+		showinfoRepository.saveAndFlush(showInfo);
+		showinfoRepository.findAll().forEach(System.out::println);
 
 		System.out.println(">>>>>>> 가격 정보");
 

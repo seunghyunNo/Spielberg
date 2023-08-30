@@ -1,5 +1,6 @@
 package com.project.MovieMania.service;
 
+import com.project.MovieMania.domain.DTO.MovieDTO;
 import com.project.MovieMania.domain.Movie;
 
 import java.util.List;

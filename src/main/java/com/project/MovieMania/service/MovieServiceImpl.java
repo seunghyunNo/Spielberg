@@ -8,6 +8,7 @@ import com.project.MovieMania.domain.type.Gender;
 import com.project.MovieMania.domain.type.ReportType;
 import com.project.MovieMania.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -38,7 +39,7 @@ public class MovieServiceImpl implements MovieService {
     public void setMovieRepository(MovieRepository movieRepository){ this.movieRepository = movieRepository;}
 
     @Autowired
-    public void setShowinfoRepoisotry(ShowInfoRepository showInfoRepository){this.showInfoRepository = showInfoRepository;}
+    public void setShowInfoRepository(ShowInfoRepository showInfoRepository){this.showInfoRepository = showInfoRepository;}
 
     @Autowired
     public void setTicketInfoRepository(TicketInfoRepository ticketInfoRepository) {this.ticketInfoRepository = ticketInfoRepository;}
