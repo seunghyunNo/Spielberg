@@ -16,9 +16,9 @@ public interface TheaterService {
 
     Set<Cinema> cinemaSet(Long movieId);
 
-    Set<LocalDate> dateList();
+    Set<LocalDate> dateList(Long movieId);
 
-    Set<LocalTime> timeList();
+    Set<LocalTime> timeList(Long movieId);
 
     Theater findById(Long theaterId);
 

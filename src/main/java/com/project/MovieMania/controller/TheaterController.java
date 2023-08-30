@@ -41,8 +41,8 @@ public class TheaterController {
     {
         model.addAttribute("movieId",movie_id);
         model.addAttribute("cinemas",theaterService.cinemaSet(movie_id));
-        model.addAttribute("dates",theaterService.dateList());
-        model.addAttribute("times",theaterService.timeList());
+        model.addAttribute("dates",theaterService.dateList(movie_id));
+        model.addAttribute("times",theaterService.timeList(movie_id));
 
         return "ticket/theater";
     }
