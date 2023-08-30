@@ -4,6 +4,7 @@ import com.project.MovieMania.domain.Question;
 import com.project.MovieMania.domain.TicketInfo;
 import com.project.MovieMania.repository.MyPageRepository;
 import com.project.MovieMania.repository.QuestionRepository;
+import com.project.MovieMania.repository.TicketInfoRepository;
 import com.project.MovieMania.util.U;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Value;
@@ -19,6 +20,8 @@ public class MyPageServiceImpl implements MyPageService {
 
     private QuestionRepository questionRepository;
 
+    private TicketInfoRepository ticketInfoRepository;
+
     @Value("${app.pagination.write_pages}")
     private int WRITE_PAGES;
 
@@ -27,7 +30,52 @@ public class MyPageServiceImpl implements MyPageService {
 
     @Override
     public List<TicketInfo> TICKET_INFOS(Model model, Integer page, long id) {
-        return null;
+
+        if(page == null || page<1){
+            page=1;
+        }
+        HttpSession session = U.getSession();
+        Integer writePage = (Integer) session.getAttribute("writePage");
+        Integer pageRows = (Integer) session.getAttribute("pageRows");
+
+        if (writePage==null){
+            writePage = WRITE_PAGES;
+        }
+        if(pageRows ==null){
+            pageRows=PAGE_ROWS;
+        }
+
+        session.setAttribute("page",page);
+
+        // 질문  티켓의 아이디 갯수???
+        long count = myPageRepository.findById(id).orElseThrow().getId();
+        int totalPage = (int) Math.ceil(count/(double)pageRows);
+
+        if(page>totalPage){
+            page=totalPage;
+        }
+        int fromRow = (page-1)*pageRows;
+        if(page==0){
+            fromRow=0;
+        }
+
+        int start = (((page-1)/writePage)*writePage+1);
+        int end = start+writePage-1;
+        if(end>=totalPage)end = totalPage;
+        model.addAttribute("count",count);
+        model.addAttribute("page",page);
+        model.addAttribute("totalPage",totalPage);
+        model.addAttribute("pageRows",pageRows);
+
+        model.addAttribute("url",U.getRequest().getRequestURI());
+        model.addAttribute("writePage",writePage);
+        model.addAttribute("start",start);
+        model.addAttribute("end",end);
+
+        //
+        List<TicketInfo> list = myPageRepository.findByFromRowAndPageRowsAndId(fromRow,pageRows,id);
+
+        return list;
     }
 
 
