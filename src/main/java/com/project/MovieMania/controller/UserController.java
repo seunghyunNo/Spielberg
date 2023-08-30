@@ -6,12 +6,15 @@ import com.project.MovieMania.domain.UserValidator;
 import com.project.MovieMania.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.neo4j.Neo4jProperties;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -40,7 +43,7 @@ public class UserController {
 
     // 접근 권한
     @RequestMapping("/rejectAuth")
-    public String rejectAuth(){return "common/rejectAuth";}
+    public String rejectAuth(){return "user/rejectAuth";}
 
 
     // 회원가입
@@ -156,22 +159,20 @@ public class UserController {
        return "/user/findPw";
     }
 
-    //비밀번호 변경
+    //비밀번호 찾기에서 비밀번호 변경
     @PostMapping("/changePw")
     public String changePw(@RequestParam("userId") Long userId,
                            @RequestParam("password") String password,
                            @RequestParam("re_password")String re_password,
                            Model model){
-        System.out.println(userId);
-        System.out.println(password);
-        System.out.println(re_password);
+
         if(password.equals(re_password)){
-            System.out.println("success");
+
             model.addAttribute("result",1);
             User user = userService.changePw(userId,password);
             return "/user/changePwOk";
         }else {
-            System.out.println("fail");
+
             User user = userService.findByUserId(userId);
             model.addAttribute("user",user);
             return "/user/changePw";
@@ -180,32 +181,92 @@ public class UserController {
 
     }
 
-//    @GetMapping("/delete")
-//    public void delete(Model model){
-//        PrincipalDetails userDetails = (PrincipalDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-//        User user =userDetails.getUser();
-//
-//        model.addAttribute("username",user.getUsername());
-//        model.addAttribute("email",user.getUsername());
-//    }
-//
-//    @PostMapping("/delete")
-//    public String deleteOk(User user, Model model, HttpServletRequest request, HttpServletResponse response,RedirectAttributes redirectAttributes){
-//        User user = userService (User)
-//    }
 
-    @PostMapping("/delete")
-    public String deleteOk(@RequestParam String password, Model model, Authentication authentication){
-        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-        boolean result = userService.pwCheck(Long.valueOf(userDetails.getUsername()),password);
+    @GetMapping("/profileUpdate")
+    public void profileUpdate(Model model){
+        PrincipalDetails userDetails = (PrincipalDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
-        if (result){
-            return "redirect:/user/deleteOk";
-        } else {
-            model.addAttribute("password", password);
-            return "/user/delete";
+        User user =userDetails.getUser();
+        System.out.println(user.getAuthorities());
+        model.addAttribute("authority",user.getAuthorities());
+        model.addAttribute("userId",user.getId());
+        model.addAttribute("name",user.getName());
+        model.addAttribute("username",user.getUsername());
+        model.addAttribute("email",user.getEmail());
+        model.addAttribute("phoneNum",user.getPhoneNum());
+        model.addAttribute("password",user.getPassword());
+    }
+
+    // 프로필업데이트(비밀번호 변경)
+    @PostMapping("/profileUpdate")
+    public String profileUpdate(@RequestParam("userId")Long userId,
+                                @RequestParam("username") String username,
+                                @RequestParam("name") String name,
+                                @RequestParam("email") String email,
+                                @RequestParam("phoneNum") String phoneNum,
+                                @RequestParam("password") String password,
+                                @RequestParam("re_password") String re_password,
+                                Model model
+                                ){
+        if(password.equals(re_password)){
+            model.addAttribute("result",1);
+            User user = userService.profileUpdate(userId, name, username, email, phoneNum, password);
+            return "/user/profileUpdateOk";
+        }else{
+            User user = userService.findByUserId(userId);
+            model.addAttribute("user",user);
+            return "/user/profileUpdate";
         }
     }
+
+
+    @GetMapping("/delete")
+    public void delete(Model model){
+        PrincipalDetails userDetails = (PrincipalDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        User user = userDetails.getUser();
+
+        model.addAttribute("userId",user.getId());
+
+    }
+
+    @PostMapping("/delete")
+    public String deleteOk(@RequestParam("userId") Long userId,
+                           @RequestParam("password") String password,
+                           Model model,HttpServletRequest request, HttpServletResponse response,RedirectAttributes redirectAttributes){
+        PrincipalDetails userDetails = (PrincipalDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        User user1 = userDetails.getUser();
+        Long id = user1.getId();
+
+
+        boolean isPasswordCorrect = userService.pwCheck(userId,password);
+
+        if(isPasswordCorrect){
+            model.addAttribute("result",1);
+            // 하기전에 시큐리티 로그아웃
+            new SecurityContextLogoutHandler().logout(request,response,null);
+            userService.delete(userId);
+            return "/user/deleteOk";
+        }else {
+            model.addAttribute("result", 0);
+            return "redirect:/user/delete";
+        }
+    }
+
+
+
+    @GetMapping("/myPage")
+    public void myPage(Model model){
+        PrincipalDetails userDetails = (PrincipalDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        User user =userDetails.getUser();
+        System.out.println(user.getAuthorities());
+
+        model.addAttribute("id",user.getId());
+        model.addAttribute("username",user.getUsername());
+        model.addAttribute("authority",user.getAuthorities());
+    }
+
+
 
 
 //

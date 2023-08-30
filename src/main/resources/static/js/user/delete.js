@@ -1,9 +1,7 @@
-$(function(){
-    // 회원 탈퇴 이벤트
-    $("#button").click(function(){
-        let answer = confirm("탈퇴하시겠습니까?");
-        if(answer){
-            $("form[name='frmDelete']").submit();
-        }
-    });
-});
+function checkForm() {
+  let answer = confirm("회원탈퇴를 하시겠습니까?");
+  if (!answer) {
+    alert("취소합니다");
+  }
+  return answer;
+}

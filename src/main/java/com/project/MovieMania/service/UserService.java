@@ -34,6 +34,13 @@ public interface UserService {
 
     User findByUserId(Long userId);
 
-    // 회원탈퇴 시 비밀번호 확인
+    User profileUpdate(Long userId,String name,String username,String email,String phoneNum,String password);
+
+
+    // 회원탈툇 시 비밀번호 확인
     boolean pwCheck(Long userId, String password);
+
+    int delete(Long userId);
+
+
 }

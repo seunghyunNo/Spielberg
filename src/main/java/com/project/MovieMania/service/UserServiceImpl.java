@@ -77,16 +77,24 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public int register(User user) {
 
+
         user.setStatus(UserStatus.ACTIVE);
+
 
         user.setPassword(passwordEncoder.encode(user.getPassword()));   // 비밀번호를 가져와서 암호화
 
         User user1 = userRepository.save(user);
 
+        Authority authority = authorityRepository.findByName("ROLE_MEMBER");
+
+        user1.addAuthorities(authority);
+
+        user1 = userRepository.save(user1); // update
+
 
         User user2 = userRepository.findById(user1.getId()).orElseThrow();
 
-        if(user1 != null){
+        if(user2 != null){
             return 1;
         }
         return 0;
@@ -138,16 +146,44 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public boolean pwCheck(Long userId, String password) {
+    public User profileUpdate(Long userId, String name, String username, String email, String phoneNum, String password) {
+
+        // 여기에 유저정보가 다 담겨있는건가????
+
         User user = userRepository.findById(userId).orElseThrow();
 
-        if (passwordEncoder.matches(password, user.getPassword())) {
-            userRepository.delete(user);
+
+        user.setPassword(passwordEncoder.encode(password));
+
+        return userRepository.save(user);
+    }
+
+
+
+    // 비밀번호를 확인 해서 유저 회원탈퇴
+    @Override
+    public boolean pwCheck(Long userId, String password) {
+
+        User user = userRepository.findById(userId).orElseThrow();
+
+        String getPassword = user.getPassword();
+
+        // 비밀번호가 일치하면 아이디 삭제
+        if(passwordEncoder.matches(password,getPassword)){
+//            userRepository.delete(user);    // 타입이 안맞아서 void != boolean
             return true;
-        } else {
+        }else {
             return false;
         }
 
+    }
+
+    @Override
+    public int delete(Long userId) {
+        User user = userRepository.findById(userId).orElseThrow();
+
+        userRepository.delete(user);
+        return 1;
     }
 
 
