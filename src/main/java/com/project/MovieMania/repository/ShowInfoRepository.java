@@ -27,4 +27,6 @@ public interface ShowInfoRepository extends JpaRepository<ShowInfo, Long> {
     List<ShowInfo> findByStatus(ShowInfoStatus status);
 
     List<ShowInfo> findByMovieIdAndShowDateTime(Long movieId,LocalDateTime showDateTime);
+
+    List<ShowInfo> findByMovie(Movie movie);
 }

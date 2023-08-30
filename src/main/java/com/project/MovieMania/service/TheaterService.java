@@ -14,6 +14,8 @@ public interface TheaterService {
 
     List<Cinema> cinemaList();
 
+    Set<Cinema> cinemaSet(Long movieId);
+
     Set<LocalDate> dateList();
 
     Set<LocalTime> timeList();

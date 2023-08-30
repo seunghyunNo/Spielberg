@@ -40,7 +40,7 @@ public class TheaterController {
     public String theater(@PathVariable Long movie_id,Model model)
     {
         model.addAttribute("movieId",movie_id);
-        model.addAttribute("cinemas",theaterService.cinemaList());
+        model.addAttribute("cinemas",theaterService.cinemaSet(movie_id));
         model.addAttribute("dates",theaterService.dateList());
         model.addAttribute("times",theaterService.timeList());
 
@@ -53,7 +53,7 @@ public class TheaterController {
 
         time = " " + time;
         String dateTime = date.concat(time);
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm");
         LocalDateTime showDateTime = LocalDateTime.parse(dateTime, formatter);
         ShowInfo showInfo = showInfoService.findShowInfo(movie_id, cinemaName, showDateTime, model);
 

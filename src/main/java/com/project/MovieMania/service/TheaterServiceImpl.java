@@ -1,6 +1,7 @@
 package com.project.MovieMania.service;
 
 import com.project.MovieMania.domain.Cinema;
+import com.project.MovieMania.domain.Movie;
 import com.project.MovieMania.domain.ShowInfo;
 import com.project.MovieMania.domain.Theater;
 import com.project.MovieMania.repository.CinemaRepository;
@@ -53,6 +54,19 @@ public class TheaterServiceImpl implements TheaterService{
     public List<Cinema> cinemaList() {
         cinemaRepository.findAll().forEach(System.out::println);
         return cinemaRepository.findAll();
+    }
+
+    @Override
+    public Set<Cinema> cinemaSet(Long movieId) {
+        Movie movie = movieRepository.findById(movieId).orElse(null);
+        List<ShowInfo> showInfoList = showInfoRepository.findByMovie(movie);
+        Set<Cinema> cinemaSet = new HashSet<>();
+        for(int i = 0; i < showInfoList.size(); i++)
+        {
+            cinemaSet.add(showInfoList.get(i).getTheater().getCinema());
+        }
+
+        return cinemaSet;
     }
 
     @Override
