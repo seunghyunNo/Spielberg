@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDateTime;
 
@@ -25,6 +26,7 @@ public class ShowInfo {
 	private ShowInfoStatus status;
 	
 	@Column(nullable = false)
+	@DateTimeFormat(pattern = "MM/dd/yyyy'T'HH:mm")
 	private LocalDateTime showDateTime;
 	
 	@ManyToOne

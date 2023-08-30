@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+	<meta charset="UTF-8">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+	<title>Admin - Show List</title>
+	<script>
+		selected = "[[${status}]]";
+	</script>
+	<script th:src="@{/js/admin/show/list.js}"></script>
+</head>
+<body>
+	<div class="container">
+		<th:block th:insert="~{admin/header/navbar::adminNav}"></th:block>
+		<h2 class="my-3">상영 정보 목록</h2>
+		<hr>
+		<div class="row mb-3 justify-content-between">
+			<div class="col-3">
+				<form name="formStatus">
+					<select class="form-select" name="selectStatus" id="selectStatus">
+						<option value="ALL">모두 보기</option>
+						<option value="NOW">상영 중</option>
+						<option value="END">상영 종료</option>
+						<option value="SOON">상영 예정</option>
+					</select>
+				</form>
+			</div>
+			<div class="col-auto">
+				<a class="btn btn-primary" th:href="@{show/register}">새 상영 등록</a>
+			</div>
+		</div>
+		<table id="showInfoList" class="table">
+			<thead class="table-info">
+			<tr>
+				<th rowspan="2">#</th>
+				<th colspan="2">영화</th>
+				<th colspan="2">극장</th>
+				<th rowspan="2">상태</th>
+				<th rowspan="2">상영 날짜 시간</th>
+				<th></th>
+				<th></th>
+			</tr>
+			<tr>
+				<th>movie#</th>
+				<th>Title</th>
+				<th>theater#</th>
+				<th>Num</th>
+				<th></th>
+				<th></th>
+			</tr>
+			</thead>
+			<tbody>
+				<th:block th:each="show : ${list}">
+					<tr>
+						<input type="hidden" th:value="${show}">
+						<td th:text="${show.id}"></td>
+						<td th:text="${show.movie.id}"></td>
+						<td><a th:href="@{'/admin/movie/detail/' + ${show.movie.id}}" th:text="${show.movie.title}"></a></td>
+						<td th:text="${show.theater.id}"></td>
+						<td th:text="${show.theater.theaterNum}"></td>
+						<td th:text="${show.status}"></td>
+						<td th:text="${show.showDateTime}"></td>
+						<td><a th:href="@{'/admin/show/update/' + ${show.id}}" class="btn btn-outline-primary">수정</a></td>
+						<td><button th:show-del-btn="${show.id}" class="btn btn-outline-danger">삭제</button></td>
+					</tr>
+				</th:block>
+			</tbody>
+		</table>
+	</div>
+	
+</body>
+</html>

@@ -1,6 +1,7 @@
 package com.project.MovieMania.controller;
 
 import com.project.MovieMania.domain.QryResult;
+import com.project.MovieMania.domain.Seat;
 import com.project.MovieMania.domain.TicketInfo;
 import com.project.MovieMania.service.SeatService;
 import com.project.MovieMania.service.TicketingService;
@@ -9,6 +10,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @RestController
 @RequestMapping("/seat")
@@ -21,34 +25,47 @@ public class SeatController {
     private TicketingService ticketingService;
 
     @PostMapping("/check")
-    public QryResult check(@RequestParam String seatRow,@RequestParam String seatColumn)
+    public List<QryResult> check(@RequestParam String seatRow,@RequestParam String seatColumn,
+                           @RequestParam Long userId,@RequestParam Long showInfoId)
     {
         int row = Integer.parseInt(seatRow);
         int column = Integer.parseInt(seatColumn);
+        Long ticketId = 0L;
+        List<TicketInfo> ticketInfo = ticketingService.findTicket(showInfoId,userId);
+        List<QryResult> resultList = new ArrayList<>();
+        for(int i = 0 ; i < ticketInfo.size(); i++) {
+            ticketId = ticketInfo.get(i).getId();
+            QryResult result = QryResult.builder()
+                    .count(seatService.checkSeat(ticketId,row,column))
+                    .status("OK")
+                    .build();
+            resultList.add(result);
+        }
 
-
-        QryResult result = QryResult.builder()
-                .count(seatService.findSeat(row,column))
-                .status("OK")
-                .build();
-
-        return result;
+        return resultList;
     }
 
-    @PostMapping("/save")
-    public QryResult save(@RequestParam String seatRow,@RequestParam String seatColumn,@RequestParam Long userId,@RequestParam Long showInfoId,@RequestParam Long priceId)
+    @PostMapping("/loadSeat")
+    public List<QryResult> load(@RequestParam String seatRow,@RequestParam String seatColumn,
+                                @RequestParam Long showInfoId)
     {
         int row = Integer.parseInt(seatRow);
         int column = Integer.parseInt(seatColumn);
-        TicketInfo ticketInfo = ticketingService.writeTicket(showInfoId,userId,priceId);
+        Long ticketId = 0L;
+        List<TicketInfo> ticketInfo = ticketingService.findShowInfoTicket(showInfoId);
+        List<QryResult> resultList = new ArrayList<>();
+        for(int i = 0 ; i < ticketInfo.size(); i++) {
+            ticketId = ticketInfo.get(i).getId();
+            QryResult result = QryResult.builder()
+                    .count(seatService.checkSeat(ticketId,row,column))
+                    .status("OK")
+                    .build();
+            resultList.add(result);
+        }
 
-        QryResult result = QryResult.builder()
-                .count(seatService.writeSeat(ticketInfo,row,column))
-                .status("OK")
-                .build();
-
-        return result;
+        return resultList;
     }
+
 
 
 

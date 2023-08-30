@@ -6,5 +6,7 @@ import org.springframework.ui.Model;
 
 public interface PriceService {
 
-    PriceInfo findById(Long priceId,Model model);
+    PriceInfo checkAdultNum();
+    PriceInfo checkStudentNum();
+
 }
