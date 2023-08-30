@@ -23,7 +23,7 @@ public class MovieServiceImpl implements MovieService {
 
     private MovieRepository movieRepository;
 
-    private ShowinfoRepoisotry showinfoRepoisotry;
+    private ShowInfoRepository showInfoRepository;
 
     private TicketInfoRepository ticketInfoRepository;
 
@@ -39,7 +39,7 @@ public class MovieServiceImpl implements MovieService {
     public void setMovieRepository(MovieRepository movieRepository){ this.movieRepository = movieRepository;}
 
     @Autowired
-    public void setShowinfoRepoisotry(ShowinfoRepoisotry showinfoRepoisotry){this.showinfoRepoisotry = showinfoRepoisotry;}
+    public void setShowInfoRepository(ShowInfoRepository showInfoRepository){this.showInfoRepository = showInfoRepository;}
 
     @Autowired
     public void setTicketInfoRepository(TicketInfoRepository ticketInfoRepository) {this.ticketInfoRepository = ticketInfoRepository;}
@@ -79,7 +79,7 @@ public class MovieServiceImpl implements MovieService {
         LocalDateTime nowPlusTwo = LocalDateTime.now().plusHours(2);
 
         // showInfo 에서 현재시간에서 2시간 이후의 모든 영화의 상영정보 조회
-        List<ShowInfo> upcomingShow = showinfoRepoisotry.findByshowDateTimeAfter(nowPlusTwo);
+        List<ShowInfo> upcomingShow = showInfoRepository.findByshowDateTimeAfter(nowPlusTwo);
 
         // 모든 상영정보로 모든 발권 티켓 조회
         List<TicketInfo> allTickets = ticketInfoRepository.findByShowInfoIn(upcomingShow);
@@ -92,7 +92,7 @@ public class MovieServiceImpl implements MovieService {
 
         // 예매관객수 설정(A)
         // showInfo 에서 현재시간에서 2시간 이후의 특정 영화의 상영정보 조회
-        List<ShowInfo> upcomingMovie = showinfoRepoisotry.findByshowDateTimeAfterAndMovie(nowPlusTwo, movie);
+        List<ShowInfo> upcomingMovie = showInfoRepository.findByshowDateTimeAfterAndMovie(nowPlusTwo, movie);
 
         // 가져온 상영정보로 특정영화의 발권 티켓 조회
         List<TicketInfo> tickets = ticketInfoRepository.findByShowInfoIn(upcomingMovie);
@@ -107,7 +107,7 @@ public class MovieServiceImpl implements MovieService {
         // 분모가 0인 상황 예외처리
         String reserveRate;
         if(allTicketSeats != 0) {
-            reserveRate = new DecimalFormat("0.00").format((double) ticketSeats / allTicketSeats * 100);
+            reserveRate = new DecimalFormat("0.0").format((double) ticketSeats / allTicketSeats * 100);
         } else{
             reserveRate = "0";
         }
@@ -127,7 +127,7 @@ public class MovieServiceImpl implements MovieService {
         LocalDateTime now = LocalDateTime.now();
 
         // 현재시간 기준 상영이 끝난 특정 영화의 상영정보 조회
-        List<ShowInfo> endShow = showinfoRepoisotry.findByshowDateTimeBeforeAndMovie(now, movie);
+        List<ShowInfo> endShow = showInfoRepository.findByshowDateTimeBeforeAndMovie(now, movie);
 
         // 가져온 상영정보로 발권 완료된 티켓 조회
         List<TicketInfo> endTickets = ticketInfoRepository.findByShowInfoIn(endShow);
@@ -185,7 +185,7 @@ public class MovieServiceImpl implements MovieService {
             LocalDate date = LocalDate.now().minusDays(i);
 
             // 해당 날짜에 상영된 해당 영화의 모든 상영 정보 가져오기
-            List<ShowInfo> todayShowInfo = showinfoRepoisotry.findByshowDateTimeAfterAndShowDateTimeBeforeAndMovie(date.atStartOfDay(), date.plusDays(1).atStartOfDay(), movie);
+            List<ShowInfo> todayShowInfo = showInfoRepository.findByshowDateTimeAfterAndShowDateTimeBeforeAndMovie(date.atStartOfDay(), date.plusDays(1).atStartOfDay(), movie);
 
             // 해당 showInfo 의 Ticket 정보들 가져오기
             List<TicketInfo> todayTickets = ticketInfoRepository.findByShowInfoIn(todayShowInfo);
@@ -212,7 +212,7 @@ public class MovieServiceImpl implements MovieService {
         LocalDateTime nowPlusTwo = LocalDateTime.now().plusHours(2);
 
         // showInfo 에서 현재시간에서 2시간 이후의 특정 영화의 상영정보 조회
-        List<ShowInfo> upcomingMovie = showinfoRepoisotry.findByshowDateTimeAfterAndMovie(nowPlusTwo, movie);
+        List<ShowInfo> upcomingMovie = showInfoRepository.findByshowDateTimeAfterAndMovie(nowPlusTwo, movie);
 
         // 성별 설정
         Gender male = Gender.MALE;
@@ -222,7 +222,7 @@ public class MovieServiceImpl implements MovieService {
         List<TicketInfo> maleTickets = ticketInfoRepository.findByShowInfoInAndUser_Gender(upcomingMovie, male);
         List<TicketInfo> femaleTickets = ticketInfoRepository.findByShowInfoInAndUser_Gender(upcomingMovie, female);
 
-        // 성별별 예매관객수 담을 Map 준비
+        // 성별별 예매관객수 담을 List 준비
         List<Integer> reserveRateForAge = new ArrayList<>();
 
         Integer maleSeats = 0;
@@ -254,7 +254,7 @@ public class MovieServiceImpl implements MovieService {
         LocalDateTime nowPlusTwo = LocalDateTime.now().plusHours(2);
 
         // showInfo 에서 현재시간에서 2시간 이후의 특정 영화의 상영정보 조회
-        List<ShowInfo> upcomingMovie = showinfoRepoisotry.findByshowDateTimeAfterAndMovie(nowPlusTwo, movie);
+        List<ShowInfo> upcomingMovie = showInfoRepository.findByshowDateTimeAfterAndMovie(nowPlusTwo, movie);
 
         // 연령대 구분을 위한 변수
         int[] ageRanges = {10, 20, 30, 40, 50, 60};
@@ -441,6 +441,26 @@ public class MovieServiceImpl implements MovieService {
         Review review = reviewRepository.findById(reviewId).orElseThrow(null);
         List<Recommend> recommends = review.getRecommends();
         return recommends.size();
+    }
+
+    @Override
+    public List<ReviewDTO> getReviewByScore(Long id) {
+        // 영화 조회
+        Movie movie = findById(id);
+
+        // review 들 가져오기
+        List<Review> reviews = reviewRepository.findByMovieOrderByScoreDesc(movie);
+        return reviews.stream().map(this::convertReviewDTO).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<ReviewDTO> getReviewByRecommend(Long id) {
+        // 영화 조회
+        Movie movie = findById(id);
+
+        // review 들 가져오기
+        List<Review> reviews = reviewRepository.findReviewOrderByRecommendCountDesc(movie.getId());
+        return reviews.stream().map(this::convertReviewDTO).collect(Collectors.toList());
     }
 
 

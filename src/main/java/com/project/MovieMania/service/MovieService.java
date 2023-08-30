@@ -45,4 +45,8 @@ public interface MovieService {
     long deleteReview(Long reviewId);
 
     long countRecommend(Long reviewId);
+
+    List<ReviewDTO> getReviewByScore(Long id);
+
+    List<ReviewDTO> getReviewByRecommend(Long id);
 }

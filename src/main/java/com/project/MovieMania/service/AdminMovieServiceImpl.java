@@ -1,5 +1,6 @@
 package com.project.MovieMania.service;
 
+import com.project.MovieMania.domain.DTO.MovieDTO;
 import com.project.MovieMania.domain.Movie;
 import com.project.MovieMania.repository.MovieRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,7 +43,11 @@ public class AdminMovieServiceImpl implements AdminMovieService {
 	@Override
 	public int delete(long id) throws RuntimeException {
 		Movie movie = movieRepository.findById(id).orElseThrow(() -> new RuntimeException());
-		movieRepository.delete(movie);
+		try{
+			movieRepository.delete(movie);
+		}catch (RuntimeException e){
+			return 0;
+		}
 		return 1;
 	}
 	

@@ -13,7 +13,11 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 public interface TicketInfoRepository extends JpaRepository<TicketInfo, Long> {
-    TicketInfo findByUserAndShowInfo(User user, ShowInfo showInfo);
+    List<TicketInfo> findByUserAndShowInfo(User user, ShowInfo showInfo);
+
+    List<TicketInfo> findByTicketCode(String ticketCode);
+
+    List<TicketInfo> findByShowInfo(ShowInfo showInfo);
 
     List<TicketInfo> findByShowInfoIn(List<ShowInfo> showInfoList);
 

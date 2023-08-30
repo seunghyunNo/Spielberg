@@ -18,7 +18,8 @@
     <script th:src="@{/js/movie/detail_api.js}"></script>
 
     <script th:inline="javascript">
-		const movieId = [[${movieId}]];
+		const movieId = [[${movie.id}]];
+		const movieTitle = [[${movie.title}]];
 	</script>
 
     <link rel="stylesheet" type="text/css" th:href="@{/css/movie/detail.css}">
@@ -32,13 +33,13 @@
         <div class="card p-3 mt-5 mb-5">
             <div class="row mt-3">
                 <div class="col-md-4 d-flex justify-content-center">
-                    <h5>최근 5일간 일별 관객수</h5>
+                    <h5>최근 5일간 일별 관객수 [명]</h5>
                 </div>
                 <div class="col-md-4 d-flex justify-content-center">
-                    <h5>성별 예매 분포</h5>
+                    <h5>성별 예매 분포 [%]</h5>
                 </div>
                 <div class="col-md-4 d-flex justify-content-center">
-                    <h5>연령별 예매 분포</h5>
+                    <h5>연령별 예매 분포 [%]</h5>
                 </div>
             </div>
             <div class="row mt-3">

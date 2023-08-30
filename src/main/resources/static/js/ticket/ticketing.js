@@ -1,71 +1,128 @@
-$(function(){
-	const showInfoId = $("#showInfoId").val();
-	const userId = $("#userId").val();
-	const priceId = $("#priceId").val();
-	alert(showInfoId);
-	// 처음 예약 좌석 / 미예약 좌석 확인
+$(function () {
+    var showInfoId = $("#showInfoId").val();
+    var userId = "1";
+    var adultNum = 0;
+    var studentNum = 0;
+    var people = 0;
+    $("#adult").change(function () {
+        adultNum = parseInt($(this).val());
+        people += adultNum;
+        console.log(adultNum + "명");
+    });
 
-	// 예약된 좌석이면 버튼 클릭시 경고출력
+    $("#student").change(function () {
+        studentNum = parseInt($(this).val());
+        people += studentNum;
+        console.log(studentNum + "명");
+    });
 
-	// 가격 책정
+    var cnt = 0;
+    //    alert(showInfoId);
+    // 처음 예약 좌석 / 미예약 좌석 확인
 
-	checkSeat();
+    // 예약된 좌석이면 버튼 클릭시 경고출력
 
-});
-function checkSeat()
-{
-	$("[data-column-row]").click(function(){
-            let row = $(this).siblings("span").attr("data-seat-row");
-            let column = $(this).siblings("div").attr("data-seat-column");
-            let crnObj = $(this);
-            console.log(row);
-            console.log(column);
+    let nowColumn;
+    let ticketId = 0;
+    $("input").siblings("div").each(function () {
+        nowColumn = $(this).attr("data-seat-column");
+        ticketId++;
+        console.log(ticketId);
+        $(this).find("p").each(function () {
+            let nowRow = $(this).attr("data-seat-row");
+            const current = $(this).siblings("button");
+            console.log(nowColumn + "열" + nowRow + "행");
             $.ajax({
-                url: "/seat/check",
+                url: "/seat/loadSeat",
                 type: "POST",
                 cache: false,
                 data: {
-                    "seatRow": row,
-                    "seatColumn": column
+                    "seatRow": nowRow,
+                    "seatColumn": nowColumn,
+                    "showInfoId": showInfoId,
                 },
-                success: function(data)
-                {
-                    if(data.count==1)
+                success: function (data) {
+                    for(var i = 0; i < data.length; i++)
                     {
-					    crnObj.removeClass("selectSeat");
-						crnObj.addClass("seat");
-                        deleteSeat(column,row);
-                    }
-                    else
-                    {
-					    crnObj.removeClass("seat");
-						crnObj.addClass("selectSeat");
-                        saveSeat(column,row);
+                        if (data[i].count == 1) {
+                            current.removeClass("seat");
+                            current.addClass("selectSeat");
+                            current.attr("disabled",true);
+                        }
                     }
                 },
             });
-
         });
-}
+    });
 
-function saveSeat(seatColumn,seatRow)
-{
-	$.ajax({
-		url: "/seat/save",
-		type: "POST",
-		cache: false,
-		data: {
-			"seatRow": seatRow,
-			"seatColumn": seatColumn,
-			"showInfoId": showInfoId,
-			"userId": "1",
-			"priceId": priceId,
-		}
+    let checkRow = 0;
+    let checkColumn = 0;
 
-	});
-}
+    // 좌석 클릭 시
+    $("[data-column-row]").click(function () {
+        let row = $(this).siblings("p").attr("data-seat-row");
+        let column = $(this).parents("div").attr("data-seat-column");
+        let writeRow = $(this).siblings("input");
+        let writeColumn = $(this).parent().siblings("input");
+        let crnObj = $(this);
+        console.log(row);
+        console.log(column);
+        $.ajax({
+            url: "/seat/check",
+            type: "POST",
+            cache: false,
+            data: {
+                "seatRow": row,
+                "seatColumn": column,
+                "showInfoId": showInfoId,
+                "userId": userId,
+            },
+            success: function (data) {
+                if (data.count == 1) {
+                    crnObj.removeClass("selectSeat");
+                    crnObj.addClass("seat");
+                    cnt--;
+                }
+                else {
+                    alert(checkRow+checkColumn);
+                    if(checkRow == row && checkColumn == column)
+                    {
+                        crnObj.removeClass("selectSeat");
+                        crnObj.addClass("seat");
+                        cnt--;
+                        console.log("카운트" + cnt);
+                        checkRow = 0;
+                        checkColumn = 0;
+                    }
+                    else
+                    {
+                        checkRow = row;
+                        checkColumn = column;
+                        crnObj.removeClass("seat");
+                        crnObj.addClass("selectSeat");
+                        cnt++;
+                        console.log("카운트" + cnt);
+                        writeRow.val(row);
+                        writeColumn.val(column);
+                    }
 
-function deleteSeat(seatColumn,seatRow)
-{
 
-}
+                }
+            },
+        });
+
+    });
+    $("#purchaseBtn").click(function () {
+        console.log("카운트" + cnt);
+        console.log("인원수" + people);
+        if (cnt == people) {
+            $("[name='ticketingFrm']").submit();
+        }
+        else {
+            alert("선택하신 인원수 만큼 좌석을 선택하십시오.");
+        }
+
+    });
+
+});
+
