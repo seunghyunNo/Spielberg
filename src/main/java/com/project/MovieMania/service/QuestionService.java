@@ -14,9 +14,6 @@ public interface QuestionService {
 
     List<Question> list(Integer page, Model model);
 
-    @Transactional
-    Page<Question> search(String keyword);
-
     int write(Question question);
 
     @Transactional
@@ -27,5 +24,7 @@ public interface QuestionService {
     int update(Question question);
 
     int answer(Question question);
+
+    int delete(long id);
 
 }

@@ -1,0 +1,15 @@
+/* header css */
+
+#logoimg{
+    margin: 30px 0 10px 0;
+    text-align: center;
+}
+
+#menuBtn {
+    display: flex;
+    justify-content:flex-end;
+}
+
+#menuBtn a {
+    margin: 0 20px 0 30px;
+}

@@ -1,0 +1,39 @@
+body {
+        background-color: black;
+        background-size: cover;
+}
+
+#searchheader {
+    margin : 20px;
+     display: flex;
+     justify-content: center;
+}
+
+#mvinfo {
+    margin : 0 0 0 50px;
+    color: white;
+    font-size: 20pt;
+
+}
+
+#imgbox {
+    margin: 0;
+    padding: 0 0 0 25%;
+}
+
+
+.poster {
+    height: 500px;
+    width: 350px;
+}
+
+.r_info {
+    margin: 0;
+    padding: 0 0 0 30px;
+}
+
+
+.postermini {
+    height: 500px;
+    width: 350px;
+}

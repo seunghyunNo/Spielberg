@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<th:block th:fragment="header">
+
+  <nav id="logoimg">
+    <a th:href="@{/}"><img src="/image/logo.png" width="100px" height="100px"/></a>
+  </nav>
+  <nav id="menuBtn" class="navbar navbar-expand-sm navbar-dark bg-dark">
+      <a class="btn btn-dark" th:href="@{/question/list}">고객센터</a>
+      <a class="btn btn-dark" sec:authorize="isAnonymous()" th:href="@{/user/login}">Login</a>
+  </nav>
+
+</th:block>
+</html>
