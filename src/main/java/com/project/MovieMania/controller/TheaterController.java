@@ -179,7 +179,8 @@ public class TheaterController {
 
     @GetMapping("/purchase/{showInfoId}")
     public String getPurchase(@PathVariable Long showInfoId, Model model) {
-        List<TicketInfo> buyList = ticketingService.findTicket(showInfoId, 2L);
+        List<TicketInfo> buyList = ticketingService.findBuyTicket(showInfoId, 2L);
+        System.out.println(buyList);
         int cost = 0;
         int adultCnt = 0;
         int studentCnt = 0;
