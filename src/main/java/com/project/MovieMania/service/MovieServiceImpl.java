@@ -80,9 +80,11 @@ public class MovieServiceImpl implements MovieService {
 
         // showInfo 에서 현재시간에서 2시간 이후의 모든 영화의 상영정보 조회
         List<ShowInfo> upcomingShow = showinfoRepoisotry.findByshowDateTimeAfter(nowPlusTwo);
+        System.out.printf("2시간" + upcomingShow.toString());
 
         // 모든 상영정보로 모든 발권 티켓 조회
         List<TicketInfo> allTickets = ticketInfoRepository.findByShowInfoIn(upcomingShow);
+        System.out.printf("ticket" + allTickets.toString());
 
         // 조회 한 티켓의 모든 좌석 수 조회
         Long allTicketSeats = 0L;
@@ -222,7 +224,7 @@ public class MovieServiceImpl implements MovieService {
         List<TicketInfo> maleTickets = ticketInfoRepository.findByShowInfoInAndUser_Gender(upcomingMovie, male);
         List<TicketInfo> femaleTickets = ticketInfoRepository.findByShowInfoInAndUser_Gender(upcomingMovie, female);
 
-        // 성별별 예매관객수 담을 Map 준비
+        // 성별별 예매관객수 담을 List 준비
         List<Integer> reserveRateForAge = new ArrayList<>();
 
         Integer maleSeats = 0;

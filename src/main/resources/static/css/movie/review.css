@@ -9,3 +9,7 @@
 #reviewUnderLine{
   text-decoration: underline;
 }
+
+textarea {
+    resize: none;
+}

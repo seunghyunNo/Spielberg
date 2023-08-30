@@ -70,7 +70,7 @@ $(function () {
   // 성별별 예매율 그래프 생성
   var genderData = JSON.parse(document.getElementById("genderRateData").getAttribute("dataGenderRate"));
   var totalGender = genderData[0] + genderData[1];
-  var genderRateData =  [ genderData[0] / totalGender * 100 , genderData[1] / totalGender * 100]
+  var genderRateData =  [ Math.floor(genderData[0] / totalGender * 100) , Math.floor(genderData[1] / totalGender * 100)]
   var genderCtx = document.getElementById("genderChart").getContext("2d");
   var genderPieChart = new Chart(genderCtx, {
     type: "doughnut",
@@ -102,7 +102,11 @@ $(function () {
   // 연령별 예매율 그래프 생성
   var ageData = JSON.parse(document.getElementById("ageRateData").getAttribute("dataAgeRate"));
   var totalAge = ageData[0] + ageData[1] + ageData[2]+ ageData[3]+ ageData[4]
-  var ageRateData = [ ageData[0] / totalAge * 100, ageData[1] / totalAge * 100, ageData[2] / totalAge * 100, ageData[3] / totalAge * 100, ageData[4] / totalAge * 100 ]
+  var ageRateData = [ Math.floor(ageData[0] / totalAge * 100),
+                      Math.floor(ageData[1] / totalAge * 100),
+                      Math.floor(ageData[2] / totalAge * 100),
+                      Math.floor(ageData[3] / totalAge * 100),
+                      Math.floor(ageData[4] / totalAge * 100) ]
 
   var ageCtx = document.getElementById("ageChart").getContext("2d");
   var ageChartConfig = {
