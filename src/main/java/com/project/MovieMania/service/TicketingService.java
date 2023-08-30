@@ -13,4 +13,6 @@ public interface TicketingService {
     List<TicketInfo> findShowInfoTicket(Long showInfoId);
 
     List<TicketInfo> findBuyTicket(Long showInfoId,Long userId);
+
+    List<TicketInfo> findMyTicketInfo(Long id);
 }

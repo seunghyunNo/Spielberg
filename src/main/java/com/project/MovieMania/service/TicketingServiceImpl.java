@@ -135,4 +135,14 @@ public class TicketingServiceImpl implements TicketingService{
         return buyList;
     }
 
+    @Override
+    public List<TicketInfo> findMyTicketInfo(Long id) {
+
+        User user = userRepository.findById(id).orElseThrow();
+
+        List<TicketInfo> ticketInfos = ticketInfoRepository.findByUser(user);
+
+        return ticketInfos;
+    }
+
 }

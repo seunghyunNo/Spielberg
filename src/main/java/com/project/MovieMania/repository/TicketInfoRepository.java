@@ -24,4 +24,6 @@ public interface TicketInfoRepository extends JpaRepository<TicketInfo, Long> {
     List<TicketInfo> findByShowInfoInAndUser_Gender(List<ShowInfo> upcomingMovie, Gender gender);
 
     List<TicketInfo> findByShowInfoInAndUser_BirthdayBetween(List<ShowInfo> upcomingMovie, LocalDate localDate, LocalDate localDate1);
+
+    List<TicketInfo> findByUser(User user);
 }

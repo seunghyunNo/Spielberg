@@ -264,6 +264,8 @@ public class UserController {
         model.addAttribute("id",user.getId());
         model.addAttribute("username",user.getUsername());
         model.addAttribute("authority",user.getAuthorities());
+
+
     }
 
     @InitBinder
