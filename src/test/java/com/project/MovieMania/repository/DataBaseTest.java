@@ -33,7 +33,7 @@ class DataBaseTest {
 	private TheaterRepository theaterRepository;
 
 	@Autowired
-	private ShowinfoRepoisotry showinfoRepoisotry;
+	private ShowInfoRepository showinfoRepository;
 
 	@Autowired
 	private TicketInfoRepository ticketInfoRepository;
@@ -159,8 +159,8 @@ class DataBaseTest {
 				.showDateTime(LocalDateTime.of(2023, 8, 20, 11, 00))
 				.build();
 
-		showinfoRepoisotry.saveAndFlush(showInfo);
-		showinfoRepoisotry.findAll().forEach(System.out::println);
+		showinfoRepository.saveAndFlush(showInfo);
+		showinfoRepository.findAll().forEach(System.out::println);
 
 		System.out.println(">>>>>>> 가격 정보");
 

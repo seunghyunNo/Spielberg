@@ -15,8 +15,9 @@
 <body>
     <div class="container mt-5">
         <form th:action="@{|/ticket/ticketing/${showInfoId}|}" name="ticketingFrm" method="post" enctype="multipart/form-data">
+            <input type="hidden" name="theaterNum" th:value="${theaterNum}">
             <p>성인</p>
-            <select name="adult" id="adult" title="adultList">
+            <select name="adult" id="adult" title="adultList" >
                 <option value="0">0명</option>
                 <option value="1">1명</option>
                 <option value="2">2명</option>
@@ -38,17 +39,20 @@
             <h2 style="text-align:center">SCREEN</h2>
             <input type="hidden" id="showInfoId" name="showInfoId" th:value="${showInfoId}">
 <!--            <input type="hidden" id="userId" name="userId" th:value="${userId}">-->
-            <input type="hidden" id="priceId" name="priceId" th:value="${priceId}">
             <th:block th:each="sColumn:${seatMaxColumn}">
-                <div th:data-seat-column="${sColumn}"></div>
+                <div th:data-seat-column="${sColumn}">
                 <th:block th:each="sRow:${seatMaxRow}" >
-                    <input type="hidden" name="seatRow" th:value="${sRow}">
-                    <input type="hidden" name="seatColumn" th:value="${sColumn}">
-                    <span th:data-seat-row="${sRow}"></span>
-                    <button type="button" class="seat m-4" th:data-column-row="|${sColumn}${sRow}|" th:text="|${sColumn}열${sRow}행|">좌석</button>
+                    <input type="hidden" name="seatColumn" th:value="${writeSeat.seatColumn}">
+                    <span>
+                        <input type="hidden" name="seatRow" th:value="${writeSeat.seatRow}">
+                        <p style="display:inline" th:data-seat-row="${sRow}"></p>
+                        <button type="button"  class="seat m-4" th:data-column-row="|${sColumn}${sRow}|" th:text="|${sColumn}열${sRow}행|">좌석</button>
+                    </span>
                 </th:block>
-                <hr>
+                </div>
             </th:block>
+
+            <button type="button" id="purchaseBtn">결제하기</button>
         </form>
     </div>
 </body>
