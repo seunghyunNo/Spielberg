@@ -4,7 +4,7 @@ import com.project.MovieMania.domain.ShowInfo;
 import com.project.MovieMania.domain.TicketInfo;
 import com.project.MovieMania.domain.User;
 import com.project.MovieMania.repository.PriceInfoRepository;
-import com.project.MovieMania.repository.ShowinfoRepoisotry;
+import com.project.MovieMania.repository.ShowInfoRepository;
 import com.project.MovieMania.repository.TicketInfoRepository;
 import com.project.MovieMania.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +17,7 @@ import java.util.Random;
 @Service
 public class TicketingServiceImpl implements TicketingService{
 
-    private ShowinfoRepoisotry showinfoRepoisotry;
+    private ShowInfoRepository showInfoRepository;
 
     private UserRepository userRepository;
 
@@ -36,8 +36,8 @@ public class TicketingServiceImpl implements TicketingService{
     }
 
     @Autowired
-    public void setShowinfoRepoisotry(ShowinfoRepoisotry showinfoRepoisotry) {
-        this.showinfoRepoisotry = showinfoRepoisotry;
+    public void setShowinfoRepoisotry(ShowInfoRepository showInfoRepository) {
+        this.showInfoRepository = showInfoRepository;
     }
 
     @Autowired
@@ -48,7 +48,7 @@ public class TicketingServiceImpl implements TicketingService{
     @Override
     public TicketInfo writeTicket(Long showInfoId, Long userId,Long priceId) {
         User user = userRepository.findById(userId).orElse(null);
-        ShowInfo showInfo = showinfoRepoisotry.findById(showInfoId).orElse(null);
+        ShowInfo showInfo = showInfoRepository.findById(showInfoId).orElse(null);
         PriceInfo priceInfo = priceInfoRepository.findById(priceId).orElse(null);
         List<TicketInfo> ticket = ticketInfoRepository.findByUserAndShowInfo(user,showInfo);
         Random random = new Random();
@@ -69,7 +69,7 @@ public class TicketingServiceImpl implements TicketingService{
     @Override
     public List<TicketInfo> findTicket(Long showInfoId, Long userId) {
         User user = userRepository.findById(userId).orElse(null);
-        ShowInfo showInfo = showinfoRepoisotry.findById(showInfoId).orElse(null);
+        ShowInfo showInfo = showInfoRepository.findById(showInfoId).orElse(null);
         List<TicketInfo> ticketInfo = ticketInfoRepository.findByUserAndShowInfo(user,showInfo);
 
         boolean check = true;
@@ -114,7 +114,7 @@ public class TicketingServiceImpl implements TicketingService{
 
     @Override
     public List<TicketInfo> findShowInfoTicket(Long showInfoId) {
-        ShowInfo showInfo = showinfoRepoisotry.findById(showInfoId).orElse(null);
+        ShowInfo showInfo = showInfoRepository.findById(showInfoId).orElse(null);
         List<TicketInfo> ticketInfo = ticketInfoRepository.findByShowInfo(showInfo);
         return ticketInfo;
     }
@@ -122,7 +122,7 @@ public class TicketingServiceImpl implements TicketingService{
     @Override
     public List<TicketInfo> findBuyTicket(Long showInfoId, Long userId) {
         User user = userRepository.findById(userId).orElse(null);
-        ShowInfo showInfo = showinfoRepoisotry.findById(showInfoId).orElse(null);
+        ShowInfo showInfo = showInfoRepository.findById(showInfoId).orElse(null);
         List<TicketInfo> ticketInfo = ticketInfoRepository.findByUserAndShowInfo(user,showInfo);
         List<TicketInfo> buyList = new ArrayList<>();
         for(int i = 0; i < ticketInfo.size(); i++)
