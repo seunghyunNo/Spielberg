@@ -8,7 +8,6 @@ import com.project.MovieMania.domain.type.Gender;
 import com.project.MovieMania.domain.type.ReportType;
 import com.project.MovieMania.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,7 +22,7 @@ public class MovieServiceImpl implements MovieService {
 
     private MovieRepository movieRepository;
 
-    private ShowinfoRepoisotry showinfoRepoisotry;
+    private ShowInfoRepository showinfoRepository;
 
     private TicketInfoRepository ticketInfoRepository;
 
@@ -39,7 +38,7 @@ public class MovieServiceImpl implements MovieService {
     public void setMovieRepository(MovieRepository movieRepository){ this.movieRepository = movieRepository;}
 
     @Autowired
-    public void setShowinfoRepoisotry(ShowinfoRepoisotry showinfoRepoisotry){this.showinfoRepoisotry = showinfoRepoisotry;}
+    public void setShowinfoRepoisotry(ShowInfoRepository showinfoRepository){this.showinfoRepository = showinfoRepository;}
 
     @Autowired
     public void setTicketInfoRepository(TicketInfoRepository ticketInfoRepository) {this.ticketInfoRepository = ticketInfoRepository;}
@@ -79,7 +78,7 @@ public class MovieServiceImpl implements MovieService {
         LocalDateTime nowPlusTwo = LocalDateTime.now().plusHours(2);
 
         // showInfo 에서 현재시간에서 2시간 이후의 모든 영화의 상영정보 조회
-        List<ShowInfo> upcomingShow = showinfoRepoisotry.findByshowDateTimeAfter(nowPlusTwo);
+        List<ShowInfo> upcomingShow = showinfoRepository.findByshowDateTimeAfter(nowPlusTwo);
 
         // 모든 상영정보로 모든 발권 티켓 조회
         List<TicketInfo> allTickets = ticketInfoRepository.findByShowInfoIn(upcomingShow);
@@ -92,7 +91,7 @@ public class MovieServiceImpl implements MovieService {
 
         // 예매관객수 설정(A)
         // showInfo 에서 현재시간에서 2시간 이후의 특정 영화의 상영정보 조회
-        List<ShowInfo> upcomingMovie = showinfoRepoisotry.findByshowDateTimeAfterAndMovie(nowPlusTwo, movie);
+        List<ShowInfo> upcomingMovie = showinfoRepository.findByshowDateTimeAfterAndMovie(nowPlusTwo, movie);
 
         // 가져온 상영정보로 특정영화의 발권 티켓 조회
         List<TicketInfo> tickets = ticketInfoRepository.findByShowInfoIn(upcomingMovie);
@@ -127,7 +126,7 @@ public class MovieServiceImpl implements MovieService {
         LocalDateTime now = LocalDateTime.now();
 
         // 현재시간 기준 상영이 끝난 특정 영화의 상영정보 조회
-        List<ShowInfo> endShow = showinfoRepoisotry.findByshowDateTimeBeforeAndMovie(now, movie);
+        List<ShowInfo> endShow = showinfoRepository.findByshowDateTimeBeforeAndMovie(now, movie);
 
         // 가져온 상영정보로 발권 완료된 티켓 조회
         List<TicketInfo> endTickets = ticketInfoRepository.findByShowInfoIn(endShow);
@@ -185,7 +184,7 @@ public class MovieServiceImpl implements MovieService {
             LocalDate date = LocalDate.now().minusDays(i);
 
             // 해당 날짜에 상영된 해당 영화의 모든 상영 정보 가져오기
-            List<ShowInfo> todayShowInfo = showinfoRepoisotry.findByshowDateTimeAfterAndShowDateTimeBeforeAndMovie(date.atStartOfDay(), date.plusDays(1).atStartOfDay(), movie);
+            List<ShowInfo> todayShowInfo = showinfoRepository.findByshowDateTimeAfterAndShowDateTimeBeforeAndMovie(date.atStartOfDay(), date.plusDays(1).atStartOfDay(), movie);
 
             // 해당 showInfo 의 Ticket 정보들 가져오기
             List<TicketInfo> todayTickets = ticketInfoRepository.findByShowInfoIn(todayShowInfo);
@@ -212,7 +211,7 @@ public class MovieServiceImpl implements MovieService {
         LocalDateTime nowPlusTwo = LocalDateTime.now().plusHours(2);
 
         // showInfo 에서 현재시간에서 2시간 이후의 특정 영화의 상영정보 조회
-        List<ShowInfo> upcomingMovie = showinfoRepoisotry.findByshowDateTimeAfterAndMovie(nowPlusTwo, movie);
+        List<ShowInfo> upcomingMovie = showinfoRepository.findByshowDateTimeAfterAndMovie(nowPlusTwo, movie);
 
         // 성별 설정
         Gender male = Gender.MALE;
@@ -254,7 +253,7 @@ public class MovieServiceImpl implements MovieService {
         LocalDateTime nowPlusTwo = LocalDateTime.now().plusHours(2);
 
         // showInfo 에서 현재시간에서 2시간 이후의 특정 영화의 상영정보 조회
-        List<ShowInfo> upcomingMovie = showinfoRepoisotry.findByshowDateTimeAfterAndMovie(nowPlusTwo, movie);
+        List<ShowInfo> upcomingMovie = showinfoRepository.findByshowDateTimeAfterAndMovie(nowPlusTwo, movie);
 
         // 연령대 구분을 위한 변수
         int[] ageRanges = {10, 20, 30, 40, 50, 60};

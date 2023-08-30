@@ -1,20 +1,14 @@
 package com.project.MovieMania.controller;
 
-import com.project.MovieMania.domain.Seat;
 import com.project.MovieMania.domain.ShowInfo;
 import com.project.MovieMania.domain.TicketInfo;
-import com.project.MovieMania.repository.CinemaRepository;
-import com.project.MovieMania.repository.ShowinfoRepoisotry;
-import com.project.MovieMania.repository.TheaterRepository;
 import com.project.MovieMania.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;

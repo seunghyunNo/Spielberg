@@ -1,23 +1,16 @@
 package com.project.MovieMania.service;
 
 import com.project.MovieMania.domain.Cinema;
-import com.project.MovieMania.domain.Movie;
 import com.project.MovieMania.domain.ShowInfo;
-import com.project.MovieMania.domain.Theater;
-import com.project.MovieMania.domain.type.ShowInfoStatus;
 import com.project.MovieMania.repository.CinemaRepository;
 import com.project.MovieMania.repository.MovieRepository;
-import com.project.MovieMania.repository.ShowinfoRepoisotry;
+import com.project.MovieMania.repository.ShowInfoRepository;
 import com.project.MovieMania.repository.TheaterRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cglib.core.Local;
 import org.springframework.stereotype.Service;
-import org.springframework.ui.Model;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -30,7 +23,7 @@ public class TheaterServiceImpl implements TheaterService{
 
     private TheaterRepository theaterRepository;
 
-    private ShowinfoRepoisotry showinfoRepoisotry;
+    private ShowInfoRepository showinfoRepository;
 
     private MovieRepository movieRepository;
 
@@ -50,8 +43,8 @@ public class TheaterServiceImpl implements TheaterService{
     }
 
     @Autowired
-    public void setShowinfoRepoisotry(ShowinfoRepoisotry showinfoRepoisotry) {
-        this.showinfoRepoisotry = showinfoRepoisotry;
+    public void setShowinfoRepoisotry(ShowInfoRepository showinfoRepository) {
+        this.showinfoRepository = showinfoRepository;
     }
 
 
@@ -63,7 +56,7 @@ public class TheaterServiceImpl implements TheaterService{
 
     @Override
     public Set<LocalDate> dateList() {
-        List<ShowInfo> showInfos = showinfoRepoisotry.findAll();
+        List<ShowInfo> showInfos = showinfoRepository.findAll();
         Set<LocalDate> dates =new HashSet<>();
 
         for(int i = 0; i < showInfos.size(); i++)
@@ -76,7 +69,7 @@ public class TheaterServiceImpl implements TheaterService{
 
     @Override
     public Set<LocalTime> timeList() {
-        List<ShowInfo> showInfos = showinfoRepoisotry.findAll();
+        List<ShowInfo> showInfos = showinfoRepository.findAll();
         Set<LocalTime> times =new HashSet<>();
 
         for(int i = 0; i < showInfos.size(); i++)

@@ -4,7 +4,7 @@ import com.project.MovieMania.domain.ShowInfo;
 import com.project.MovieMania.domain.TicketInfo;
 import com.project.MovieMania.domain.User;
 import com.project.MovieMania.repository.PriceInfoRepository;
-import com.project.MovieMania.repository.ShowinfoRepoisotry;
+import com.project.MovieMania.repository.ShowInfoRepository;
 import com.project.MovieMania.repository.TicketInfoRepository;
 import com.project.MovieMania.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +15,7 @@ import java.util.Random;
 @Service
 public class TicketingServiceImpl implements TicketingService{
 
-    private ShowinfoRepoisotry showinfoRepoisotry;
+    private ShowInfoRepository showinfoRepository;
 
     private UserRepository userRepository;
 
@@ -34,8 +34,8 @@ public class TicketingServiceImpl implements TicketingService{
     }
 
     @Autowired
-    public void setShowinfoRepoisotry(ShowinfoRepoisotry showinfoRepoisotry) {
-        this.showinfoRepoisotry = showinfoRepoisotry;
+    public void setShowinfoRepoisotry(ShowInfoRepository showinfoRepository) {
+        this.showinfoRepository = showinfoRepository;
     }
 
     @Autowired
@@ -46,7 +46,7 @@ public class TicketingServiceImpl implements TicketingService{
     @Override
     public TicketInfo writeTicket(Long showInfoId, Long userId,Long priceId) {
         User user = userRepository.findById(userId).orElse(null);
-        ShowInfo showInfo = showinfoRepoisotry.findById(showInfoId).orElse(null);
+        ShowInfo showInfo = showinfoRepository.findById(showInfoId).orElse(null);
         PriceInfo priceInfo = priceInfoRepository.findById(priceId).orElse(null);
         TicketInfo ticket = ticketInfoRepository.findByUserAndShowInfo(user,showInfo);
         Random random = new Random();

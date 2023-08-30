@@ -4,7 +4,7 @@ $(function(){
 	movieCd += $("[name='movieCode']").val();
 	
 	if(movieCd.length == 0 || movieCd.trim().length == 0){
-		alert("none movieCd")
+		console.log("none movieCd");
 	}else{
 		alert(movieCd);
 		fetch(`http://www.kobis.or.kr/kobisopenapi/webservice/rest/movie/searchMovieInfo.json?key=${api_key}&movieCd=${movieCd}`)

@@ -7,7 +7,7 @@ import com.project.MovieMania.domain.Theater;
 import com.project.MovieMania.domain.type.ShowInfoStatus;
 import com.project.MovieMania.repository.CinemaRepository;
 import com.project.MovieMania.repository.MovieRepository;
-import com.project.MovieMania.repository.ShowinfoRepoisotry;
+import com.project.MovieMania.repository.ShowInfoRepository;
 import com.project.MovieMania.repository.TheaterRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,7 +20,7 @@ public class ShowInfoServiceImpl implements ShowInfoService{
 
     private MovieRepository movieRepository;
 
-    private ShowinfoRepoisotry showinfoRepoisotry;
+    private ShowInfoRepository showinfoRepository;
 
     private CinemaRepository cinemaRepository;
 
@@ -37,8 +37,8 @@ public class ShowInfoServiceImpl implements ShowInfoService{
     }
 
     @Autowired
-    public void setShowinfoRepoisotry(ShowinfoRepoisotry showinfoRepoisotry) {
-        this.showinfoRepoisotry = showinfoRepoisotry;
+    public void setShowinfoRepoisotry(ShowInfoRepository showinfoRepository) {
+        this.showinfoRepository = showinfoRepository;
     }
 
     @Autowired
@@ -59,7 +59,7 @@ public class ShowInfoServiceImpl implements ShowInfoService{
                 .status(ShowInfoStatus.NOW)
                 .build();
 
-        ShowInfo result =showinfoRepoisotry.findByMovieIdAndTheaterIdAndShowDateTime(movie.getId(),theater.getId(),showDateTime);
+        ShowInfo result = showinfoRepository.findByMovieIdAndTheaterIdAndShowDateTime(movie.getId(),theater.getId(),showDateTime);
 
         if(result != null)
         {
@@ -74,7 +74,7 @@ public class ShowInfoServiceImpl implements ShowInfoService{
 
     @Override
     public ShowInfo findById(Long showInfoId,Model model) {
-        ShowInfo showInfo = showinfoRepoisotry.findById(showInfoId).orElse(null);
+        ShowInfo showInfo = showinfoRepository.findById(showInfoId).orElse(null);
         model.addAttribute("showInfoId",showInfo.getId());
         System.out.println(showInfo);
         return showInfo;
