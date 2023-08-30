@@ -1,4 +1,5 @@
 $(function(){
+	const showInfoId = $("#showInfoId").val();
     $("#paymentBtn").click(function(){
         let name = $("#movieName").val();
         let adultCnt = $("#adultCnt").val();
@@ -17,9 +18,11 @@ $(function(){
                 "itemName": name,
                 "totalCnt": totalCnt,
                 "cost": cost,
+                "showInfoId": showInfoId,
             },
             success:function(response)
             {
+            	alert(response.next_redirect_pc_url);
                 location.href = response.next_redirect_pc_url;
             }
         });

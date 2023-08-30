@@ -13,7 +13,7 @@ import java.util.Map;
 @Service
 public class PurchaseServiceImpl implements PurchaseService{
     @Override
-    public Purchase paymentKakaoPay(String itemName,String totalCnt,String cost) {
+    public Purchase paymentKakaoPay(String itemName,String totalCnt,String cost,Long showInfoId) {
         HttpHeaders headers = new HttpHeaders();
         headers.set("Authorization","KakaoAK a6fd627cc7f7209f3f038eb3d0e2860c");
         headers.set("Content-type","application/x-www-form-urlencoded;charset=utf-8");
@@ -28,7 +28,7 @@ public class PurchaseServiceImpl implements PurchaseService{
         paymentData.add("quantity",totalCnt);
         paymentData.add("total_amount",cost);
         paymentData.add("tax_free_amount","0");
-        paymentData.add("approval_url","http://localhost:8093/purchase/success");
+        paymentData.add("approval_url","http://localhost:8093/purchase/success/"+showInfoId);
         paymentData.add("cancel_url","http://localhost:8093/purchase/cancel");
         paymentData.add("fail_url","http://localhost:8093/purchase/fail");
 

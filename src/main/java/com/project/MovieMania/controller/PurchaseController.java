@@ -17,9 +17,12 @@ public class PurchaseController {
     private PurchaseService purchaseService;
 
     @GetMapping("/payment")
-    public @ResponseBody Purchase payment(@RequestParam String itemName,@RequestParam String totalCnt,@RequestParam String cost)
+    public @ResponseBody Purchase payment(@RequestParam String itemName,@RequestParam String totalCnt,@RequestParam String cost
+            ,@RequestParam String showInfoId)
     {
-        Purchase response = purchaseService.paymentKakaoPay(itemName,totalCnt,cost);
+        System.out.println(showInfoId);
+        Long id = Long.parseLong(showInfoId);
+        Purchase response = purchaseService.paymentKakaoPay(itemName,totalCnt,cost,id);
 
         System.out.println("결제고유번호: "+ response.getTid());
         System.out.println("결제요청 URL"+response.getNext_redirect_pc_url());
@@ -27,9 +30,10 @@ public class PurchaseController {
         return response;
     }
 
-    @GetMapping("/success")
-    public String success()
+    @GetMapping("/success/{showInfoId}")
+    public String success(@PathVariable Long showInfoId,Model model)
     {
+        model.addAttribute("showInfoId",showInfoId);
         return "/purchase/success";
     }
 

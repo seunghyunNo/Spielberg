@@ -4,6 +4,6 @@
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <script>
   alert("카카오페이 결제를 성공하였습니다.");
-  location.href = "/ticket/complete";
+  location.href = "/ticket/complete/[[${showInfoId}]]";
 </script>
 </html>

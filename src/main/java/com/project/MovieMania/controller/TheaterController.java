@@ -126,7 +126,7 @@ public class TheaterController {
                 priceInfo = priceService.checkAdultNum();
                 for (int x = 0; x < seatColumn.size(); x++) {
                     for (int y = 0; y < seatRow.size(); y++) {
-                        ticketInfo = ticketingService.writeTicket(showInfoId, 1L, priceInfo.getId());
+                        ticketInfo = ticketingService.writeTicket(showInfoId, 2L, priceInfo.getId());
                         seatService.writeSeat(ticketInfo, seatRow.get(y), seatColumn.get(x));
                     }
                 }
@@ -136,7 +136,7 @@ public class TheaterController {
                 priceInfo = priceService.checkStudentNum();
                 for (int x = 0; x < seatColumn.size(); x++) {
                     for (int y = 0; y < seatRow.size(); y++) {
-                        ticketInfo = ticketingService.writeTicket(showInfoId, 1L, priceInfo.getId());
+                        ticketInfo = ticketingService.writeTicket(showInfoId, 2L, priceInfo.getId());
                         seatService.writeSeat(ticketInfo, seatRow.get(y), seatColumn.get(x));
                     }
                 }
@@ -151,12 +151,12 @@ public class TheaterController {
                 for (int y = 0; y < seatRow.size(); y++) {
                     if (adultCnt != adult) {
                         priceInfo = priceService.checkAdultNum();
-                        ticketInfo = ticketingService.writeTicket(showInfoId, 1L, priceInfo.getId());
+                        ticketInfo = ticketingService.writeTicket(showInfoId, 2L, priceInfo.getId());
                         seatService.writeSeat(ticketInfo, seatRow.get(y), seatColumn.get(x));
                         adultCnt++;
                     } else if (student != studentCnt) {
                         priceInfo = priceService.checkStudentNum();
-                        ticketInfo = ticketingService.writeTicket(showInfoId, 1L, priceInfo.getId());
+                        ticketInfo = ticketingService.writeTicket(showInfoId, 2L, priceInfo.getId());
                         seatService.writeSeat(ticketInfo, seatRow.get(y), seatColumn.get(x));
                         studentCnt++;
                     }
@@ -179,7 +179,7 @@ public class TheaterController {
 
     @GetMapping("/purchase/{showInfoId}")
     public String getPurchase(@PathVariable Long showInfoId, Model model) {
-        List<TicketInfo> buyList = ticketingService.findTicket(showInfoId, 1L);
+        List<TicketInfo> buyList = ticketingService.findTicket(showInfoId, 2L);
         int cost = 0;
         int adultCnt = 0;
         int studentCnt = 0;
@@ -207,9 +207,10 @@ public class TheaterController {
         return "ticket/purchase";
     }
 
-    @GetMapping("/complete")
-    public String complete()
+    @GetMapping("/complete/{showInfoId}")
+    public String complete(@PathVariable Long showInfoId,Long userId)
     {
+        List<TicketInfo> ticketList = ticketingService.findTicket(showInfoId,2L);
         return "ticket/complete";
     }
 }
