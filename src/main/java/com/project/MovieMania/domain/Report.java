@@ -1,5 +1,6 @@
 package com.project.MovieMania.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.project.MovieMania.domain.type.ReportType;
 import jakarta.persistence.*;
 import lombok.*;

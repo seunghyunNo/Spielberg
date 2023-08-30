@@ -35,4 +35,4 @@ app:
     # 기본 page_rows 값. 한 '페이지'에 몇개의 글을 리스트 할것인가?
     page_rows: 10
 
-
+  api_key: 9675e3dbd314fe9ddffb04b28f28d4db

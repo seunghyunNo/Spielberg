@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
+    <script th:src="@{/js/ticket/ticketing.js}"></script>
+    <link rel="stylesheet" th:href="@{/css/ticket/ticketing.css}">
+    <title>좌석 선택 페이지</title>
+</head>
+<body>
+    <div class="container mt-5">
+        <form th:action="@{|/ticket/ticketing/${showInfoId}|}" name="ticketingFrm" method="post" enctype="multipart/form-data">
+            <p>성인</p>
+            <select name="adult" id="adult" title="adultList">
+                <option value="0">0명</option>
+                <option value="1">1명</option>
+                <option value="2">2명</option>
+                <option value="3">3명</option>
+                <option value="4">4명</option>
+                <option value="5">5명</option>
+            </select>
+
+            <p>학생</p>
+            <select name="student" id="student" title="studentList">
+                <option value="0">0명</option>
+                <option value="1">1명</option>
+                <option value="2">2명</option>
+                <option value="3">3명</option>
+                <option value="4">4명</option>
+                <option value="5">5명</option>
+            </select>
+
+            <h2 style="text-align:center">SCREEN</h2>
+            <input type="hidden" id="showInfoId" name="showInfoId" th:value="${showInfoId}">
+<!--            <input type="hidden" id="userId" name="userId" th:value="${userId}">-->
+            <input type="hidden" id="priceId" name="priceId" th:value="${priceId}">
+            <th:block th:each="sColumn:${seatMaxColumn}">
+                <div th:data-seat-column="${sColumn}"></div>
+                <th:block th:each="sRow:${seatMaxRow}" >
+                    <input type="hidden" name="seatRow" th:value="${sRow}">
+                    <input type="hidden" name="seatColumn" th:value="${sColumn}">
+                    <span th:data-seat-row="${sRow}"></span>
+                    <button type="button" class="seat m-4" th:data-column-row="|${sColumn}${sRow}|" th:text="|${sColumn}열${sRow}행|">좌석</button>
+                </th:block>
+                <hr>
+            </th:block>
+        </form>
+    </div>
+</body>
+</html>
