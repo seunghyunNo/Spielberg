@@ -14,6 +14,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -42,7 +43,7 @@ public class UserController {
 
     // 접근 권한
     @RequestMapping("/rejectAuth")
-    public String rejectAuth(){return "common/rejectAuth";}
+    public String rejectAuth(){return "user/rejectAuth";}
 
 
     // 회원가입
@@ -230,12 +231,18 @@ public class UserController {
     @PostMapping("/delete")
     public String deleteOk(@RequestParam("userId") Long userId,
                            @RequestParam("password") String password,
-                           Model model){
+                           Model model,HttpServletRequest request, HttpServletResponse response,RedirectAttributes redirectAttributes){
+        PrincipalDetails userDetails = (PrincipalDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        User user1 = userDetails.getUser();
+        Long id = user1.getId();
+
+
         boolean isPasswordCorrect = userService.pwCheck(userId,password);
 
         if(isPasswordCorrect){
             model.addAttribute("result",1);
             // 하기전에 시큐리티 로그아웃
+            new SecurityContextLogoutHandler().logout(request,response,null);
             userService.delete(userId);
             return "/user/deleteOk";
         }else {
@@ -252,6 +259,7 @@ public class UserController {
 
         User user =userDetails.getUser();
         System.out.println(user.getAuthorities());
+
         model.addAttribute("id",user.getId());
         model.addAttribute("username",user.getUsername());
         model.addAttribute("authority",user.getAuthorities());

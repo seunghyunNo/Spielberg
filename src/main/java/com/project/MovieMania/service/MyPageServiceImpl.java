@@ -1,29 +1,36 @@
-//package com.project.MovieMania.service;
-//
-//import com.project.MovieMania.domain.Question;
-//import com.project.MovieMania.repository.MyPageRepository;
-//import com.project.MovieMania.repository.QuestionRepository;
-//import com.project.MovieMania.util.U;
-//import jakarta.servlet.http.HttpSession;
-//import org.springframework.beans.factory.annotation.Value;
-//import org.springframework.stereotype.Service;
-//import org.springframework.ui.Model;
-//
-//import java.util.List;
-//
-//@Service
-//public class MyPageServiceImpl implements MyPageService {
-//
-//    private MyPageRepository myPageRepository;
-//
-//    private QuestionRepository questionRepository;
-//
-//    @Value("${app.pagination.write_pages}")
-//    private int WRITE_PAGES;
-//
-//    @Value("${app.pagination.page_rows}")
-//    private int PAGE_ROWS;
-//
+package com.project.MovieMania.service;
+
+import com.project.MovieMania.domain.Question;
+import com.project.MovieMania.domain.TicketInfo;
+import com.project.MovieMania.repository.MyPageRepository;
+import com.project.MovieMania.repository.QuestionRepository;
+import com.project.MovieMania.util.U;
+import jakarta.servlet.http.HttpSession;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
+import org.springframework.ui.Model;
+
+import java.util.List;
+
+@Service
+public class MyPageServiceImpl implements MyPageService {
+
+    private MyPageRepository myPageRepository;
+
+    private QuestionRepository questionRepository;
+
+    @Value("${app.pagination.write_pages}")
+    private int WRITE_PAGES;
+
+    @Value("${app.pagination.page_rows}")
+    private int PAGE_ROWS;
+
+    @Override
+    public List<TicketInfo> TICKET_INFOS(Model model, Integer page, long id) {
+        return null;
+    }
+
+
 //
 //    @Override
 //    public List<Question> QuestionList(Model model, Integer page, long id) {
@@ -69,12 +76,12 @@
 //        model.addAttribute("writePage",writePage);
 //        model.addAttribute("start",start);
 //        model.addAttribute("end",end);
-//
-//
-//        // 여기 아직 모르겠음
-//
-////        List<Question> list = myPageRepository.findByFromRowAndPageRowsAndId(fromRow,pageRows,id);
-//
-////        return list;
-////    }
-//}
+
+
+        // 여기 아직 모르겠음
+
+//        List<Question> list = myPageRepository.findByFromRowAndPageRowsAndId(fromRow,pageRows,id);
+
+//        return list;
+//    }
+}

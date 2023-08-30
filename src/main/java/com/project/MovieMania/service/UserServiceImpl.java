@@ -182,7 +182,7 @@ public class UserServiceImpl implements UserService {
     public int delete(Long userId) {
         User user = userRepository.findById(userId).orElseThrow();
 
-//        userRepository.delete(user);
+        userRepository.delete(user);
         return 1;
     }
 

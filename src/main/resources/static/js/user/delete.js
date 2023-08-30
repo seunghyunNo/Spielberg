@@ -1,7 +1,7 @@
 function checkForm() {
-  let answer = confirm("Do you want to delete?");
+  let answer = confirm("회원탈퇴를 하시겠습니까?");
   if (!answer) {
-    alert("cancel");
+    alert("취소합니다");
   }
   return answer;
 }

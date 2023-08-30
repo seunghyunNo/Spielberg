@@ -4,7 +4,7 @@ SELECT TABLE_NAME FROM information_schema.TABLES
 WHERE TABLE_SCHEMA = 'moviedb';
 
 SELECT * FROM user;
-SELECT * FROM customer_authorities;
+SELECT * FROM authority;
 select * from movie;
 select * from cinema;
 select * from theater;
@@ -18,3 +18,6 @@ select * from report;
 select * from question;
 select * from review r 
  
+INSERT INTO authority
+(name)
+VALUES('ROLE_MEMBER'), ('ROLE_ADMIN');

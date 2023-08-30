@@ -55,12 +55,12 @@ public class SecurityConfig{
                         .deleteCookies("JSESSIONID")    //쿠키 삭제
                 )
 
-//                .rememberMe(rememberMe-> rememberMe
-//                        .key("key")     // 토큰 키 값
-//                        .rememberMeParameter("rememberMe")  // 파라미터 값
-//                        .tokenValiditySeconds(60*60*24*7)   // 토큰 유효시간 1주일
-//                        .userDetailsService(principalDetailsService)
-//                )
+                .rememberMe(rememberMe-> rememberMe
+                        .key("key")     // 토큰 키 값
+                        .rememberMeParameter("rememberMe")  // 파라미터 값
+                        .tokenValiditySeconds(60*60*24*7)   // 토큰 유효시간 1주일
+                        .userDetailsService(principalDetailsService)
+                )
                 .exceptionHandling(httpSecurityExceptionHandlingConfigurer -> httpSecurityExceptionHandlingConfigurer
                         .accessDeniedHandler(new CustomAccessDeniedHandler())   // 접근권한
                 )
