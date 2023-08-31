@@ -1,8 +1,13 @@
 package com.project.MovieMania.controller;
 
 import com.project.MovieMania.config.PrincipalDetails;
+import com.project.MovieMania.domain.Question;
+import com.project.MovieMania.domain.TicketInfo;
 import com.project.MovieMania.domain.User;
 import com.project.MovieMania.domain.UserValidator;
+import com.project.MovieMania.service.MovieService;
+import com.project.MovieMania.service.QuestionService;
+import com.project.MovieMania.service.TicketingService;
 import com.project.MovieMania.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -31,6 +36,15 @@ import java.util.List;
 public class UserController {
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private TicketingService ticketingService;
+
+    @Autowired
+    private QuestionService questionService;
+
+    @Autowired
+    private MovieService movieService;
 
     @PreAuthorize("isAnonymous()")
     @GetMapping("/login")
@@ -265,6 +279,41 @@ public class UserController {
         model.addAttribute("username",user.getUsername());
         model.addAttribute("authority",user.getAuthorities());
 
+        List<TicketInfo> ticketInfoList = ticketingService.findMyTicketInfo(user.getId());
+        List<Question> questionList = questionService.findMyQuestion(user.getId());
+    }
+
+    @GetMapping("/myPage/myTicket")
+    public void myTicket(Model model,Integer page){
+        PrincipalDetails userDetails = (PrincipalDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        User user =userDetails.getUser();
+        Long id = user.getId();
+        System.out.println(user.getAuthorities());
+
+        model.addAttribute("id",user.getId());
+        model.addAttribute("username",user.getUsername());
+        model.addAttribute("authority",user.getAuthorities());
+
+        model.addAttribute("list",ticketingService.findMyTicketList(model,page, user.getId()));
+
+        List<TicketInfo> ticketInfoList = ticketingService.findMyTicketInfo(user.getId());
+    }
+
+    @GetMapping("/myPage/myQuestion")
+    public void myQuestion(Model model,Integer page){
+        PrincipalDetails userDetails = (PrincipalDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        User user =userDetails.getUser();
+        Long id = user.getId();
+        System.out.println(user.getAuthorities());
+
+        model.addAttribute("id",user.getId());
+        model.addAttribute("username",user.getUsername());
+        model.addAttribute("authority",user.getAuthorities());
+        model.addAttribute("list",questionService.findMyQuestionList(model,page,user.getId()));
+
+        List<Question> questionList = questionService.findMyQuestion(user.getId());
 
     }
 

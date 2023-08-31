@@ -31,19 +31,19 @@
         </thead>
         <tbody>
         <tr th:each="post : ${list}">
-            <td th:text="${post.user.username}">asd</td>
+            <td th:text="${post.id}"></td>
+
             <td><a th:href="@{'/question/detail/' + ${post.id}}" th:text="${post.title}"></a></td>
-            <td th:text="${username}"></td>
+            <td th:text="${post.user.username}"></td>
         </tr>
         </tbody>
     </table>
 </form>
 
 <div>
-    <a th:href="@{/question/write}">글작성</a>
 </div>
 
-<!--<th:block th:insert="~{question/pagination::pagination}"></th:block>-->
+<th:block th:insert="~{question/pagination::pagination}"></th:block>
 
 </body>
 </html>

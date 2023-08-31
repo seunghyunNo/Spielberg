@@ -1,6 +1,7 @@
 package com.project.MovieMania.service;
 
 import com.project.MovieMania.domain.Question;
+import com.project.MovieMania.domain.User;
 import com.project.MovieMania.repository.QuestionRepository;
 import com.project.MovieMania.repository.UserRepository;
 import com.project.MovieMania.util.U;
@@ -146,6 +147,63 @@ public class QuestionServiceImpl implements QuestionService {
         }
 
         return result;
+    }
+
+    @Override
+    public List<Question> findMyQuestion(Long id) {
+
+        User user = userRepository.findById(id).orElseThrow();
+
+        List<Question> questionList = questionRepository.findByUser_id(id);
+
+        return questionList;
+    }
+
+
+
+    // 마이페이지 내 질문 리스트
+    @Override
+    public List<Question> findMyQuestionList(Model model, Integer myPage, long id) {
+        if(myPage == null) myPage = 1;
+        if(myPage < 1) myPage = 1;
+
+        HttpSession session = U.getSession();
+
+        Integer writePages = (Integer)session.getAttribute("writePages");
+        if(writePages == null) writePages = WRITE_PAGES;
+
+        Integer pageRows = (Integer)session.getAttribute("pageRows");
+        if(pageRows == null) pageRows = PAGE_ROWS;
+
+        session.setAttribute("myPage", myPage);
+
+        Page<Question> pageWrites = questionRepository.findAll(PageRequest.of(myPage - 1, pageRows, Sort.by(Sort.Order.desc("id"))));
+
+        long cnt = pageWrites.getTotalElements();
+        int totalPage =  pageWrites.getTotalPages();
+
+        if(myPage > totalPage) myPage = totalPage;
+
+        int fromRow = (myPage - 1) * pageRows;
+
+        int startPage = (((myPage - 1) / writePages) * writePages) + 1;
+        int endPage = startPage + writePages - 1;
+        if (endPage >= totalPage) endPage = totalPage;
+
+        model.addAttribute("cnt", cnt);
+        model.addAttribute("myPage", myPage);
+        model.addAttribute("totalPage", totalPage);
+        model.addAttribute("pageRows", pageRows);
+
+        model.addAttribute("url", U.getRequest().getRequestURI());
+        model.addAttribute("writePages", writePages);
+        model.addAttribute("startPage", startPage);
+        model.addAttribute("endPage", endPage);
+
+        List<Question> list = pageWrites.getContent();
+        model.addAttribute("list", list);
+
+        return list;
     }
 
 }

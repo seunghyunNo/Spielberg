@@ -28,4 +28,7 @@ public interface QuestionService {
 
     int answer(Question question);
 
+    List<Question> findMyQuestion(Long id);
+
+    List<Question> findMyQuestionList(Model model,Integer page,long id);
 }
