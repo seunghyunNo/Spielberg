@@ -12,10 +12,11 @@
     <title>극장 선택 페이지</title>
 </head>
 <body>
+<th:block th:insert="~{common/header::header}"></th:block>
     <div class="container mt-3">
         <form th:action="@{|/ticket/theater/${movieId}|}" name="theaterFrm" method="post" enctype="multipart/form-data">
             <input type="hidden" name="showInfoId" th:value="${showInfoId}">
-            <input type="hidden" name="movieId" th:value="${movieId}">
+            <input type="hidden" id="movieId" name="movieId" th:value="${movieId}">
             <div class="container ml-2">
                 <select name="cinemaName" id="cinemaName" title="cinemaList">
                     <option>극장 선택</option>
@@ -25,12 +26,12 @@
                 </select>
 
                 <input type="hidden" id="movieDate" th:value="${dates}">
-                <select th:name="date" id="date" title="dateList">
+                <select name="date" id="date" title="dateList">
                     <option selected>날짜 선택</option>
                 </select>
 
                 <input type="hidden" id="movieTime" th:value="${times}">
-                <select th:name="time" id="time" title="timeList">
+                <select name="time" id="time" title="timeList">
                     <option selected>시간 선택</option>
                 </select>
             </div>

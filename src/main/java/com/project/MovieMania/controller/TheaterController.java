@@ -1,11 +1,10 @@
 package com.project.MovieMania.controller;
 
-import com.project.MovieMania.domain.PriceInfo;
-import com.project.MovieMania.domain.Seat;
-import com.project.MovieMania.domain.ShowInfo;
-import com.project.MovieMania.domain.TicketInfo;
+import com.project.MovieMania.config.PrincipalDetails;
+import com.project.MovieMania.domain.*;
 import com.project.MovieMania.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -39,6 +38,7 @@ public class TheaterController {
     @GetMapping("/theater/{movie_id}")
     public String theater(@PathVariable Long movie_id,Model model)
     {
+        System.out.println(movie_id);
         model.addAttribute("movieId",movie_id);
         model.addAttribute("cinemas",theaterService.cinemaSet(movie_id));
         model.addAttribute("dates",theaterService.dateList(movie_id));
@@ -82,13 +82,19 @@ public class TheaterController {
         }
         model.addAttribute("seatMaxColumn", seatColumnList);
 
+        PrincipalDetails userDetails = (PrincipalDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        User user = userDetails.getUser();
+
+        model.addAttribute("userId",user.getId());
+
         return "ticket/ticketing";
     }
 
     @PostMapping("/ticketing/{showInfoId}")
     public String ticketing(@PathVariable Long showInfoId,
                             Integer adult, Integer student,
-                            @RequestParam List<Integer> seatRow, @RequestParam List<Integer> seatColumn, Model model) {
+                            @RequestParam List<Integer> seatRow, @RequestParam List<Integer> seatColumn,Long userId, Model model) {
         TicketInfo ticketInfo = new TicketInfo();
         PriceInfo priceInfo = new PriceInfo();
         Set<Integer> rowList = new HashSet<>();
@@ -120,7 +126,7 @@ public class TheaterController {
                 priceInfo = priceService.checkAdultNum();
                 for (int x = 0; x < seatColumn.size(); x++) {
                     for (int y = 0; y < seatRow.size(); y++) {
-                        ticketInfo = ticketingService.writeTicket(showInfoId, 2L, priceInfo.getId());
+                        ticketInfo = ticketingService.writeTicket(showInfoId, userId, priceInfo.getId());
                         seatService.writeSeat(ticketInfo, seatRow.get(y), seatColumn.get(x));
                     }
                 }
@@ -130,7 +136,7 @@ public class TheaterController {
                 priceInfo = priceService.checkStudentNum();
                 for (int x = 0; x < seatColumn.size(); x++) {
                     for (int y = 0; y < seatRow.size(); y++) {
-                        ticketInfo = ticketingService.writeTicket(showInfoId, 2L, priceInfo.getId());
+                        ticketInfo = ticketingService.writeTicket(showInfoId, userId, priceInfo.getId());
                         seatService.writeSeat(ticketInfo, seatRow.get(y), seatColumn.get(x));
                     }
                 }
@@ -145,12 +151,12 @@ public class TheaterController {
                 for (int y = 0; y < seatRow.size(); y++) {
                     if (adultCnt != adult) {
                         priceInfo = priceService.checkAdultNum();
-                        ticketInfo = ticketingService.writeTicket(showInfoId, 2L, priceInfo.getId());
+                        ticketInfo = ticketingService.writeTicket(showInfoId, userId, priceInfo.getId());
                         seatService.writeSeat(ticketInfo, seatRow.get(y), seatColumn.get(x));
                         adultCnt++;
                     } else if (student != studentCnt) {
                         priceInfo = priceService.checkStudentNum();
-                        ticketInfo = ticketingService.writeTicket(showInfoId, 2L, priceInfo.getId());
+                        ticketInfo = ticketingService.writeTicket(showInfoId, userId, priceInfo.getId());
                         seatService.writeSeat(ticketInfo, seatRow.get(y), seatColumn.get(x));
                         studentCnt++;
                     }
@@ -161,19 +167,21 @@ public class TheaterController {
         }
 
 
-        // 로그인한 유저 정보 모델로 넘기기 TODO
-//        model.addAttribute("showInfoId",ticketInfo.getShowInfo().getId());
+
         ShowInfo showInfo = showInfoService.findById(showInfoId, model);
 
 
-//        model.addAttribute("theaterNum",showInfo.getTheater().getTheaterNum());
 
         return "redirect:/ticket/purchase/" + showInfo.getId();
     }
 
     @GetMapping("/purchase/{showInfoId}")
     public String getPurchase(@PathVariable Long showInfoId, Model model) {
-        List<TicketInfo> buyList = ticketingService.findBuyTicket(showInfoId, 2L);
+        PrincipalDetails userDetails = (PrincipalDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        User user = userDetails.getUser();
+
+        List<TicketInfo> buyList = ticketingService.findBuyTicket(showInfoId, user.getId());
         System.out.println(buyList);
         int cost = 0;
         int adultCnt = 0;
@@ -197,15 +205,19 @@ public class TheaterController {
         model.addAttribute("studentCnt", studentCnt);
         model.addAttribute("ticketCnt", ticketCnt);
         model.addAttribute("showInfoId",showInfoId);
-        // 로그인된 유저 아이디 모델로 넘기기
+
 
         return "ticket/purchase";
     }
 
     @GetMapping("/complete/{showInfoId}")
-    public String complete(@PathVariable Long showInfoId,Long userId)
+    public String complete(@PathVariable Long showInfoId)
     {
-        List<TicketInfo> ticketList = ticketingService.findTicket(showInfoId,2L);
+        PrincipalDetails userDetails = (PrincipalDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        User user = userDetails.getUser();
+
+        List<TicketInfo> ticketList = ticketingService.findTicket(showInfoId,user.getId());
         return "ticket/complete";
     }
 }

@@ -13,6 +13,7 @@
     <title>좌석 선택 페이지</title>
 </head>
 <body>
+<th:block th:insert="~{common/header::header}"></th:block>
     <div class="container mt-5">
         <form th:action="@{|/ticket/ticketing/${showInfoId}|}" name="ticketingFrm" method="post" enctype="multipart/form-data">
             <input type="hidden" name="theaterNum" th:value="${theaterNum}">
@@ -38,7 +39,7 @@
 
             <h2 style="text-align:center">SCREEN</h2>
             <input type="hidden" id="showInfoId" name="showInfoId" th:value="${showInfoId}">
-<!--            <input type="hidden" id="userId" name="userId" th:value="${userId}">-->
+            <input type="hidden" id="userId" name="userId" th:value="${userId}">
             <th:block th:each="sColumn:${seatMaxColumn}">
                 <div th:data-seat-column="${sColumn}">
                 <th:block th:each="sRow:${seatMaxRow}" >

@@ -1,6 +1,6 @@
 $(function () {
     var showInfoId = $("#showInfoId").val();
-    var userId = "1";
+    var userId = $("#userId").val();
     var adultNum = 0;
     var studentNum = 0;
     var people = 0;

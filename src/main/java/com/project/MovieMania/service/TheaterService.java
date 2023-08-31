@@ -22,5 +22,7 @@ public interface TheaterService {
 
     Theater findById(Long theaterId);
 
+    List<Theater> findByCinemaId(Long cinemaId);
+
 
 }

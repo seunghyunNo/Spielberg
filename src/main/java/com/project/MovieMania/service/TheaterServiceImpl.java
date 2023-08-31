@@ -107,5 +107,11 @@ public class TheaterServiceImpl implements TheaterService{
         return theater;
     }
 
+    @Override
+    public List<Theater> findByCinemaId(Long cinemaId) {
+        List<Theater> theater = theaterRepository.findTheaterByCinemaId(cinemaId);
+        return theater;
+    }
+
 
 }

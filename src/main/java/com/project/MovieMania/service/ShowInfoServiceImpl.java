@@ -3,6 +3,7 @@ package com.project.MovieMania.service;
 import com.project.MovieMania.domain.Cinema;
 import com.project.MovieMania.domain.Movie;
 import com.project.MovieMania.domain.ShowInfo;
+import com.project.MovieMania.domain.Theater;
 import com.project.MovieMania.repository.CinemaRepository;
 import com.project.MovieMania.repository.MovieRepository;
 import com.project.MovieMania.repository.ShowInfoRepository;
@@ -74,5 +75,19 @@ public class ShowInfoServiceImpl implements ShowInfoService{
         model.addAttribute("showInfoId",showInfo.getId());
         System.out.println(showInfo);
         return showInfo;
+    }
+
+    @Override
+    public List<ShowInfo> findByMovie(Long movieId) {
+        Movie movie = movieRepository.findById(movieId).orElse(null);
+        List<ShowInfo> showInfoList = showInfoRepository.findByMovie(movie);
+        return showInfoList;
+    }
+
+    @Override
+    public List<ShowInfo> findByMovieAndTheater(Long movieId, Theater theater) {
+        Movie movie = movieRepository.findById(movieId).orElse(null);
+        List<ShowInfo> showInfoList = showInfoRepository.findByTheaterAndMovie(theater,movie);
+        return showInfoList;
     }
 }
