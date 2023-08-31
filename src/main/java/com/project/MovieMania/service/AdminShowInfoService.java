@@ -8,7 +8,9 @@ public interface AdminShowInfoService {
 	
 	List<ShowInfo> list(String status);
 	
-	int save(ShowInfo showInfo);
+	int register(ShowInfo showInfo);
+	
+	int update(ShowInfo showInfo);
 	
 	ShowInfo detail(long id);
 	
