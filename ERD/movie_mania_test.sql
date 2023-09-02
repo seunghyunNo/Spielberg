@@ -18,7 +18,11 @@ select * from report;
 select * from question;
 select * from review r;
 
+select m.*, si.status from movie m LEFT JOIN show_info si on m.id = si.id;
+
 select * from user;
+
+select * from show_info where status = "now";
 
 INSERT INTO moviedb.`user`
 (birthday, created_at, updated_at, gender, phone_num, name, password, username, email, status)
