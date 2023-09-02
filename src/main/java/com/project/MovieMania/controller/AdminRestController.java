@@ -2,16 +2,16 @@ package com.project.MovieMania.controller;
 
 
 import com.project.MovieMania.domain.*;
+import com.project.MovieMania.domain.DTO.AdminReportDTO;
 import com.project.MovieMania.domain.DTO.MovieDTO;
 import com.project.MovieMania.domain.DTO.TheaterDTO;
+import com.project.MovieMania.domain.type.ReportType;
 import com.project.MovieMania.repository.TheaterRepository;
 import com.project.MovieMania.service.AdminMovieService;
+import com.project.MovieMania.service.AdminReportService;
 import com.project.MovieMania.service.TheaterService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,6 +22,7 @@ public class AdminRestController {
 	
 	private AdminMovieService movieService;
 	private TheaterService theaterService;
+	private AdminReportService reportService;
 	
 	@Autowired
 	public void setMovieService(AdminMovieService movieService) {
@@ -29,6 +30,8 @@ public class AdminRestController {
 	}
 	@Autowired
 	public void setTheaterService(TheaterService theaterService){ this.theaterService = theaterService; }
+	@Autowired
+	public void setReportService(AdminReportService reportService){this.reportService = reportService; }
 	
 	@PostMapping("/movieList")
 	public QryMovieList listMovie(){
@@ -80,6 +83,24 @@ public class AdminRestController {
 		list.setCount(theaterDTOS.size());
 		list.setStatus("OK");
 		return list;
+	}
+	
+	@GetMapping("/reportList")
+	public List<AdminReportDTO> listReport(@RequestParam(required = false) String reportType){
+		if(reportType == null || reportType.equals("ALL")) return reportService.list();
+		else{
+			return reportService.list(ReportType.valueOf(reportType));
+		}
+	}
+	@GetMapping("/reportDel/{id}")
+	public QryResult delReport(@PathVariable Long id){
+		int count = reportService.delete(id);
+		String status = (count == 1) ? "OK" : "Fail";
+		QryResult qryResult = QryResult.builder()
+				.count(count)
+				.status(status)
+				.build();
+		return qryResult;
 	}
 	
 }

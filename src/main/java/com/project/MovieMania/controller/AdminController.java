@@ -2,9 +2,7 @@ package com.project.MovieMania.controller;
 
 import com.project.MovieMania.domain.Movie;
 import com.project.MovieMania.domain.ShowInfo;
-import com.project.MovieMania.service.AdminMovieService;
-import com.project.MovieMania.service.AdminShowInfoService;
-import com.project.MovieMania.service.TheaterService;
+import com.project.MovieMania.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -23,6 +21,7 @@ public class AdminController {
 	private AdminMovieService movieService;
 	private AdminShowInfoService showInfoService;
 	private TheaterService theaterService;
+	private AdminReportService reportService;
 	
 	@Autowired
 	public void setMovieService(AdminMovieService movieService){
@@ -32,12 +31,15 @@ public class AdminController {
 	public  void setShowInfoService(AdminShowInfoService showInfoService){ this.showInfoService = showInfoService;	}
 	@Autowired
 	public void setTheaterService(TheaterService theaterService){ this.theaterService = theaterService; }
+	@Autowired
+	public void setReportService(AdminReportService reportService){ this.reportService = reportService; }
 	
 	@RequestMapping("/")
 	public String adminHome(){
 		return "redirect:/admin/movie";
 	}
 	
+	// -------- movie ----------
 	@RequestMapping("/movie")
 	public String movieList(Model model){
 		model.addAttribute("list", movieService.list());
@@ -107,6 +109,7 @@ public class AdminController {
 		return	"admin/movie/updateOK";
 	}
 	
+	// -------- showInfo -------------
 	@GetMapping("/show")
 	public String showList(
 			Model model,
@@ -155,6 +158,12 @@ public class AdminController {
 	public String showDelete(@RequestParam("showInfoId") Long id, Model model){
 		model.addAttribute("result", showInfoService.delete(id));
 		return "admin/show/deleteOk";
+	}
+	
+	// --------- report ---------------
+	@GetMapping("/report")
+	public String reportList(){
+		return "admin/report/list";
 	}
 	
 }

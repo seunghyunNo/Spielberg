@@ -123,3 +123,10 @@ VALUES
   ('1988-03-12', NOW(), NOW(), 'FEMALE', '222-333-4444', 'Emily Brown', 'password111', 'emily_brown', 'emily@example.com', 'ACTIVE'),
   ('1995-11-25', NOW(), NOW(), 'MALE', '777-888-9999', 'Daniel Lee', 'password222', 'daniel_lee', 'daniel@example.com', 'ACTIVE'),
   ('1999-07-07', NOW(), NOW(), 'FEMALE', '444-555-6666', 'Olivia Wilson', 'password333', 'olivia_wilson', 'olivia@example.com', 'ACTIVE');
+ 
+ INSERT INTO report (`type`, review_id, user_id)
+ VALUES
+ ('BADWORD', 9, 1);
+
+
+
