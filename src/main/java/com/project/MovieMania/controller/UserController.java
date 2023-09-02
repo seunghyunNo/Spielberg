@@ -1,10 +1,7 @@
 package com.project.MovieMania.controller;
 
 import com.project.MovieMania.config.PrincipalDetails;
-import com.project.MovieMania.domain.Question;
-import com.project.MovieMania.domain.TicketInfo;
-import com.project.MovieMania.domain.User;
-import com.project.MovieMania.domain.UserValidator;
+import com.project.MovieMania.domain.*;
 import com.project.MovieMania.service.MovieService;
 import com.project.MovieMania.service.QuestionService;
 import com.project.MovieMania.service.TicketingService;
@@ -45,6 +42,7 @@ public class UserController {
 
     @Autowired
     private MovieService movieService;
+
 
     @PreAuthorize("isAnonymous()")
     @GetMapping("/login")
@@ -315,6 +313,22 @@ public class UserController {
 
         List<Question> questionList = questionService.findMyQuestion(user.getId());
 
+    }
+
+    @GetMapping("/myPage/myReview")
+    public void myReview(Model model,Integer page){
+        PrincipalDetails userDetails = (PrincipalDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        User user = userDetails.getUser();
+        Long id = user.getId();
+        System.out.println(user.getAuthorities());
+
+        model.addAttribute("id",user.getId());
+        model.addAttribute("username",user.getUsername());
+        model.addAttribute("authority",user.getAuthorities());
+        model.addAttribute("list",movieService.findMyReviewList(model,page,user.getId()));
+
+        List<Review> reviewList = movieService.findMyReview(user.getId());
     }
 
     @InitBinder

@@ -15,33 +15,33 @@
 </head>
 <body>
 <th:block th:insert="~{/header::header}"></th:block>
-<!--<form th:action="@{/question/search}" method="get" enctype="multipart/form-data">-->
-    <div>
+<form th:action="@{/question/search}" method="get" enctype="multipart/form-data">
+    <div class="container mt-3">
+        <th:block th:insert="~{user/myInfo::myPageInfo}"></th:block>
         <input type="text" name="keyword">
-    </div>
+
     <button type="submit">검색</button>
-
-    <table>
-        <thead>
-        <tr>
-            <th>번호</th>
-            <th>제목</th>
-            <th>작성자</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr th:each="post : ${list}">
-            <td th:text="${post.id}"></td>
-
-            <td><a th:href="@{'/question/detail/' + ${post.id}}" th:text="${post.title}"></a></td>
-            <td th:text="${post.user.username}"></td>
-        </tr>
-        </tbody>
-    </table>
+        <div class="mb-3 mt-3 clearfix">
+            <table class="table table=hover">
+                <thead class="table-primary">
+                <tr>
+                    <th>번호</th>
+                    <th>제목</th>
+                    <th>작성자</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="post : ${list}">
+                    <td th:text="${post.id}"></td>
+                    <td><a th:href="@{'/question/detail/' + ${post.id}}" th:text="${post.title}"></a></td>
+                    <td th:text="${post.user.username}"></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
 </form>
 
-<div>
-</div>
 
 <th:block th:insert="~{question/pagination::pagination}"></th:block>
 

@@ -7,10 +7,16 @@ import com.project.MovieMania.domain.DTO.UserDTO;
 import com.project.MovieMania.domain.type.Gender;
 import com.project.MovieMania.domain.type.ReportType;
 import com.project.MovieMania.repository.*;
+import com.project.MovieMania.util.U;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.ui.Model;
 
 import java.text.DecimalFormat;
 import java.time.LocalDate;
@@ -20,6 +26,12 @@ import java.util.stream.Collectors;
 
 @Service
 public class MovieServiceImpl implements MovieService {
+
+    @Value("${app.pagination.write_pages}")
+    private int WRITE_PAGES;
+
+    @Value("${app.pagination.page_rows}")
+    private int PAGE_ROWS;
 
     private MovieRepository movieRepository;
 
@@ -114,6 +126,8 @@ public class MovieServiceImpl implements MovieService {
 
         return reserveRate;
     }
+
+
 
     @Override
     public Long audiNum(Long id) {
@@ -441,6 +455,59 @@ public class MovieServiceImpl implements MovieService {
         Review review = reviewRepository.findById(reviewId).orElseThrow(null);
         List<Recommend> recommends = review.getRecommends();
         return recommends.size();
+    }
+
+    @Override
+    public List<Review> findMyReview(Long id) {
+
+        User user = userRepository.findById(id).orElseThrow();
+
+        List<Review> reviewList = reviewRepository.findByUser_id(id);
+        return reviewList;
+    }
+
+    @Override
+    public List<Review> findMyReviewList(Model model, Integer page, long id) {
+        if(page == null) page = 1;
+        if(page <1)page = 1;
+
+        HttpSession session = U.getSession();
+
+        Integer writePages = (Integer) session.getAttribute("writePages");
+        if(writePages==null)writePages = WRITE_PAGES;
+
+        Integer pageRows = (Integer) session.getAttribute("pageRows");
+        if(pageRows ==null) pageRows = PAGE_ROWS;
+
+        session.setAttribute("page",page);
+
+        Page<Review> pageWrites = reviewRepository.findAll(PageRequest.of(page-1,pageRows,Sort.by(Sort.Order.desc("id"))));
+
+        long cnt = pageWrites.getTotalElements();
+        int totalPage = pageWrites.getTotalPages();
+
+        if(page>totalPage)page= totalPage;
+
+        int fromRow = (page -1)*pageRows;
+
+        int startPage = (((page-1)/writePages)*writePages)+1;
+        int endPage = startPage+writePages-1;
+        if(endPage >=totalPage) endPage = totalPage;
+
+        model.addAttribute("cnt",cnt);
+        model.addAttribute("page",page);
+        model.addAttribute("totalPage",totalPage);
+        model.addAttribute("pageRows",pageRows);
+
+        model.addAttribute("url",U.getRequest().getRequestURI());
+        model.addAttribute("writePages",writePages);
+        model.addAttribute("startPage",startPage);
+        model.addAttribute("endPage",endPage);
+
+        List<Review> list = pageWrites.getContent();
+        model.addAttribute("list",list);
+
+        return list;
     }
 
 
