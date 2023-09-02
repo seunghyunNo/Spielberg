@@ -6,9 +6,11 @@ import com.project.MovieMania.domain.DTO.AdminReportDTO;
 import com.project.MovieMania.domain.DTO.MovieDTO;
 import com.project.MovieMania.domain.DTO.TheaterDTO;
 import com.project.MovieMania.domain.type.ReportType;
+import com.project.MovieMania.domain.type.UserStatus;
 import com.project.MovieMania.repository.TheaterRepository;
 import com.project.MovieMania.service.AdminMovieService;
 import com.project.MovieMania.service.AdminReportService;
+import com.project.MovieMania.service.AdminUserService;
 import com.project.MovieMania.service.TheaterService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -23,6 +25,7 @@ public class AdminRestController {
 	private AdminMovieService movieService;
 	private TheaterService theaterService;
 	private AdminReportService reportService;
+	private AdminUserService userService;
 	
 	@Autowired
 	public void setMovieService(AdminMovieService movieService) {
@@ -32,6 +35,8 @@ public class AdminRestController {
 	public void setTheaterService(TheaterService theaterService){ this.theaterService = theaterService; }
 	@Autowired
 	public void setReportService(AdminReportService reportService){this.reportService = reportService; }
+	@Autowired
+	public void setUserService(AdminUserService userService){ this.userService = userService; }
 	
 	@PostMapping("/movieList")
 	public QryMovieList listMovie(){
@@ -100,6 +105,27 @@ public class AdminRestController {
 				.count(count)
 				.status(status)
 				.build();
+		return qryResult;
+	}
+	
+	@GetMapping("/userList")
+	public List<User> userList(@RequestParam(required = false) String userStatus){
+		if(userStatus == null || userStatus.equals("ALL")) return userService.list();
+		else {
+			return userService.list(UserStatus.valueOf(userStatus));
+		}
+	}
+	
+	@GetMapping("/setUserStatus")
+	public QryResult setUserStatus(
+			@RequestParam("userId") Long userId
+			, @RequestParam("status") UserStatus userStatus
+	){
+		QryResult qryResult = new QryResult();
+		int count = userService.statusUpdate(userId, userStatus);
+		String status = (count == 1) ? "OK" : "FAIL";
+		qryResult.setCount(count);
+		qryResult.setStatus(status);
 		return qryResult;
 	}
 	

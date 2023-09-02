@@ -2,6 +2,7 @@ package com.project.MovieMania.controller;
 
 import com.project.MovieMania.domain.Movie;
 import com.project.MovieMania.domain.ShowInfo;
+import com.project.MovieMania.domain.type.UserStatus;
 import com.project.MovieMania.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -165,5 +166,13 @@ public class AdminController {
 	public String reportList(){
 		return "admin/report/list";
 	}
+	
+	// -------- user -----------------
+	
+	@GetMapping("/user")
+	public String userList(){
+		return "admin/user/list";
+	}
+	
 	
 }

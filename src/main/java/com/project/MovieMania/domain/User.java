@@ -77,6 +77,7 @@ public class User extends BaseEntity{
 	@JoinColumn(name = "user_id")
 	@ToString.Exclude
 	@Builder.Default
+	@JsonIgnore
 	private List<Question> questions = new ArrayList<>();
 	
 	public void addQuestions(Question... questions){

@@ -1,9 +1,11 @@
 package com.project.MovieMania.repository;
 
 import com.project.MovieMania.domain.User;
+import com.project.MovieMania.domain.type.UserStatus;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.time.LocalDate;
+import java.util.List;
 
 public interface UserRepository extends JpaRepository<User, Long> {
 
@@ -19,6 +21,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
     // 비밀번호 찾기
     User findByNameAndUsernameAndEmail(String name,String username, String email);
 
-
+    List<User> findByStatus(UserStatus userStatus);
 
 }
