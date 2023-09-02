@@ -18,54 +18,56 @@ select * from report;
 select * from question;
 select * from review r;
 
-delete from ticket_info where  id  = 12;
-
-delete from seat where ticket_info_id =12;
-
-update price_info
-set name = "학생"
-where id = 2;
+select m.*, si.status from movie m LEFT JOIN show_info si on m.id = si.id;
 
 select * from user;
 
-    select
-        t1_0.id,
-        t1_0.created_at,
-        t1_0.price_info_id,
-        t1_0.show_info_id,
-        t1_0.ticket_code,
-        t1_0.updated_at,
-        t1_0.user_id
-    from
-        ticket_info t1_0
-    where
-        t1_0.user_id=1
-        and t1_0.show_info_id=15;
+select * from show_info where status = "now";
 
 INSERT INTO moviedb.`user`
 (birthday, created_at, updated_at, gender, phone_num, name, password, username, email, status)
 VALUES('2000-05-03', NOW(), NOW(), 'MALE', '00011112222', '나', 'ㅇㅇㅇㅇㅇ', '나', 'PPP@VVV.COM', 'ACTIVE');
 
-INSERT INTO theater (cinema_id, theater_num, max_seat_column, max_seat_row)
-VALUES(1, 2, 10, 10),
-(2, 1, 15, 15),
-(2, 2, 13, 13),
-(1, 3, 12, 12);
-insert into theater(cinema_Id,theater_num,max_seat_column,max_seat_row)
-values(2,1,10,10);
+ 
 
+INSERT INTO movie
+(open_date, show_time, audi_cnt, movie_code, directors, genre, rate_grade, title, actors, img)
+VALUES('20240822', 0, 0, '0', '1', '1', '1', '1', '1', '1.img');
 
+INSERT INTO movie
+(open_date, show_time, audi_cnt, movie_code, directors, genre, rate_grade, title, actors, img)
+VALUES('20240922', 0, 0, '2', '2', '2', '2', '2', '2', '2');
 
 
 INSERT INTO movie
 (open_date, show_time, audi_cnt, movie_code, directors, genre, rate_grade, title, actors, img)
-VALUES('20240822', 0, 0, '0', '1', '1', '1', '1', '1', '1');
+VALUES('20240822', 0, 0, '3', '3', '3', '3', '3', '3', '3');
+
+INSERT INTO movie
+(open_date, show_time, audi_cnt, movie_code, directors, genre, rate_grade, title, actors, img)
+VALUES('20240822', 0, 0, '4', '4', '4', '4', '3', '23', '3');
+
+INSERT INTO movie
+(open_date, show_time, audi_cnt, movie_code, directors, genre, rate_grade, title, actors, img)
+VALUES('20240822', 0, 0, '5', '4', '4', '4', '3', '23', '3');
+INSERT INTO movie
+(open_date, show_time, audi_cnt, movie_code, directors, genre, rate_grade, title, actors, img)
+VALUES('20240822', 0, 0, '6', '4', '4', '4', '3', '23', '3');
+
+INSERT INTO movie
+(open_date, show_time, audi_cnt, movie_code, directors, genre, rate_grade, title, actors, img)
+VALUES('20240822', 0, 0, '7', '4', '4', '4', '3', '23', '3');
+
+INSERT INTO movie
+(open_date, show_time, audi_cnt, movie_code, directors, genre, rate_grade, title, actors, img)
+VALUES('20240822', 0, 0, '8', '4', '4', '4', '3', '23', '3');
+
+
+
 
 INSERT INTO show_info
 (movie_id, show_date_time, theater_id, status)
-VALUES(6, '20230923143000', 1, 'SOON');
-DELETE FROM show_info WHERE id=4;
-VALUES(1, '20240823110000', 6, 'NOW');
+VALUES(2, '20240823110000', 1, 'NOW');
 
 INSERT INTO ticket_info
 (price_info_id, show_info_id, user_id, ticket_code)

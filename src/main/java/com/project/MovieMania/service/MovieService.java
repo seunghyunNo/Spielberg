@@ -47,6 +47,10 @@ public interface MovieService {
 
     long countRecommend(Long reviewId);
 
+    List<ReviewDTO> getReviewByScore(Long id);
+
+    List<ReviewDTO> getReviewByRecommend(Long id);
+
     List<Review> findMyReview(Long id);
 
     List<Review> findMyReviewList(Model model,Integer page,long id);

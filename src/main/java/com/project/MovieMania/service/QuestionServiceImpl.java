@@ -93,12 +93,6 @@ public class QuestionServiceImpl implements QuestionService {
         return list;
     }
 
-    @Override
-    public Page<Question> search(String keyword) {
-        Page<Question> questionList = questionRepository.findByTitleContaining(keyword, PageRequest.of(0, 10, Sort.by(Sort.Order.desc("id"))));
-
-        return questionList;
-    }
 
     @Override
     public int write(Question question) {
@@ -145,6 +139,20 @@ public class QuestionServiceImpl implements QuestionService {
             q = questionRepository.save(q);
             result = 1;
         }
+
+        return result;
+    }
+
+    @Override
+    public int delete(long id) {
+        int result = 0;
+
+        Question question = questionRepository.findById(id).orElse(null);
+
+       if (question != null){
+           questionRepository.delete(question);
+           result = 1;
+       }
 
         return result;
     }

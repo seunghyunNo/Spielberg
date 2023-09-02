@@ -1,35 +1,135 @@
 <!DOCTYPE html>
 <html lang="ko"
-      xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      xmlns:th="http://www.thymeleaf.org">
 
 <head>
-  <meta charset="UTF-8">
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <meta charset="UTF-8">
+    <meta content="width=600" name="viewport">
 
-  <script src="https://kit.fontawesome.com/51772bd9bd.js"></script>
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
-  <title>HOME</title>
+    <script src="https://kit.fontawesome.com/51772bd9bd.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
+
+<!--    <link rel="stylesheet" th:href="@{/css/home/header.css}" type="text/css">-->
+    <link rel="stylesheet" th:href="@{/css/home/home.css}" type="text/css">
+
+    <script th:src="@{/js/home/home.js}"></script>
+
+    <title>HOME</title>
 </head>
+
 <body>
-  <div>
-    <h1>메인홈</h1>
-    <a th:href="@{/question/list}">고객센터</a>
+<div>
+    <th:block th:insert="~{/header::header}"></th:block>
 
+        <div id="carouselposter" class="container mt-3">
+            <div class="carousel carousel-dark slide" data-bs-ride="carousel" id="mvList">
+                <div class="carousel-inner">
+                    <div th:each="movie, i : ${movieList}">
+                        <div th:id="'moviepostercnt'+${i.count}" class="carousel-item">
+                            <div class="d-flex">
+                                <a id="imgbox" th:href="@{'/movie/detail/' + ${movie.id}}">
+                                    <img class="poster"
+                                         th:src="@{'/upload/' + ${movie.img}}"></a>
+                                <table id="mvinfo">
+                                    <tr>
+                                        <td>
+                                        </td>
+                                        <td class="r_info">
+                                            <p th:text="${movie.title}"></p>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <p>장르 : </p>
+                                        </td>
+                                        <td class="r_info">
+                                            <p th:text="${movie.genre}"></p>
+                                        </td>
+                                    </tr>
+                                   <tr>
+                                       <td>
+                                           <p>상영시간 :</p>
+                                       </td>
+                                       <td class="r_info">
+                                           <p>[[${movie.showTime}]] 분</p>
+                                       </td>
+                                   </tr>
+                                    <tr>
+                                        <td>
+                                            <p>등급 :</p>
+                                        </td>
+                                        <td class="r_info">
+                                            <p th:text="${movie.rateGrade}"></p>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <p>개봉일 : </p>
+                                        </td>
+                                        <td class="r_info">
+                                            <p th:text="${movie.openDate}"></p>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                        </td>
+                                        <td class="r_info" th:classappend="${#lists.size(movie.showInfos) > 0} ? 'has-status' : 'no-status'">
+                                            <p th:if="${#lists.size(movie.showInfos) > 0}" th:text="${movie.showInfos[0].status}"></p>
+                                            <p th:unless="${#lists.size(movie.showInfos) > 0}">상영 정보 없음</p>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <button class="carousel-control-prev" data-bs-slide="prev" data-bs-target="#mvList" type="button">
+                    <span aria-hidden="true" class="carousel-control-prev-icon"></span>
+                    <span class="visually-hidden">Previous</span>
+                </button>
+                <button class="carousel-control-next" data-bs-slide="next" data-bs-target="#mvList" type="button">
+                    <span aria-hidden="true" class="carousel-control-next-icon"></span>
+                    <span class="visually-hidden">Next</span>
+                </button>
+            </div>
+        </div>
+    <form enctype="multipart/form-data" method="get" th:action="@{/search}">
 
-      <div th:each="movie : ${movieList}">
-        <div><img th:src="@{'/upload/' + ${movie.img}}"></div>
-        <div><a th:text="${movie.title}"></a></div>
-        <div><a th:text="${movie.genre}"></a></div>
-        <div><a th:text="${movie.showTime}"></a></div>
-        <div><a th:text="${movie.rateGrade}"></a></div>
-      </div>
+        <div id="searchheader">
+            <input class="form-control input-sm w-25" name="keyword" placeholder="영화제목을 입력하세요" type="text">
+            <button class="btn btn-outline-primary" type="submit">검색</button>
+        </div>
 
-  </div>
+        <div class="container mt-4">
+        <table class="table table-hover">
+            <thead class="table-success">
+            <tr>
+                <th></th>
+                <th>제목</th>
+                <th>개봉일</th>
+                <th> </th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="movie : ${movieList}">
+                <td></td>
+                <td><a th:href="@{'/movie/detail/' + ${movie.id}}"><p th:text="${movie.title}"></p></a></td>
+                <td><p th:text="${movie.openDate}"></p></td>
+                <td><p></p></td>
+            </tr>
+            </tbody>
+        </table>
 
+            <th:block th:insert="~{home/homepage::homepage}"></th:block>
+        </div>
 
+    </form>
+
+</div>
 
 </body>
 </html>

@@ -1,7 +1,6 @@
 package com.project.MovieMania.service;
 
 import com.project.MovieMania.domain.Movie;
-import com.project.MovieMania.domain.Question;
 import com.project.MovieMania.repository.MovieRepository;
 import com.project.MovieMania.util.U;
 import jakarta.servlet.http.HttpSession;
@@ -24,15 +23,12 @@ public class HomeServiceImpl implements HomeService {
     @Value("${app.pagination.page_rows}")
     private int PAGE_ROWS;
 
-
     private MovieRepository movieRepository;
 
     @Autowired
     public void setMovieRepository(MovieRepository movieRepository) {
         this.movieRepository = movieRepository;
     }
-
-
 
     @Override
     public List<Movie> movieList() {
@@ -83,4 +79,19 @@ public class HomeServiceImpl implements HomeService {
 
         return movieList;
     }
+
+    @Override
+    public List<Movie> search(String keyword) {
+        List<Movie> movieList = movieRepository.findByTitleContaining(keyword);
+        return movieList;
+    }
+
+
+//    @Override
+//    public Page<Movie> search(String keyword, Pageable pageable) {
+//        Page<Movie> movies = movieRepository.findByTitleContaining(keyword, pageable);
+//        return null;
+//    }
+
+
 }

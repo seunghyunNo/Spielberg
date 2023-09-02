@@ -41,12 +41,6 @@ public class QuestionController {
 
     }
 
-    @GetMapping("/search")
-    public String search(@RequestParam("keyword") String keyword, Model model) {
-        Page<Question> searchList = questionService.search(keyword);
-        model.addAttribute("list", searchList);
-        return "/question/list";
-    }
 
     @GetMapping("/write")
     public void write(Model model){
@@ -80,6 +74,9 @@ public class QuestionController {
         user.setBirthday(LocalDate.now());
         user.setStatus(UserStatus.ACTIVE);
         user.setGender(Gender.MALE);
+
+        model.addAttribute("user_id", user.getId());
+        model.addAttribute("username", user.getUsername());
 
         question.setUser(user);
 
@@ -169,6 +166,12 @@ public class QuestionController {
 
         model.addAttribute("result", questionService.answer(question));
         return "question/answerOk";
+    }
+
+    @PostMapping("/delete")
+    public String delete(long id, Model model){
+        model.addAttribute("result", questionService.delete(id));
+        return "question/deleteOk";
     }
 
 
