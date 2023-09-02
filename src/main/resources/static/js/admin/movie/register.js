@@ -59,16 +59,13 @@ $(function(){
 
 				const movie = data.results[0];
 
-				const posterPath = movie.poster_path;
+				// const posterPath = movie.poster_path;
 
 
-				// 포스터 경로 전달
-				const posterUrl = `https://image.tmdb.org/t/p/w500${posterPath}`;
+				// // 포스터 경로 전달
+				// const posterUrl = `https://image.tmdb.org/t/p/w500${posterPath}`;
 
-				$("[name='img']").val(posterUrl);
-			})
-			.catch((error) => {
-				console.error("Error searching for movie:", error);
+				// $("[name='img']").val(posterUrl);
 			});
 	}
 
