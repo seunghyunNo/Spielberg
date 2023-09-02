@@ -12,7 +12,7 @@
     <title>결제 페이지</title>
 </head>
 <body>
-<th:block th:insert="~{common/header::header}"></th:block>
+<th:block th:insert="~{/header::header}"></th:block>
     <div class="container mt-3">
             <h3>총 결제금액</h3>
             <span class="m-2" th:text="|${cost}원|"></span>
@@ -28,7 +28,7 @@
             <span>학생</span>
             <span th:text="|${studentCnt}명|"></span>
 
-            <button id="paymentBtn" class="m-3" type="button">결제</button>
+            <button id="paymentBtn" class="m-3 btn btn-outline-dark" type="button">결제</button>
     </div>
 </body>
 </html>

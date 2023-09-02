@@ -1,7 +1,31 @@
+body{
+    background-color:gray;
+}
+
 .selectSeat{
 	background-color:black;
+    width: 50px;
+    height: 40px;
+    margin: 20px;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
 }
 
 .seat{
-    background-color:gray;
+    background-color:white;
+    width: 50px;
+    height: 40px;
+    margin: 20px;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+}
+
+.screen{
+    background-color: #fff;
+    margin: 20px;
+    padding: 5px;
+    width: 1000px;
+    height: 200px;
+    transform: rotateX(-45deg);
+    box_shadow: 0 3px 10px rgb(255 255 255 / 70%);
 }

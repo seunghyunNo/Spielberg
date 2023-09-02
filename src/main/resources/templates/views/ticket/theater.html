@@ -12,13 +12,13 @@
     <title>극장 선택 페이지</title>
 </head>
 <body>
-<th:block th:insert="~{common/header::header}"></th:block>
+<th:block th:insert="~{/header::header}"></th:block>
     <div class="container mt-3">
         <form th:action="@{|/ticket/theater/${movieId}|}" name="theaterFrm" method="post" enctype="multipart/form-data">
             <input type="hidden" name="showInfoId" th:value="${showInfoId}">
             <input type="hidden" id="movieId" name="movieId" th:value="${movieId}">
             <div class="container ml-2">
-                <select name="cinemaName" id="cinemaName" title="cinemaList">
+                <select name="cinemaName" id="cinemaName" title="cinemaList" style="width:200px;height:30px;text-align:center;">
                     <option>극장 선택</option>
                     <th:block th:each="cinema:${cinemas}">
                         <option th:value="${cinema.name}" th:utext="${cinema.name}" th:selected="cinemaName==${cinema.name}"></option>
@@ -26,12 +26,12 @@
                 </select>
 
                 <input type="hidden" id="movieDate" th:value="${dates}">
-                <select name="date" id="date" title="dateList">
+                <select name="date" id="date" title="dateList" style="width:200px;height:30px;text-align:center;">
                     <option selected>날짜 선택</option>
                 </select>
 
-                <input type="hidden" id="movieTime" th:value="${times}">
-                <select name="time" id="time" title="timeList">
+                <input type="hidden" id="movieTime" th:value="${times}" >
+                <select name="time" id="time" title="timeList" style="width:200px;height:30px;text-align:center;">
                     <option selected>시간 선택</option>
                 </select>
             </div>

@@ -211,13 +211,20 @@ public class TheaterController {
     }
 
     @GetMapping("/complete/{showInfoId}")
-    public String complete(@PathVariable Long showInfoId)
+    public String complete(@PathVariable Long showInfoId,Model model)
     {
         PrincipalDetails userDetails = (PrincipalDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
         User user = userDetails.getUser();
 
         List<TicketInfo> ticketList = ticketingService.findTicket(showInfoId,user.getId());
+
+        String showTime = ticketList.get(0).getShowInfo().getShowDateTime().toLocalDate().toString() +"일"+ticketList.get(0).getShowInfo().getShowDateTime().toLocalTime().toString();
+        String peopleCnt = ticketList.size() + "인";
+
+        model.addAttribute("movieName",ticketList.get(0).getShowInfo().getMovie().getTitle());
+        model.addAttribute("showTime",showTime);
+        model.addAttribute("peopleCnt",peopleCnt);
         return "ticket/complete";
     }
 }
