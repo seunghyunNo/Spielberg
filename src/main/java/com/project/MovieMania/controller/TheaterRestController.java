@@ -58,10 +58,21 @@ public class TheaterRestController {
         showInfoList.clear();
         showInfoList = showInfoService.findByMovieAndTheater(id,theaterInfo);
         List<LocalDate> dateList = new ArrayList<>();
-
         for (int i = 0; i < showInfoList.size(); i++)
         {
-            dateList.add(showInfoList.get(i).getShowDateTime().toLocalDate());
+            boolean check = false;
+            for(int x = 0; x < dateList.size(); x++)
+            {
+                String date = showInfoList.get(i).getShowDateTime().toLocalDate().toString();
+                String checkDate = dateList.get(x).toString();
+                if(date.equals(checkDate))
+                {
+                    check = true;
+                }
+            }
+            if(!check) {
+                dateList.add(showInfoList.get(i).getShowDateTime().toLocalDate());
+            }
         }
 
         return dateList;

@@ -25,13 +25,14 @@ $(function(){
                     dateS.append(`<option value="${date}">${date}<option>`);
                 }
 
-                for(var x = 0; x < data.length; x++)
+                for(var x = 1; x <= data.length; x++)
                 {
-                    let index = 2 * (x+1);
+                    let index = x+1;
+
+
                     $(`select[name=date] option:eq(${index})`).remove();
                 }
-                let lastIndex =$("select[name=date] option").length-1;
-                 $(`select[name=date] option:eq(${lastIndex})`).remove();
+
             },
         });
 	});
@@ -62,14 +63,12 @@ $(function(){
                         timeS.append(`<option value="${time}">${time}<option>`);
                     }
 
-                    for(var x = 1; x < data.length; x++)
+                    for(var x = 1; x <= data.length; x++)
                     {
-                        let index = 2 * x;
+                        let index = x + 1;
                         $(`select[name=time] option:eq(${index})`).remove();
                     }
-                    let lastIndex =$("select[name=time] option").length-1;
-                     $(`select[name=time] option:eq(${lastIndex})`).remove();
-                    console.log(timeS.val());
+
                 },
             });
 
