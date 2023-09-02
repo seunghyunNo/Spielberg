@@ -18,6 +18,7 @@
   <script th:inline="javascript">
 		const movieId = [[${movie.id}]];
 		const movieTitle = [[${movie.title}]];
+		const apiKey = [[${TMDB_ApiKey}]];
   </script>
 
   <link rel="stylesheet" type="text/css" th:href="@{/css/movie/trailer.css}">
@@ -25,6 +26,7 @@
   <title>스틸컷/트레일러</title>
 </head>
 <body>
+  <th:block th:insert="~{header::header}"></th:block>
   <th:block th:insert="~{movie/fragment/header::header}"></th:block>
   <div class="container mt-5 custom-lighter-bg mb-5">
     <th:block th:insert="~{movie/fragment/navi::navigation}"></th:block>

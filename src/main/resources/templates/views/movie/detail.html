@@ -20,6 +20,8 @@
     <script th:inline="javascript">
 		const movieId = [[${movie.id}]];
 		const movieTitle = [[${movie.title}]];
+		const apiKey = [[${TMDB_ApiKey}]];
+		const birth = [[${userBirth}]];
 	</script>
 
     <link rel="stylesheet" type="text/css" th:href="@{/css/movie/detail.css}">
@@ -27,6 +29,7 @@
     <title>영화상세페이지</title>
 </head>
 <body>
+    <th:block th:insert="~{header::header}"></th:block>
     <th:block th:insert="~{movie/fragment/header::header}"></th:block>
     <div class="container mt-5">
     <th:block th:insert="~{movie/fragment/navi::navigation}"></th:block>

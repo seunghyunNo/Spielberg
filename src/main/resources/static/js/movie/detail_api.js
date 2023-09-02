@@ -1,6 +1,4 @@
 $(function () {
-  const apiKey = "25930c0ce8107734d85ee82311f96b0d";
-//  const movieTitle = "범죄도시";
 
   getMovieId(apiKey, movieTitle);
   $("#showMoreButton").hide();
