@@ -6,13 +6,11 @@ $(function () {
     var people = 0;
     $("#adult").change(function () {
         adultNum = parseInt($(this).val());
-        people += adultNum;
         console.log(adultNum + "명");
     });
 
     $("#student").change(function () {
         studentNum = parseInt($(this).val());
-        people += studentNum;
         console.log(studentNum + "명");
     });
 
@@ -113,6 +111,7 @@ $(function () {
 
     });
     $("#purchaseBtn").click(function () {
+        people = adultNum + studentNum;
         console.log("카운트" + cnt);
         console.log("인원수" + people);
         if (cnt == people) {

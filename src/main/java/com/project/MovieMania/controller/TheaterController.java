@@ -53,7 +53,7 @@ public class TheaterController {
 
         time = " " + time;
         String dateTime = date.concat(time);
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         LocalDateTime showDateTime = LocalDateTime.parse(dateTime, formatter);
         ShowInfo showInfo = showInfoService.findShowInfo(movie_id, cinemaName, showDateTime, model);
 
