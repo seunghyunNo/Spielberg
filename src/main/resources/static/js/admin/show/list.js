@@ -9,7 +9,11 @@ $(function(){
 
 	$('[show-del-btn]').click(function(){
 		let answer = confirm("삭제하시겠습니까?");
-		alert($(this).attr('show-del-btn'));
+		if(answer){
+			$("[name='showInfoId']").val($(this).attr('show-del-btn'));
+			$("[name='frmDel']").submit();	
+		}
+		
 	})
 
 });

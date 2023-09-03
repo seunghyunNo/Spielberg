@@ -29,10 +29,10 @@ public class ShowInfo {
 	@DateTimeFormat(pattern = "MM/dd/yyyy'T'HH:mm")
 	private LocalDateTime showDateTime;
 	
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.EAGER)
 	private Movie movie;
 	
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	private Theater theater;
 	
 }

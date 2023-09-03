@@ -1,6 +1,7 @@
 package com.project.MovieMania.service;
 
 import com.project.MovieMania.domain.Cinema;
+import com.project.MovieMania.domain.Movie;
 import com.project.MovieMania.domain.ShowInfo;
 import com.project.MovieMania.domain.Theater;
 import com.project.MovieMania.repository.CinemaRepository;
@@ -56,8 +57,25 @@ public class TheaterServiceImpl implements TheaterService{
     }
 
     @Override
-    public Set<LocalDate> dateList() {
-        List<ShowInfo> showInfos = showInfoRepository.findAll();
+    public Set<Cinema> cinemaSet(Long movieId) {
+        Movie movie = movieRepository.findById(movieId).orElse(null);
+        List<ShowInfo> showInfoList = showInfoRepository.findByMovie(movie);
+        Set<Cinema> cinemaSet = new HashSet<>();
+        for(int i = 0; i < showInfoList.size(); i++)
+        {
+            cinemaSet.add(showInfoList.get(i).getTheater().getCinema());
+        }
+
+        return cinemaSet;
+    }
+
+    @Override
+    public Set<LocalDate> dateList(Long movieId) {
+        Movie movie = movieRepository.findById(movieId).orElse(null);
+        List<ShowInfo> showInfos = showInfoRepository.findByMovie(movie);
+
+
+
         Set<LocalDate> dates =new HashSet<>();
 
         for(int i = 0; i < showInfos.size(); i++)
@@ -69,8 +87,9 @@ public class TheaterServiceImpl implements TheaterService{
     }
 
     @Override
-    public Set<LocalTime> timeList() {
-        List<ShowInfo> showInfos = showInfoRepository.findAll();
+    public Set<LocalTime> timeList(Long movieId) {
+        Movie movie = movieRepository.findById(movieId).orElse(null);
+        List<ShowInfo> showInfos = showInfoRepository.findByMovie(movie);
         Set<LocalTime> times =new HashSet<>();
 
         for(int i = 0; i < showInfos.size(); i++)
@@ -85,6 +104,12 @@ public class TheaterServiceImpl implements TheaterService{
     public Theater findById(Long theaterId) {
         Theater theater = theaterRepository.findById(theaterId).orElse(null);
 
+        return theater;
+    }
+
+    @Override
+    public List<Theater> findByCinemaId(Long cinemaId) {
+        List<Theater> theater = theaterRepository.findTheaterByCinemaId(cinemaId);
         return theater;
     }
 

@@ -14,11 +14,15 @@ public interface TheaterService {
 
     List<Cinema> cinemaList();
 
-    Set<LocalDate> dateList();
+    Set<Cinema> cinemaSet(Long movieId);
 
-    Set<LocalTime> timeList();
+    Set<LocalDate> dateList(Long movieId);
+
+    Set<LocalTime> timeList(Long movieId);
 
     Theater findById(Long theaterId);
+
+    List<Theater> findByCinemaId(Long cinemaId);
 
 
 }

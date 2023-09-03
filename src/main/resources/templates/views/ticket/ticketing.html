@@ -13,6 +13,7 @@
     <title>좌석 선택 페이지</title>
 </head>
 <body>
+<th:block th:insert="~{/header::header}"></th:block>
     <div class="container mt-5">
         <form th:action="@{|/ticket/ticketing/${showInfoId}|}" name="ticketingFrm" method="post" enctype="multipart/form-data">
             <input type="hidden" name="theaterNum" th:value="${theaterNum}">
@@ -36,9 +37,9 @@
                 <option value="5">5명</option>
             </select>
 
-            <h2 style="text-align:center">SCREEN</h2>
+            <div class="screen"></div>
             <input type="hidden" id="showInfoId" name="showInfoId" th:value="${showInfoId}">
-<!--            <input type="hidden" id="userId" name="userId" th:value="${userId}">-->
+            <input type="hidden" id="userId" name="userId" th:value="${userId}">
             <th:block th:each="sColumn:${seatMaxColumn}">
                 <div th:data-seat-column="${sColumn}">
                 <th:block th:each="sRow:${seatMaxRow}" >
@@ -46,13 +47,13 @@
                     <span>
                         <input type="hidden" name="seatRow" th:value="${writeSeat.seatRow}">
                         <p style="display:inline" th:data-seat-row="${sRow}"></p>
-                        <button type="button"  class="seat m-4" th:data-column-row="|${sColumn}${sRow}|" th:text="|${sColumn}열${sRow}행|">좌석</button>
+                        <button type="button"  class="seat m-4" th:data-column-row="|${sColumn}${sRow}|" ></button>
                     </span>
                 </th:block>
                 </div>
             </th:block>
 
-            <button type="button" id="purchaseBtn">결제하기</button>
+            <button class="btn btn-outline-dark float-end me-1 b-3" style="background-color:white" type="button" id="purchaseBtn">결제하기</button>
         </form>
     </div>
 </body>

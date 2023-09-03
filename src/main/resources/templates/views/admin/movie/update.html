@@ -24,14 +24,14 @@
 			<div class="my-2 row">
 				<label class="col-2 col-form-label">ID :</label>
 				<div class="col-10">
-					<input name="movieId" class="form-control" th:value="${movie.id}" type="text" disabled readonly/>
+					<input name="id" class="form-control" th:value="${movie.id}" readonly/>
 				</div>
 			</div>
 			<div class="my-2 row">
 				<label class="col-2 col-form-label">영화 코드 :</label>
 				<div class="col-10">
 					<input name="movieCode" class="form-control" placeholder="영화 코드 (API)" type="text"
-					       th:value="${movieCode} ? ${movieCode} : ''" disabled>
+					       th:value="${movieCode} ? ${movieCode} : ''" readonly>
 				</div>
 			</div>
 			<div class="my-2 row">

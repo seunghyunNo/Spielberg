@@ -1,11 +1,10 @@
 package com.project.MovieMania.controller;
 
-import com.project.MovieMania.domain.PriceInfo;
-import com.project.MovieMania.domain.Seat;
-import com.project.MovieMania.domain.ShowInfo;
-import com.project.MovieMania.domain.TicketInfo;
+import com.project.MovieMania.config.PrincipalDetails;
+import com.project.MovieMania.domain.*;
 import com.project.MovieMania.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -40,9 +39,9 @@ public class TheaterController {
     public String theater(@PathVariable Long movie_id,Model model)
     {
         model.addAttribute("movieId",movie_id);
-        model.addAttribute("cinemas",theaterService.cinemaList());
-        model.addAttribute("dates",theaterService.dateList());
-        model.addAttribute("times",theaterService.timeList());
+        model.addAttribute("cinemas",theaterService.cinemaSet(movie_id));
+        model.addAttribute("dates",theaterService.dateList(movie_id));
+        model.addAttribute("times",theaterService.timeList(movie_id));
 
         return "ticket/theater";
     }
@@ -53,7 +52,7 @@ public class TheaterController {
 
         time = " " + time;
         String dateTime = date.concat(time);
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         LocalDateTime showDateTime = LocalDateTime.parse(dateTime, formatter);
         ShowInfo showInfo = showInfoService.findShowInfo(movie_id, cinemaName, showDateTime, model);
 
@@ -82,13 +81,22 @@ public class TheaterController {
         }
         model.addAttribute("seatMaxColumn", seatColumnList);
 
+        try{
+            PrincipalDetails userDetails = (PrincipalDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+            User user = userDetails.getUser();
+            Long id = user.getId();
+            model.addAttribute("userId", id);
+        } catch (Exception e){
+            model.addAttribute("userId", null);
+        }
+
         return "ticket/ticketing";
     }
 
     @PostMapping("/ticketing/{showInfoId}")
     public String ticketing(@PathVariable Long showInfoId,
                             Integer adult, Integer student,
-                            @RequestParam List<Integer> seatRow, @RequestParam List<Integer> seatColumn, Model model) {
+                            @RequestParam List<Integer> seatRow, @RequestParam List<Integer> seatColumn,Long userId, Model model) {
         TicketInfo ticketInfo = new TicketInfo();
         PriceInfo priceInfo = new PriceInfo();
         Set<Integer> rowList = new HashSet<>();
@@ -113,14 +121,13 @@ public class TheaterController {
             }
         }
 
-        System.out.println(seatRow);
-        System.out.println(seatColumn);
+
         if (adult > 0 && student == 0) {         // 성인만 선택
             for (int i = 0; i < adult; i++) {
                 priceInfo = priceService.checkAdultNum();
                 for (int x = 0; x < seatColumn.size(); x++) {
                     for (int y = 0; y < seatRow.size(); y++) {
-                        ticketInfo = ticketingService.writeTicket(showInfoId, 2L, priceInfo.getId());
+                        ticketInfo = ticketingService.writeTicket(showInfoId, userId, priceInfo.getId());
                         seatService.writeSeat(ticketInfo, seatRow.get(y), seatColumn.get(x));
                     }
                 }
@@ -130,7 +137,7 @@ public class TheaterController {
                 priceInfo = priceService.checkStudentNum();
                 for (int x = 0; x < seatColumn.size(); x++) {
                     for (int y = 0; y < seatRow.size(); y++) {
-                        ticketInfo = ticketingService.writeTicket(showInfoId, 2L, priceInfo.getId());
+                        ticketInfo = ticketingService.writeTicket(showInfoId, userId, priceInfo.getId());
                         seatService.writeSeat(ticketInfo, seatRow.get(y), seatColumn.get(x));
                     }
                 }
@@ -145,12 +152,12 @@ public class TheaterController {
                 for (int y = 0; y < seatRow.size(); y++) {
                     if (adultCnt != adult) {
                         priceInfo = priceService.checkAdultNum();
-                        ticketInfo = ticketingService.writeTicket(showInfoId, 2L, priceInfo.getId());
+                        ticketInfo = ticketingService.writeTicket(showInfoId, userId, priceInfo.getId());
                         seatService.writeSeat(ticketInfo, seatRow.get(y), seatColumn.get(x));
                         adultCnt++;
                     } else if (student != studentCnt) {
                         priceInfo = priceService.checkStudentNum();
-                        ticketInfo = ticketingService.writeTicket(showInfoId, 2L, priceInfo.getId());
+                        ticketInfo = ticketingService.writeTicket(showInfoId, userId, priceInfo.getId());
                         seatService.writeSeat(ticketInfo, seatRow.get(y), seatColumn.get(x));
                         studentCnt++;
                     }
@@ -161,20 +168,21 @@ public class TheaterController {
         }
 
 
-        // 로그인한 유저 정보 모델로 넘기기 TODO
-//        model.addAttribute("showInfoId",ticketInfo.getShowInfo().getId());
+
         ShowInfo showInfo = showInfoService.findById(showInfoId, model);
 
 
-//        model.addAttribute("theaterNum",showInfo.getTheater().getTheaterNum());
 
         return "redirect:/ticket/purchase/" + showInfo.getId();
     }
 
     @GetMapping("/purchase/{showInfoId}")
     public String getPurchase(@PathVariable Long showInfoId, Model model) {
-        List<TicketInfo> buyList = ticketingService.findBuyTicket(showInfoId, 2L);
-        System.out.println(buyList);
+        PrincipalDetails userDetails = (PrincipalDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        User user = userDetails.getUser();
+
+        List<TicketInfo> buyList = ticketingService.findBuyTicket(showInfoId, user.getId());
         int cost = 0;
         int adultCnt = 0;
         int studentCnt = 0;
@@ -197,15 +205,26 @@ public class TheaterController {
         model.addAttribute("studentCnt", studentCnt);
         model.addAttribute("ticketCnt", ticketCnt);
         model.addAttribute("showInfoId",showInfoId);
-        // 로그인된 유저 아이디 모델로 넘기기
+
 
         return "ticket/purchase";
     }
 
     @GetMapping("/complete/{showInfoId}")
-    public String complete(@PathVariable Long showInfoId,Long userId)
+    public String complete(@PathVariable Long showInfoId,Model model)
     {
-        List<TicketInfo> ticketList = ticketingService.findTicket(showInfoId,2L);
+        PrincipalDetails userDetails = (PrincipalDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        User user = userDetails.getUser();
+
+        List<TicketInfo> ticketList = ticketingService.findTicket(showInfoId,user.getId());
+
+        String showTime = ticketList.get(0).getShowInfo().getShowDateTime().toLocalDate().toString() +"일"+ticketList.get(0).getShowInfo().getShowDateTime().toLocalTime().toString();
+        String peopleCnt = ticketList.size() + "인";
+
+        model.addAttribute("movieName",ticketList.get(0).getShowInfo().getMovie().getTitle());
+        model.addAttribute("showTime",showTime);
+        model.addAttribute("peopleCnt",peopleCnt);
         return "ticket/complete";
     }
 }

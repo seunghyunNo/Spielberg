@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+	<meta charset="UTF-8">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+	<title>Admin - Report List</title>
+	
+	<script th:src="@{/js/admin/report/list.js}"></script>
+	<!-- <link th:href="@{/css/admin/report/list.css}" rel="stylesheet" type="text/css"> -->
+</head>
+<body>
+	<div class="container">
+		<th:block th:insert="~{admin/header/navbar::adminNav}"></th:block>
+		<h2 class="my-3">신고 목록</h2>
+		<hr>
+		<div class="row">
+			<div class="col-3">
+				<select class="form-select" id="selectReportType">
+					<option value="ALL" selected>전체 보기</option>
+					<option value="SPOILER">스포일러</option>
+					<option value="BADWORD">욕설 및 비방</option>
+				</select>
+			</div>
+		</div>
+		<table id="reportTable" class="table">
+			<thead>
+			<tr>
+				<th>#</th>
+				<th>Type</th>
+				<th>Reporter#</th>
+				<th>Username</th>
+				<th>Review#</th>
+				<th>Review Content</th>
+				<th>Review CreatedAt</th>
+				<th>Writer#</th>
+				<th>Username</th>
+				<th></th>
+			</tr>
+			</thead>
+			<tbody>
+			
+			</tbody>
+		</table>
+	</div>
+</body>
+</html>

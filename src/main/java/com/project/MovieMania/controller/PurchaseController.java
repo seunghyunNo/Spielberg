@@ -20,7 +20,6 @@ public class PurchaseController {
     public @ResponseBody Purchase payment(@RequestParam String itemName,@RequestParam String totalCnt,@RequestParam String cost
             ,@RequestParam String showInfoId)
     {
-        System.out.println(showInfoId);
         Long id = Long.parseLong(showInfoId);
         Purchase response = purchaseService.paymentKakaoPay(itemName,totalCnt,cost,id);
 
