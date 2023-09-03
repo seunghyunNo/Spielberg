@@ -81,11 +81,14 @@ public class TheaterController {
         }
         model.addAttribute("seatMaxColumn", seatColumnList);
 
-        PrincipalDetails userDetails = (PrincipalDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-
-        User user = userDetails.getUser();
-
-        model.addAttribute("userId",user.getId());
+        try{
+            PrincipalDetails userDetails = (PrincipalDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+            User user = userDetails.getUser();
+            Long id = user.getId();
+            model.addAttribute("userId", id);
+        } catch (Exception e){
+            model.addAttribute("userId", null);
+        }
 
         return "ticket/ticketing";
     }
