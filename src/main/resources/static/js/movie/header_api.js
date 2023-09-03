@@ -3,7 +3,6 @@ $(function () {
   getMovie(apiKey, movieTitle);
 
   // 관객수 변환 함수
-  formatNumber("#audiCnt");
   formatNumber("#audiNum");
 
   // 예매하기 나이 검증
