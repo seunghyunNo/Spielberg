@@ -294,9 +294,9 @@ public class UserController {
         model.addAttribute("username",user.getUsername());
         model.addAttribute("authority",user.getAuthorities());
 
-        model.addAttribute("list",userService.findTicketList(model,page, user.getId()));
+        model.addAttribute("list",ticketingService.findMyTicketList(model,page, user.getId()));
 
-//        List<TicketInfo> ticketInfoList = ticketingService.findMyTicketInfo(user.getId());
+        List<TicketInfo> ticketInfoList = ticketingService.findMyTicketInfo(user.getId());
     }
 
     @GetMapping("/myPage/myQuestion")
@@ -310,14 +310,14 @@ public class UserController {
         model.addAttribute("id",user.getId());
         model.addAttribute("username",user.getUsername());
         model.addAttribute("authority",user.getAuthorities());
-        model.addAttribute("list",userService.findQuestionList(model,page,user.getId()));
+        model.addAttribute("list",questionService.findMyQuestionList(model,page,user.getId()));
 
-//        List<Question> questionList = questionService.findMyQuestion(user.getId());
+        List<Question> questionList = questionService.findMyQuestion(user.getId());
 
     }
 
     @GetMapping("/myPage/myReview")
-    public void myReview(Model model,Integer page){
+    public String myReview(Model model,Integer page){
         PrincipalDetails userDetails = (PrincipalDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
         User user = userDetails.getUser();
@@ -327,15 +327,13 @@ public class UserController {
         model.addAttribute("id",id);
         model.addAttribute("username",user.getUsername());
         model.addAttribute("authority",user.getAuthorities());
-        model.addAttribute("list", userService.findReview(id));
-
-        System.out.println(userService.findReview(id));
+        model.addAttribute("list", movieService.findMyReview(id));
         
         // 여기부터 확실하지가 않음
 
-        /*List<Review> reviewList = movieService.findMyReviewList(model,page,user.getId());*/
+        List<Review> reviewList = movieService.findMyReviewList(model,page,user.getId());
         
-
+        return "user/myPage/myReview";
     }
 
     @InitBinder

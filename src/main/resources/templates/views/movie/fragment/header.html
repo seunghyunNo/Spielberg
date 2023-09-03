@@ -15,7 +15,7 @@
                         <span> | </span>
                         <span>장르 [[${movie.genre}]]</span>
                         <span> | </span>
-                        <span>심의등급 [[${movie.rateGrade}]]</span>
+                        <span>심의등급 <span id="grade">[[${movie.rateGrade}]]</span></span>
                     </div>
                     <div class="position-absolute w-50 row" style="bottom: 50px">
                         <b class="col-md-8">
@@ -23,11 +23,9 @@
                             <span> | </span>
                             <span>예매율 [[${rate}]] </span>
                             <span> | </span>
-                            <span>총 누적관객수 [[${movie.audiCnt}]]</span>
-                            <span> | </span>
-                            <span>누적관객수 [[${audinum}]]</span>
+                            <span>누적관객수 <span id="audiNum">[[${audinum}]]</span></span>
                         </b>
-                        <a class = "btn btn-primary col-md-3" th:href="@{'/ticket/theater/' + ${movie.id}}">예매하기</a>
+                        <a class = "btn btn-primary col-md-3" id="reserve" th:href="@{'/ticket/theater/' + ${movie.id}}">예매하기</a>
                     </div>
                 </div>
             </div>
