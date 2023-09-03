@@ -1,12 +1,10 @@
 package com.project.MovieMania.repository;
 
-import com.project.MovieMania.domain.DTO.MovieDTO;
 import com.project.MovieMania.domain.Movie;
 import com.project.MovieMania.domain.ShowInfo;
 import com.project.MovieMania.domain.Theater;
 import com.project.MovieMania.domain.type.ShowInfoStatus;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -23,7 +21,7 @@ public interface ShowInfoRepository extends JpaRepository<ShowInfo, Long> {
 
     List<ShowInfo> findByTheaterAndMovie(Theater theater,Movie movie);
 
-    List<ShowInfo> findByStatus(ShowInfoStatus status);
+    List<ShowInfo> findByStatusOrderByShowDateTimeDesc(ShowInfoStatus status);
 
     List<ShowInfo> findByMovieIdAndShowDateTime(Long movieId,LocalDateTime showDateTime);
 

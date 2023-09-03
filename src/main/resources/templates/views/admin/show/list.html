@@ -41,27 +41,24 @@
 				<th colspan="2">극장</th>
 				<th rowspan="2">상태</th>
 				<th rowspan="2">상영 날짜 시간</th>
-				<th></th>
-				<th></th>
+				<th rowspan="2"></th>
+				<th rowspan="2"></th>
 			</tr>
 			<tr>
 				<th>movie#</th>
 				<th>Title</th>
 				<th>theater#</th>
 				<th>Num</th>
-				<th></th>
-				<th></th>
 			</tr>
 			</thead>
 			<tbody>
 				<th:block th:each="show : ${list}">
 					<tr>
-						<input type="hidden" th:value="${show}">
 						<td th:text="${show.id}"></td>
 						<td th:text="${show.movie.id}"></td>
 						<td><a th:href="@{'/admin/movie/detail/' + ${show.movie.id}}" th:text="${show.movie.title}"></a></td>
 						<td th:text="${show.theater.id}"></td>
-						<td th:text="${show.theater.theaterNum}"></td>
+						<td th:text="${show.theater.theaterNum} + '관'"></td>
 						<td th:text="${show.status}"></td>
 						<td th:text="${show.showDateTime}"></td>
 						<td><a th:href="@{'/admin/show/update/' + ${show.id}}" class="btn btn-outline-primary">수정</a></td>
@@ -69,6 +66,9 @@
 					</tr>
 				</th:block>
 			</tbody>
+			<form name="frmDel" method="post" th:action="@{delete}">
+				<input type="hidden" name="showInfoId" id="inputId">
+			</form>
 		</table>
 	</div>
 	

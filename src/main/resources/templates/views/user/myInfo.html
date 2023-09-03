@@ -8,7 +8,7 @@
     <div class="row justify-content-start align-item-center m-3">
       <div class="card-body align-center">
         <h2 class="col-auto">[[${username}]] 님 안녕하세요</h2>
-        <h2 class="col-auto">[[${authority[0].name}]]</h2>
+        <h2 class="col-auto">회원님의 등급은 [[${authority[0].name}]] 입니다</h2>
         <nav class="navbar navbar-expend-md">
           <div class="container-fluid">
             <ul class="navbar-nav">
@@ -28,8 +28,8 @@
     </div>
   </div>
 
-  <nav class="navbar navbar-expend-md navbar-light bg-light mt-2">
-    <div class="collapse navbar-collapse justify-content-center" id="navbarSupportedContent">
+  <nav class="navbar navbar-expand-md navbar-light bg-light mt-2">
+    <div class="collapse navbar-collapse justify-content-center">
       <ul class="navbar-nav mr-auto">
         <li class="nav-item active">
           <a class="nav-link" th:href="@{/user/myPage/myTicket}">내 예매 목록</a>

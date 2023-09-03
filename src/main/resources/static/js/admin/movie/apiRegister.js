@@ -4,6 +4,8 @@ let curPage=1;
 let itemPerPage=10;
 let startPage=1;
 let endPage= startPage + itemPerPage - 1;
+let movieNm = "";
+let directorNm = "";
 $(function(){
 	fetch(`http://www.kobis.or.kr/kobisopenapi/webservice/rest/movie/searchMovieList.json?key=${api_key}`)
 		.then((response) => response.json())
@@ -13,11 +15,11 @@ $(function(){
 			$("#totalPage").text(totalPage);
 		});
 	
-	loadList(curPage, itemPerPage);
-	loadPagination(curPage, startPage, endPage);
+	loadList();
+	loadPagination();
 
 	$("#single-right").click(function(){
-		curPage += 1;
+		curPage ++;
 		loadList();
 		
 		startPage = (parseInt((curPage-1)/itemPerPage) * itemPerPage)+1;
@@ -27,7 +29,7 @@ $(function(){
 	});
 
 	$("#single-left").click(function(){
-		curPage -= 1;
+		curPage --;
 		loadList();
 
 		startPage = (parseInt((curPage-1)/itemPerPage) * itemPerPage)+1;
@@ -48,6 +50,19 @@ $(function(){
 		startPage -= itemPerPage;
 		endPage -= itemPerPage;
 		curPage = endPage;
+		loadList();
+		loadPagination();
+	})
+
+	$('#searchBtn').click(function(){
+		directorNm = $("#searchDirector").val();
+		movieNm = $("#searchMovie").val();
+		console.log("movieNm : ", movieNm);
+		console.log("directorNm : ", directorNm);
+		curPage = 1;
+		startPage = 1;
+		endPage = 10;
+
 		loadList();
 		loadPagination();
 	})
@@ -99,13 +114,15 @@ function numClick(){
 
 function loadList(){
 	$("#movieList tbody").empty();
-	fetch(`http://www.kobis.or.kr/kobisopenapi/webservice/rest/movie/searchMovieList.json?key=${api_key}&curPage=${curPage}&itemPerPage=${itemPerPage}`)
+	fetch(`http://www.kobis.or.kr/kobisopenapi/webservice/rest/movie/searchMovieList.json?key=${api_key}&movieNm=${movieNm}&directorNm=${directorNm}&curPage=${curPage}&itemPerPage=${itemPerPage}`)
 		.then((response) => response.json())
 		.then((data) => data.movieListResult)
 		.then((data) => {
 			$("#sourceBy").text(data.source);
 			$("#movieCnt").text(data.totCnt);
 			$("#curPage").text(curPage);
+			totalPage = Math.ceil(data.totCnt/itemPerPage);
+			$("#totalPage").text(totalPage);
 			return data.movieList;
 		})
 		.then((movieList) => {

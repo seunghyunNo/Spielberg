@@ -64,6 +64,22 @@ $(document).ready(function(){
         }
     });
 
+    $('#phoneCheckBtn').click(function(){
+        // 입력한 핸드폰 번호
+        const phoneNum = $('#phoneNum').val().trim();
+
+        var phoneRegex=/^01([0|1|6|7|8|9])-?([0-9]{3,4})-?([0-9]{4})$/;
+
+        if(!phoneNum){
+            alert("핸드폰 번호를 입력해주세요")
+            $("#phoneNum").focus();
+            return;
+        }else if(!phoneRegex.text(phoneNum)){
+            alert("유효한 핸드폰번호를 입력해주세요");
+            phoneNumInput.focus;
+            return;
+        }
+    })
 
     $('#emailCheckBtn').click(function(){
 
@@ -82,7 +98,6 @@ $(document).ready(function(){
             emailInput.focus();
             return;
         }
-
         // 메일 중복 확인
 
         $.ajax({
@@ -96,33 +111,6 @@ $(document).ready(function(){
                     $("#email_exist").css('color','#f00');
                     $("#email").focus();
                     return;
-
-                }else{
-                    // 알림창
-                    alert('인증번호를 보냈습니다');
-                    $("#eamil_exist").html('');
-
-                    // parameter 전달
-                    const data={'email':email};
-
-                    // 메일검증
-                    $.ajax({
-                        url:'/register/authEmail',
-                        type:'POST',
-                        data:JSON.stringify(data),  // 데이터를 JSON 형식으로 변환
-                        contentType:'application/json', // 요청의 컨텐츠 타입을 JSON으로
-                        dataType:'text',
-                        success:function(response){
-                            var inputElement=$("#emailCodeInput");
-                            inputElement.val(response);
-
-                            $('#emailCodeCheckBtn').unbind('click').click(emailCodeCheckBtnHandler);
-                        },
-                        error:function(xhr,status,error){
-                            console.error(error);
-                        }
-                    });
-                    $('#emailCodeCheck').show();
                 }
             },
             error:function(xhr,status,error){
@@ -134,39 +122,39 @@ $(document).ready(function(){
 
     // emailCodeCheckBtn 클릭 이벤트 함수
 
-    function emailCodeCheckBtnHandler(){
-           var emailCodeInput = $('#emailCodeInput').val()    // 인증번호 입력 값 가져오기
-           var code = $('#code').val();     // 확인 버튼을 클릭할 때 입력한 인증번호 가져오기
-
-           if(emailCodeInput === code){
-            $('#emailCodeCheck').hide();
-            $('#email').prop('readonly',true);
-            $('#email_exist').html('인증에 성공하였습니다');
-            $('#email_exist').css('color','#00f');
-           }else{
-            $('#email_exist').html("인증번호가 맞지 않습니다");
-            $('#email_exist').css("color",'#f00');
-           }
-    }
+//    function emailCodeCheckBtnHandler(){
+//           var emailCodeInput = $('#emailCodeInput').val()    // 인증번호 입력 값 가져오기
+//           var code = $('#code').val();     // 확인 버튼을 클릭할 때 입력한 인증번호 가져오기
+//
+//           if(emailCodeInput === code){
+//            $('#emailCodeCheck').hide();
+//            $('#email').prop('readonly',true);
+//            $('#email_exist').html('인증에 성공하였습니다');
+//            $('#email_exist').css('color','#00f');
+//           }else{
+//            $('#email_exist').html("인증번호가 맞지 않습니다");
+//            $('#email_exist').css("color",'#f00');
+//           }
+//    }
 
     // 폼 제출 이벤트
-    $('form').submit(function(event){
-        // 이벤트 기본 동작 막기
-        event.preventDefault();
-
-        // 입력한 메일
-        var emailCodeInput = $('#emailCodeInput').val();    //인증번호 입력값 가져오기
-        var code = $('#code').val();        // 확인버튼을 클릭할 때 인증번호 가져오기
-
-        if(!code|| emailCodeInput !== code){
-            $('#email_exist').html('이메일 인증에 실패하였습니다');
-            $('#email_exist').css('color','#f00');
-            return;
-        }
-
-        // 유효성 검사 통과
-        $(this).unbind('submit').submit();
-    })
+//    $('form').submit(function(event){
+//        // 이벤트 기본 동작 막기
+//        event.preventDefault();
+//
+//        // 입력한 메일
+//        var emailCodeInput = $('#emailCodeInput').val();    //인증번호 입력값 가져오기
+//        var code = $('#code').val();        // 확인버튼을 클릭할 때 인증번호 가져오기
+//
+//        if(!code|| emailCodeInput !== code){
+//            $('#email_exist').html('이메일 인증에 실패하였습니다');
+//            $('#email_exist').css('color','#f00');
+//            return;
+//        }
+//
+//        // 유효성 검사 통과
+//        $(this).unbind('submit').submit();
+//    })
 
 
 })

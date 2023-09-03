@@ -12,11 +12,73 @@
     <link href="https://unpkg.com/gijgo@1.9.14/css/gijgo.min.css" rel="stylesheet" type="text/css" />
 	<title>Admin - ShowInfo Update</title>
 	
+	<script>
+		$movieId = [[${show.movie.id}]];
+		$cinemaId = [[${theaterInfo.cinema.id}]];
+		$theaterId = [[${theaterInfo.id}]];
+		$showStatus = '[[${show.status}]]';
+	</script>
 	<script th:src="@{/js/admin/show/update.js}"></script>
 </head>
 <body>
 	<div class="container">
-	
+		<th:block th:insert="~{admin/header/navbar::adminNav}"></th:block>
+		<h2 class="my-3">상영 수정하기</h2>
+		<hr>
+		<form name="showForm" enctype="multipart/form-data">
+			<input type="hidden" name="id" th:value="${show.id}">
+			<div class="my-2 row">
+				<label class="col-2 col-form-label">영화 :</label>
+				<div class="col-10">
+					<select class="form-select" id="selectMovie" name="movie"></select>
+				</div>
+			</div>
+			<div class="my-2 row">
+				<label class="col-2 col-form-label">상영관 :</label>
+				<div class="col-5">
+					<select class="form-select" id="selectCinema"></select>
+				</div>
+				<div class="col-5">
+					<select class="form-select" id="selectTheater" name="theater"></select>
+				</div>
+			</div>
+			<div class="my-2 row">
+				<label class="col-2 col-form-label">상영시간 :</label>
+				<div class="col-6">
+					<input name="datePicker" id="datePicker" class="form-control" placeholder="MM/DD/YYYY" th:value="${showDate}">
+					<script>
+					    $('#datePicker').datepicker({
+					        uiLibrary: 'bootstrap5'
+					    });
+					    $('.gj-datepicker').removeClass('mb-3');
+					</script>
+				</div>
+				<div class="col-2">
+					<input id="inputHour" type="number" class="form-control" placeholder="Hour"
+					       min="1" max="24" th:value="${showTimeHour}">
+				</div>
+				<div class="col-2">
+					<input id="inputMinute" type="number" class="form-control" placeholder="Minute"
+					       min="0" max="59" th:value="${showTimeMin}">
+				</div>
+				<input type="hidden" name="showDateTime" id="resultDateTime">
+			</div>
+			<div class="my-2 row">
+				<label class="col-2 col-form-label">영화 :</label>
+				<div class="col-10">
+					<select name="status" class="form-select" id="selectStatus">
+						<option value="SOON">상영 예정</option>
+						<option value="NOW">상영 중</option>
+						<option value="END">상영 종료</option>
+					</select>
+				</div>
+			</div>
+			<div class="my-2 row justify-content-end">
+				<div class="col-auto">
+					<button type="button" id="updateBtn" class="btn btn-primary">수정 완료</button>
+				</div>
+			</div>
+		</form>
 	</div>
 </body>
 </html>

@@ -24,18 +24,37 @@ public class AdminShowInfoServiceImpl implements AdminShowInfoService{
 			return showInfoRepository.findAll();
 		}else{
 			ShowInfoStatus showInfoStatus = ShowInfoStatus.valueOf(status);
-			return showInfoRepository.findByStatus(showInfoStatus);
+			return showInfoRepository.findByStatusOrderByShowDateTimeDesc(showInfoStatus);
 		}
 	}
 	
 	@Override
-	public int save(ShowInfo showInfo) {
+	public int register(ShowInfo showInfo) {
 		try{
 			showInfoRepository.saveAndFlush(showInfo);
 		}catch (RuntimeException e){
 			System.out.println(e.getMessage());
 			return 0;
 		}
+		return 1;
+	}
+	
+	@Override
+	public int update(ShowInfo showInfo) {
+		try{
+			ShowInfo show = showInfoRepository.findById(showInfo.getId()).orElseThrow(() -> new RuntimeException());
+			show.setStatus(showInfo.getStatus());
+			show.setShowDateTime(showInfo.getShowDateTime());
+			show.setMovie(show.getMovie());
+			show.setTheater(show.getTheater());
+			showInfoRepository.saveAndFlush(show);
+		}catch (RuntimeException e){
+			System.out.println(e.getCause());
+			System.out.println(e.getMessage());
+			System.out.println(showInfo);
+			return 0;
+		}
+		
 		return 1;
 	}
 	
