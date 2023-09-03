@@ -85,8 +85,6 @@ $(function () {
                             cnt--;
                             checkRow = 0;
                             checkColumn = 0;
-                            writeRow.val("0");
-                            writeColumn.val("0");
                         }
                         else
                         {
@@ -100,7 +98,6 @@ $(function () {
                                 writeRow.val(row);
                                 writeColumn.val(column);
                             }
-
                         }
                     }
                 },

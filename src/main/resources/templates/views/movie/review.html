@@ -18,8 +18,8 @@
   <script th:inline="javascript">
 		const movieId = [[${movie.id}]];
 		const movieTitle = [[${movie.title}]];
-		const apiKey = [[${TMDB_ApiKey}]];
-		const userId = [[${userId}]];
+<!--		const userId = [[${userId}]];-->
+		const userId = 3
   </script>
 
   <link rel="stylesheet" type="text/css" th:href="@{/css/movie/review.css}">
@@ -27,7 +27,6 @@
   <title>리뷰 페이지</title>
 </head>
 <body>
-  <th:block th:insert="~{header::header}"></th:block>
   <th:block th:insert="~{movie/fragment/header::header}"></th:block>
   <div class="container mt-5 custom-lighter-bg">
     <th:block th:insert="~{movie/fragment/navi::navigation}"></th:block>
@@ -73,7 +72,6 @@
       <div class="btn" id="orderByRecommend">추천순</div>
     </div>
     <div class="row m-3 justify-content-center" id="reviewList"></div>
-    <div id="pagination" class="mt-4"></div>
   </div>
 </body>
 </html>

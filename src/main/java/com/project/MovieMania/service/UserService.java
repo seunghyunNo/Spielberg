@@ -1,6 +1,7 @@
 package com.project.MovieMania.service;
 
 import com.project.MovieMania.domain.Authority;
+import com.project.MovieMania.domain.Review;
 import com.project.MovieMania.domain.User;
 
 import java.time.LocalDate;
@@ -42,7 +43,7 @@ public interface UserService {
 
     int delete(Long userId);
 
-
+    List<Review> findMyReview(Long id);
 
 
 }

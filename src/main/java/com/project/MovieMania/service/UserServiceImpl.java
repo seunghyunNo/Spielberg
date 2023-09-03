@@ -1,9 +1,11 @@
 package com.project.MovieMania.service;
 
 import com.project.MovieMania.domain.Authority;
+import com.project.MovieMania.domain.Review;
 import com.project.MovieMania.domain.User;
 import com.project.MovieMania.domain.type.UserStatus;
 import com.project.MovieMania.repository.AuthorityRepository;
+import com.project.MovieMania.repository.ReviewRepository;
 import com.project.MovieMania.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -23,6 +25,13 @@ public class UserServiceImpl implements UserService {
 
 
     private PasswordEncoder passwordEncoder;
+
+    private ReviewRepository reviewRepository;
+
+    @Autowired
+    public void setReviewRepository(ReviewRepository reviewRepository) {
+        this.reviewRepository = reviewRepository;
+    }
 
     @Autowired
     public void setPasswordEncoder(PasswordEncoder passwordEncoder) {
@@ -184,6 +193,16 @@ public class UserServiceImpl implements UserService {
 
         userRepository.delete(user);
         return 1;
+    }
+
+    @Override
+    public List<Review> findMyReview(Long id) {
+
+        User user = userRepository.findById(id).orElseThrow();
+
+        List<Review> reviews = reviewRepository.findByUser(user);
+
+        return reviews;
     }
 
 

@@ -327,7 +327,9 @@ public class UserController {
         model.addAttribute("id",id);
         model.addAttribute("username",user.getUsername());
         model.addAttribute("authority",user.getAuthorities());
-        model.addAttribute("list", movieService.findMyReview(id));
+        model.addAttribute("list", userService.findMyReview(id));
+
+        System.out.println(userService.findMyReview(id));
         
         // 여기부터 확실하지가 않음
 

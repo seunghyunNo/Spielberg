@@ -1,31 +1,23 @@
 package com.project.MovieMania.controller;
 
-import com.project.MovieMania.config.PrincipalDetails;
 import com.project.MovieMania.domain.DTO.ReportDTO;
 import com.project.MovieMania.domain.DTO.ReviewDTO;
 import com.project.MovieMania.domain.Recommend;
 import com.project.MovieMania.domain.Report;
 import com.project.MovieMania.domain.Review;
-import com.project.MovieMania.domain.User;
 import com.project.MovieMania.domain.type.ReportType;
 import com.project.MovieMania.service.MovieService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDate;
 import java.util.List;
 
 @Controller
 @RequestMapping("/movie")
 public class MovieController {
-
-    @Value("${app.TMDB_api_key}")
-    private String TMDB_API_KEY;
 
     private MovieService movieService;
 
@@ -37,22 +29,7 @@ public class MovieController {
     @GetMapping("/detail/{id}")
     public String movieDetail(@PathVariable Long id, Model model) {
 
-        // 로그인 한유저 Id 전달하기
-        Object principal =  SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        if (principal instanceof PrincipalDetails) {
-            PrincipalDetails userDetails = (PrincipalDetails) principal;
-            User user = userDetails.getUser();
-            Long loggedId = user.getId();
-            LocalDate birth = user.getBirthday();
-            model.addAttribute("userId", loggedId);
-            model.addAttribute("userBirth", birth);
-        } else {
-            model.addAttribute("userId", null);
-            model.addAttribute("userBirth", null);
-        }
-
         model.addAttribute("movie", movieService.findById(id));
-        model.addAttribute("TMDB_ApiKey", TMDB_API_KEY);
         model.addAttribute("rate", movieService.reserveRate(id));
         model.addAttribute("audinum", movieService.audiNum(id));
         model.addAttribute("avgScore", movieService.avgScore(id));
@@ -65,23 +42,9 @@ public class MovieController {
 
     @GetMapping("/review/{id}")
     public String movieReview(@PathVariable Long id, Model model){
-
-        // 로그인 한유저 Id 전달하기
-        Object principal =  SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        if (principal instanceof PrincipalDetails) {
-            PrincipalDetails userDetails = (PrincipalDetails) principal;
-            User user = userDetails.getUser();
-            Long loggedId = user.getId();
-            LocalDate birth = user.getBirthday();
-            model.addAttribute("userId", loggedId);
-            model.addAttribute("userBirth", birth);
-        } else {
-            model.addAttribute("userId", null);
-            model.addAttribute("userBirth", null);
-        }
+        model.addAttribute("userId", 1);
 
         model.addAttribute("movie", movieService.findById(id));
-        model.addAttribute("TMDB_ApiKey", TMDB_API_KEY);
         model.addAttribute("rate", movieService.reserveRate(id));
         model.addAttribute("audinum", movieService.audiNum(id));
         model.addAttribute("avgScore", movieService.avgScore(id));
@@ -90,23 +53,7 @@ public class MovieController {
 
     @GetMapping("/trailer/{id}")
     public String movieTrailer(@PathVariable Long id, Model model){
-
-        // 로그인 한유저 Id 전달하기
-        Object principal =  SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        if (principal instanceof PrincipalDetails) {
-            PrincipalDetails userDetails = (PrincipalDetails) principal;
-            User user = userDetails.getUser();
-            Long loggedId = user.getId();
-            LocalDate birth = user.getBirthday();
-            model.addAttribute("userId", loggedId);
-            model.addAttribute("userBirth", birth);
-        } else {
-            model.addAttribute("userId", null);
-            model.addAttribute("userBirth", null);
-        }
-
         model.addAttribute("movie", movieService.findById(id));
-        model.addAttribute("TMDB_ApiKey", TMDB_API_KEY);
         model.addAttribute("rate", movieService.reserveRate(id));
         model.addAttribute("audinum", movieService.audiNum(id));
         model.addAttribute("avgScore", movieService.avgScore(id));
