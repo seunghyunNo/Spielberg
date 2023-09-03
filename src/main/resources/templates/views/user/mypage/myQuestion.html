@@ -15,7 +15,7 @@
 </head>
 <body>
 <th:block th:insert="~{/header::header}"></th:block>
-<form th:action="@{/question/search}" method="get" enctype="multipart/form-data">
+<form th:action="@{/question/search}" method="post" enctype="multipart/form-data">
     <div class="container mt-3">
         <th:block th:insert="~{user/myInfo::myPageInfo}"></th:block>
         <input type="text" name="keyword">

@@ -17,6 +17,7 @@
 
 <div class="container mt-3">
     <th:block th:insert="~{user/myInfo::myPageInfo}"></th:block>
+    <form th:action="@{/question/search}" method="post" enctype="multipart/form-data">
     <div class="mb-3 mt-3 clearfix">
         <table class="table table=hover">
             <thead class="table-primary">
@@ -30,7 +31,7 @@
             <tbody>
                 <tr th:each="ticketInfo : ${list}">
 
-                    <td th:text="${ticketInfo.showInfo.movie[0].title}"></td>
+                    <td th:text="${ticketInfo.showInfo[0].movie.title}"></td>
                     <td th:text="${ticketInfo.ticketCode}"></td>
                     <td th:text="${ticketInfo.priceInfo[0].price}"></td>
                     <td th:text="${ticketInfo.showInfo[0].showDateTime,'yyyy-MM-dd HH:mm:ss'}"></td>
@@ -38,7 +39,9 @@
             </tbody>
         </table>
     </div>
+    </form>
 </div>
+
 
 </body>
 </head>

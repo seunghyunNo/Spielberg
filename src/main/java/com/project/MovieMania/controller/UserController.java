@@ -328,6 +328,8 @@ public class UserController {
         model.addAttribute("authority",user.getAuthorities());
         model.addAttribute("list",movieService.findMyReviewList(model,page,user.getId()));
 
+        // 여기부터 확실하지가 않음
+
         List<Review> reviewList = movieService.findMyReview(user.getId());
     }
 
