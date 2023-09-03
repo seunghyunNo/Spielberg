@@ -53,5 +53,4 @@ public interface MovieService {
 
     List<Review> findMyReview(Long id);
 
-    List<Review> findMyReviewList(Model model,Integer page,long id);
 }

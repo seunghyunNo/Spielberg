@@ -36,4 +36,6 @@ public interface TicketInfoRepository extends JpaRepository<TicketInfo, Long> {
     long findById(long id);
 
     Page<TicketInfo> findByUser(User user, PageRequest id);
+
+    List<TicketInfo> findByUser(User user);
 }

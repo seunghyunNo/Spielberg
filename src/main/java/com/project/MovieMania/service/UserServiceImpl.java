@@ -232,105 +232,24 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<TicketInfo> findTicketList(Model model, Integer page, long id) {
-        if(page== null|| page<1){
-            page=1;
-        }
-        HttpSession session = U.getSession();
-        Integer writePage = (Integer) session.getAttribute("writePage");
-        Integer pageRows = (Integer) session.getAttribute("pageRows");
-        if(writePage==null){
-            writePage=WRITE_PAGES;
-        }
-        if(pageRows==null){
-            pageRows=PAGE_ROWS;
-        }
-        session.setAttribute("page",page);
+    public List<TicketInfo> findTicketList(Long id) {
 
         User user = userRepository.findById(id).orElseThrow();
-        Page<TicketInfo> pageWrites = ticketInfoRepository.findByUser(user,PageRequest.of(page - 1, pageRows, Sort.by(Sort.Order.desc("id"))));
 
+        List<TicketInfo> ticketInfos = ticketInfoRepository.findByUser(user);
 
-        long count = pageWrites.getTotalElements();
-        int totalPage= pageWrites.getTotalPages();
-
-        if(page>totalPage){
-            page=totalPage;
-        }
-
-        int fromRow = (page-1) * pageRows ;
-        if(page==0){
-            fromRow=0;
-        }
-
-        // 페이징에 표시할 시작페이지와 마지막 페이지 계산
-        int start= (((page-1)/ writePage) * writePage) + 1;
-        int end=start+writePage-1;
-        if(end >= totalPage)end=totalPage;
-
-        model.addAttribute("count",count);
-        model.addAttribute("page",page);
-        model.addAttribute("totalPage",totalPage);
-        model.addAttribute("pageRows",pageRows);
-
-        model.addAttribute("url",U.getRequest().getRequestURI());
-        model.addAttribute("writePage",writePage);
-        model.addAttribute("start",start);
-        model.addAttribute("end",end);
-
-
-        List<TicketInfo> list = pageWrites.getContent();
-        model.addAttribute("list",list);
-
-        return list;
+        return ticketInfos;
     }
 
     @Override
-    public List<Question> findQuestionList(Model model, Integer page, long id) {
-        if(page == null) page = 1;
-        if(page < 1) page = 1;
-
-        HttpSession session = U.getSession();
-
-        Integer writePages = (Integer)session.getAttribute("writePages");
-        if(writePages == null) writePages = WRITE_PAGES;
-
-        Integer pageRows = (Integer)session.getAttribute("pageRows");
-        if(pageRows == null) pageRows = PAGE_ROWS;
-
-        session.setAttribute("myPage", page);
-
+    public List<Question> findQuestionList(Long id) {
         User user = userRepository.findById(id).orElseThrow();
-        Page<Question> pageWrites = questionRepository.findByUser(user,PageRequest.of(page - 1, pageRows, Sort.by(Sort.Order.desc("id"))));
 
-        System.out.println(pageWrites);
+        List<Question> questionList = questionRepository.findByUser(user);
 
-        long cnt = pageWrites.getTotalElements();
-        int totalPage =  pageWrites.getTotalPages();
-
-        if(page > totalPage) page = totalPage;
-
-        int fromRow = (page - 1) * pageRows;
-
-        int startPage = (((page - 1) / writePages) * writePages) + 1;
-        int endPage = startPage + writePages - 1;
-        if (endPage >= totalPage) endPage = totalPage;
-
-        model.addAttribute("cnt", cnt);
-        model.addAttribute("myPage", page);
-        model.addAttribute("totalPage", totalPage);
-        model.addAttribute("pageRows", pageRows);
-
-        model.addAttribute("url", U.getRequest().getRequestURI());
-        model.addAttribute("writePages", writePages);
-        model.addAttribute("startPage", startPage);
-        model.addAttribute("endPage", endPage);
-
-        List<Question> list = pageWrites.getContent();
-        model.addAttribute("list", list);
-
-        return list;
+        return questionList;
     }
+
 
     private ReviewDTO convertReviewDTO(Review review){
         ReviewDTO reviewDTO = new ReviewDTO();

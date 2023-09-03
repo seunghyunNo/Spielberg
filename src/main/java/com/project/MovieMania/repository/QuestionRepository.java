@@ -16,6 +16,6 @@ public interface QuestionRepository extends JpaRepository<Question, Long> {
 
     List<Question> findByUser_id(Long id);
 
-    Page<Question> findByUser(User user, PageRequest id);
+    List<Question> findByUser(User user);
 
 }

@@ -283,7 +283,7 @@ public class UserController {
     }
 
     @GetMapping("/myPage/myTicket")
-    public void myTicket(Model model,Integer page){
+    public String myTicket(Model model){
         PrincipalDetails userDetails = (PrincipalDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
         User user =userDetails.getUser();
@@ -293,14 +293,13 @@ public class UserController {
         model.addAttribute("id",user.getId());
         model.addAttribute("username",user.getUsername());
         model.addAttribute("authority",user.getAuthorities());
+        model.addAttribute("list",ticketingService.findMyTicketInfo(id));
 
-        model.addAttribute("list",ticketingService.findMyTicketList(model,page, user.getId()));
-
-        List<TicketInfo> ticketInfoList = ticketingService.findMyTicketInfo(user.getId());
+        return "user/myPage/myTicket";
     }
 
     @GetMapping("/myPage/myQuestion")
-    public void myQuestion(Model model,Integer page){
+    public String myQuestion(Model model){
         PrincipalDetails userDetails = (PrincipalDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
         User user =userDetails.getUser();
@@ -310,14 +309,14 @@ public class UserController {
         model.addAttribute("id",user.getId());
         model.addAttribute("username",user.getUsername());
         model.addAttribute("authority",user.getAuthorities());
-        model.addAttribute("list",questionService.findMyQuestionList(model,page,user.getId()));
+        model.addAttribute("list",questionService.findMyQuestion(id));
 
-        List<Question> questionList = questionService.findMyQuestion(user.getId());
-
+        System.out.println(questionService.findMyQuestion(id));
+        return "user/myPage/myQuestion";
     }
 
     @GetMapping("/myPage/myReview")
-    public String myReview(Model model,Integer page){
+    public String myReview(Model model){
         PrincipalDetails userDetails = (PrincipalDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
         User user = userDetails.getUser();
@@ -328,11 +327,7 @@ public class UserController {
         model.addAttribute("username",user.getUsername());
         model.addAttribute("authority",user.getAuthorities());
         model.addAttribute("list", movieService.findMyReview(id));
-        
-        // 여기부터 확실하지가 않음
 
-        List<Review> reviewList = movieService.findMyReviewList(model,page,user.getId());
-        
         return "user/myPage/myReview";
     }
 

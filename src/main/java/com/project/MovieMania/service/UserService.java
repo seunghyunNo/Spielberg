@@ -45,9 +45,9 @@ public interface UserService {
 
     List<ReviewDTO> findReview(Long id);
 
-    List<TicketInfo> findTicketList(Model model,Integer page,long id);
+    List<TicketInfo> findTicketList(Long id);
 
-    List<Question> findQuestionList(Model model,Integer page,long id);
+    List<Question> findQuestionList(Long id);
 
 
 }

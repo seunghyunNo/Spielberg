@@ -17,6 +17,4 @@ public interface TicketingService {
 
     List<TicketInfo> findMyTicketInfo(Long id);
 
-    List<TicketInfo> findMyTicketList(Model model, Integer page,long id);
-
 }
