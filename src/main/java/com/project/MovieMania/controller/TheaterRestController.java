@@ -81,7 +81,6 @@ public class TheaterRestController {
     @PostMapping("/selectTime")
     public List<LocalTime> selectTime(@RequestParam String cinemaName,@RequestParam String movieId,@RequestParam String day)
     {
-        System.out.println(day);
         Long id = Long.parseLong(movieId);
         Cinema cinema = cinemaRepository.findByName(cinemaName);
         List<Theater> theater = theaterService.findByCinemaId(cinema.getId());
@@ -114,7 +113,6 @@ public class TheaterRestController {
                 timeList.add(showInfoList.get(i).getShowDateTime().toLocalTime());
             }
         }
-        System.out.println(timeList);
         return timeList;
     }
 }

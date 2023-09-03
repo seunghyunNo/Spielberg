@@ -6,12 +6,10 @@ $(function () {
     var people = 0;
     $("#adult").change(function () {
         adultNum = parseInt($(this).val());
-        console.log(adultNum + "명");
     });
 
     $("#student").change(function () {
         studentNum = parseInt($(this).val());
-        console.log(studentNum + "명");
     });
 
     var cnt = 0;
@@ -25,11 +23,9 @@ $(function () {
     $("input").siblings("div").each(function () {
         nowColumn = $(this).attr("data-seat-column");
         ticketId++;
-        console.log(ticketId);
         $(this).find("p").each(function () {
             let nowRow = $(this).attr("data-seat-row");
             const current = $(this).siblings("button");
-            console.log(nowColumn + "열" + nowRow + "행");
             $.ajax({
                 url: "/seat/loadSeat",
                 type: "POST",
@@ -63,8 +59,6 @@ $(function () {
         let writeRow = $(this).siblings("input");
         let writeColumn = $(this).parent().siblings("input");
         let crnObj = $(this);
-        console.log(row);
-        console.log(column);
         $.ajax({
             url: "/seat/check",
             type: "POST",
@@ -88,7 +82,6 @@ $(function () {
                         crnObj.removeClass("selectSeat");
                         crnObj.addClass("seat");
                         cnt--;
-                        console.log("카운트" + cnt);
                         checkRow = 0;
                         checkColumn = 0;
                     }
@@ -99,7 +92,6 @@ $(function () {
                         crnObj.removeClass("seat");
                         crnObj.addClass("selectSeat");
                         cnt++;
-                        console.log("카운트" + cnt);
                         writeRow.val(row);
                         writeColumn.val(column);
                     }
@@ -112,8 +104,6 @@ $(function () {
     });
     $("#purchaseBtn").click(function () {
         people = adultNum + studentNum;
-        console.log("카운트" + cnt);
-        console.log("인원수" + people);
         if (cnt == people) {
             $("[name='ticketingFrm']").submit();
         }

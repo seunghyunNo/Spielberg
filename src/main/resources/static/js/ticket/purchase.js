@@ -7,10 +7,6 @@ $(function(){
         let cost = $("#cost").val();
         let totalCnt = Number(adultCnt) + Number(studentCnt);
 
-        console.log(name);
-        console.log(adultCnt);
-        console.log(studentCnt);
-        console.log(cost);
         $.ajax({
             url: "/purchase/payment",
             type: "GET",
@@ -22,7 +18,6 @@ $(function(){
             },
             success:function(response)
             {
-            	alert(response.next_redirect_pc_url);
                 location.href = response.next_redirect_pc_url;
             }
         });

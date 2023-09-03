@@ -1,7 +1,6 @@
 $(function(){
     let movieId = $("#movieId").val();
     let name;
-    alert(typeof(movieId));
 	$("#cinemaName").change(function(){
         name = $(this).val();
         let dateS = $("#date");
@@ -17,8 +16,6 @@ $(function(){
             },
             success:function(data)
             {
-                alert(data.length);
-                console.log(data);
                 for(var i = 0; i < data.length; i++)
                 {
                     let date = data[i].trim();
@@ -28,8 +25,6 @@ $(function(){
                 for(var x = 1; x <= data.length; x++)
                 {
                     let index = x+1;
-
-
                     $(`select[name=date] option:eq(${index})`).remove();
                 }
 
@@ -59,7 +54,6 @@ $(function(){
                     for(var i = 0; i < data.length; i++)
                     {
                         let time = data[i].trim();
-                        console.log(i);
                         timeS.append(`<option value="${time}">${time}<option>`);
                     }
 
@@ -77,11 +71,10 @@ $(function(){
 
 	$("#theaterBtn").click(function(){
 	    var name = $("[name='cinemaName']").val();
-	    alert(name);
+
 	    var date = $("[name='date']").val();
-	    alert(date);
+
 	    var time = $("[name='time']").val();
-        alert(time);
 
 		$("[name='theaterFrm']").submit();
 	});

@@ -38,7 +38,6 @@ public class TheaterController {
     @GetMapping("/theater/{movie_id}")
     public String theater(@PathVariable Long movie_id,Model model)
     {
-        System.out.println(movie_id);
         model.addAttribute("movieId",movie_id);
         model.addAttribute("cinemas",theaterService.cinemaSet(movie_id));
         model.addAttribute("dates",theaterService.dateList(movie_id));
@@ -119,8 +118,7 @@ public class TheaterController {
             }
         }
 
-        System.out.println(seatRow);
-        System.out.println(seatColumn);
+
         if (adult > 0 && student == 0) {         // 성인만 선택
             for (int i = 0; i < adult; i++) {
                 priceInfo = priceService.checkAdultNum();
@@ -182,7 +180,6 @@ public class TheaterController {
         User user = userDetails.getUser();
 
         List<TicketInfo> buyList = ticketingService.findBuyTicket(showInfoId, user.getId());
-        System.out.println(buyList);
         int cost = 0;
         int adultCnt = 0;
         int studentCnt = 0;

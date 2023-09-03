@@ -65,7 +65,6 @@ public class ShowInfoServiceImpl implements ShowInfoService{
             }
         }
             model.addAttribute("showInfoId",showInfo.getId());
-            System.out.println(showInfo);
             return showInfo;
     }
 
@@ -73,7 +72,6 @@ public class ShowInfoServiceImpl implements ShowInfoService{
     public ShowInfo findById(Long showInfoId,Model model) {
         ShowInfo showInfo = showInfoRepository.findById(showInfoId).orElse(null);
         model.addAttribute("showInfoId",showInfo.getId());
-        System.out.println(showInfo);
         return showInfo;
     }
 
