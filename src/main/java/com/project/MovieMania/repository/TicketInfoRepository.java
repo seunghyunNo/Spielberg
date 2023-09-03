@@ -6,6 +6,8 @@ import com.project.MovieMania.domain.ShowInfo;
 import com.project.MovieMania.domain.TicketInfo;
 import com.project.MovieMania.domain.User;
 import com.project.MovieMania.domain.type.Gender;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.time.LocalDate;
@@ -32,4 +34,6 @@ public interface TicketInfoRepository extends JpaRepository<TicketInfo, Long> {
 
     // 페이징에서 전체페이지 찾기(long 타입으로)
     long findById(long id);
+
+    Page<TicketInfo> findByUser(User user, PageRequest id);
 }

@@ -1,8 +1,8 @@
 package com.project.MovieMania.service;
 
-import com.project.MovieMania.domain.Authority;
-import com.project.MovieMania.domain.Review;
-import com.project.MovieMania.domain.User;
+import com.project.MovieMania.domain.*;
+import com.project.MovieMania.domain.DTO.ReviewDTO;
+import org.springframework.ui.Model;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -43,7 +43,11 @@ public interface UserService {
 
     int delete(Long userId);
 
-    List<Review> findMyReview(Long id);
+    List<ReviewDTO> findReview(Long id);
+
+    List<TicketInfo> findTicketList(Model model,Integer page,long id);
+
+    List<Question> findQuestionList(Model model,Integer page,long id);
 
 
 }

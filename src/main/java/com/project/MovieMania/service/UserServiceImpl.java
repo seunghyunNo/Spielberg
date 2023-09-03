@@ -1,22 +1,34 @@
 package com.project.MovieMania.service;
 
-import com.project.MovieMania.domain.Authority;
-import com.project.MovieMania.domain.Review;
-import com.project.MovieMania.domain.User;
+import com.project.MovieMania.domain.*;
+import com.project.MovieMania.domain.DTO.ReviewDTO;
+import com.project.MovieMania.domain.DTO.UserDTO;
 import com.project.MovieMania.domain.type.UserStatus;
-import com.project.MovieMania.repository.AuthorityRepository;
-import com.project.MovieMania.repository.ReviewRepository;
-import com.project.MovieMania.repository.UserRepository;
+import com.project.MovieMania.repository.*;
+import com.project.MovieMania.util.U;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.ui.Model;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class UserServiceImpl implements UserService {
+
+    @Value("${app.pagination.write_pages}")
+    private int WRITE_PAGES;
+
+    @Value("${app.pagination.page_rows}")
+    private int PAGE_ROWS;
 
     private UserRepository userRepository;
 
@@ -27,6 +39,20 @@ public class UserServiceImpl implements UserService {
     private PasswordEncoder passwordEncoder;
 
     private ReviewRepository reviewRepository;
+
+    private TicketInfoRepository ticketInfoRepository;
+
+    private QuestionRepository questionRepository;
+
+    @Autowired
+    public void setQuestionRepository(QuestionRepository questionRepository) {
+        this.questionRepository = questionRepository;
+    }
+
+    @Autowired
+    public void setTicketInfoRepository(TicketInfoRepository ticketInfoRepository) {
+        this.ticketInfoRepository = ticketInfoRepository;
+    }
 
     @Autowired
     public void setReviewRepository(ReviewRepository reviewRepository) {
@@ -196,13 +222,127 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<Review> findMyReview(Long id) {
+    public List<ReviewDTO> findReview(Long id) {
 
         User user = userRepository.findById(id).orElseThrow();
 
         List<Review> reviews = reviewRepository.findByUser(user);
 
-        return reviews;
+        return reviews.stream().map(this::convertReviewDTO).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<TicketInfo> findTicketList(Model model, Integer page, long id) {
+        if(page== null|| page<1){
+            page=1;
+        }
+        HttpSession session = U.getSession();
+        Integer writePage = (Integer) session.getAttribute("writePage");
+        Integer pageRows = (Integer) session.getAttribute("pageRows");
+        if(writePage==null){
+            writePage=WRITE_PAGES;
+        }
+        if(pageRows==null){
+            pageRows=PAGE_ROWS;
+        }
+        session.setAttribute("page",page);
+
+        User user = userRepository.findById(id).orElseThrow();
+        Page<TicketInfo> pageWrites = ticketInfoRepository.findByUser(user,PageRequest.of(page - 1, pageRows, Sort.by(Sort.Order.desc("id"))));
+
+
+        long count = pageWrites.getTotalElements();
+        int totalPage= pageWrites.getTotalPages();
+
+        if(page>totalPage){
+            page=totalPage;
+        }
+
+        int fromRow = (page-1) * pageRows ;
+        if(page==0){
+            fromRow=0;
+        }
+
+        // 페이징에 표시할 시작페이지와 마지막 페이지 계산
+        int start= (((page-1)/ writePage) * writePage) + 1;
+        int end=start+writePage-1;
+        if(end >= totalPage)end=totalPage;
+
+        model.addAttribute("count",count);
+        model.addAttribute("page",page);
+        model.addAttribute("totalPage",totalPage);
+        model.addAttribute("pageRows",pageRows);
+
+        model.addAttribute("url",U.getRequest().getRequestURI());
+        model.addAttribute("writePage",writePage);
+        model.addAttribute("start",start);
+        model.addAttribute("end",end);
+
+
+        List<TicketInfo> list = pageWrites.getContent();
+        model.addAttribute("list",list);
+
+        return list;
+    }
+
+    @Override
+    public List<Question> findQuestionList(Model model, Integer page, long id) {
+        if(page == null) page = 1;
+        if(page < 1) page = 1;
+
+        HttpSession session = U.getSession();
+
+        Integer writePages = (Integer)session.getAttribute("writePages");
+        if(writePages == null) writePages = WRITE_PAGES;
+
+        Integer pageRows = (Integer)session.getAttribute("pageRows");
+        if(pageRows == null) pageRows = PAGE_ROWS;
+
+        session.setAttribute("myPage", page);
+
+        User user = userRepository.findById(id).orElseThrow();
+        Page<Question> pageWrites = questionRepository.findByUser(user,PageRequest.of(page - 1, pageRows, Sort.by(Sort.Order.desc("id"))));
+
+        System.out.println(pageWrites);
+
+        long cnt = pageWrites.getTotalElements();
+        int totalPage =  pageWrites.getTotalPages();
+
+        if(page > totalPage) page = totalPage;
+
+        int fromRow = (page - 1) * pageRows;
+
+        int startPage = (((page - 1) / writePages) * writePages) + 1;
+        int endPage = startPage + writePages - 1;
+        if (endPage >= totalPage) endPage = totalPage;
+
+        model.addAttribute("cnt", cnt);
+        model.addAttribute("myPage", page);
+        model.addAttribute("totalPage", totalPage);
+        model.addAttribute("pageRows", pageRows);
+
+        model.addAttribute("url", U.getRequest().getRequestURI());
+        model.addAttribute("writePages", writePages);
+        model.addAttribute("startPage", startPage);
+        model.addAttribute("endPage", endPage);
+
+        List<Question> list = pageWrites.getContent();
+        model.addAttribute("list", list);
+
+        return list;
+    }
+
+    private ReviewDTO convertReviewDTO(Review review){
+        ReviewDTO reviewDTO = new ReviewDTO();
+
+        reviewDTO.setId(review.getId());
+        reviewDTO.setContent(review.getContent());
+        reviewDTO.setScore(review.getScore());
+        reviewDTO.setCreatedAt(review.getCreatedAt());
+
+
+
+        return reviewDTO;
     }
 
 
