@@ -23,4 +23,6 @@ public interface ReviewRepository extends JpaRepository<Review, Long> {
             "GROUP BY r.id " +
             "ORDER BY COUNT(rc) DESC")
     List<Review> findReviewOrderByRecommendCountDesc(@Param("movieId") Long movieId);
+
+    List<Review> findByUser_id(Long id);
 }

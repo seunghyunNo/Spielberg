@@ -1,7 +1,6 @@
 package com.project.MovieMania.service;
 
 import com.project.MovieMania.domain.Movie;
-import com.project.MovieMania.domain.Question;
 import com.project.MovieMania.repository.MovieRepository;
 import com.project.MovieMania.util.U;
 import jakarta.servlet.http.HttpSession;
@@ -9,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
@@ -25,15 +23,12 @@ public class HomeServiceImpl implements HomeService {
     @Value("${app.pagination.page_rows}")
     private int PAGE_ROWS;
 
-
     private MovieRepository movieRepository;
 
     @Autowired
     public void setMovieRepository(MovieRepository movieRepository) {
         this.movieRepository = movieRepository;
     }
-
-
 
     @Override
     public List<Movie> movieList() {

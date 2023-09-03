@@ -1,4 +1,4 @@
-.$(document).ready(function(){
+$(document).ready(function(){
 
     // 저장된 쿠키값을 id 칸에 넣어준다. 없으면 공백으로
     var key = getCookie("key");
@@ -10,7 +10,7 @@
 
     $("#idSaveCheck").change(function(){    // 아이디 저장하기에 변화가 있을 때
         if($("#idSaveCheck").is(":checked")){   // id 저장하기 체크 했을 때
-            setCookie("key",$("#userId").val(),7)   // 7일 동안 쿠키 보관
+            setCookie("key",$("#userId").val(),7);   // 7일 동안 쿠키 보관
         }else{  // id 저장하기 체크를 풀 때
             deleteCookie("key");
         }
@@ -24,6 +24,15 @@
     });
 
 });
+
+function setCookie(cookieName,value,exdays){
+    var exdate = new Date();
+    exdate.setDate(exdate.getDate()+exdays);
+    var cookieValue=escape(value)+((exdays==null)?"":";expires="+exdate.toGMTString());
+    document.cookie = cookieName + "=" + cookieValue;
+}
+
+
 
 function deleteCookie(cookieName){
     var expireDate = new Date();

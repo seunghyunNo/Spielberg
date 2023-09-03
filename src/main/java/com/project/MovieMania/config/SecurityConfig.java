@@ -42,7 +42,7 @@ public class SecurityConfig{
                         .defaultSuccessUrl("/") // 직접 /login -> /loginOk 에서 성공하면 / 로 이동
 
                         // 로그인 성공 시 홈으로 이동
-                        .successHandler(new CustomLoginSuccessHandler("/home"))
+                        .successHandler(new CustomLoginSuccessHandler("/"))
 
                         // 로그인 실패 시
                         .failureHandler(new CustomLoginFailureHandler())

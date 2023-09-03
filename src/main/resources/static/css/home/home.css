@@ -1,5 +1,4 @@
 body {
-        background-color: black;
         background-size: cover;
 }
 
@@ -11,7 +10,6 @@ body {
 
 #mvinfo {
     margin : 0 0 0 50px;
-    color: white;
     font-size: 20pt;
 
 }

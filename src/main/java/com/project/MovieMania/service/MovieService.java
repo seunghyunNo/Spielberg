@@ -7,6 +7,7 @@ import com.project.MovieMania.domain.Recommend;
 import com.project.MovieMania.domain.Report;
 import com.project.MovieMania.domain.Review;
 import com.project.MovieMania.domain.type.ReportType;
+import lombok.extern.java.Log;
 import org.springframework.ui.Model;
 
 import java.util.List;
@@ -49,4 +50,8 @@ public interface MovieService {
     List<ReviewDTO> getReviewByScore(Long id);
 
     List<ReviewDTO> getReviewByRecommend(Long id);
+
+    List<Review> findMyReview(Long id);
+
+    List<Review> findMyReviewList(Model model,Integer page,long id);
 }
