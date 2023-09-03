@@ -34,38 +34,66 @@ $(function(){
   // 댓글 작성
   $("#submitScore").on("click", submitScoreHandler);
 
-  // 추천 눌렀을때
-  $(document).on('click', '.fa-thumbs-up', function() {
-      const reviewId = $(this).attr('thumb-reviewId');
+    // 추천 눌렀을때
+    $(document).on('click', '.fa-thumbs-up', function() {
+      if(userId){
+        const reviewId = $(this).attr('thumb-reviewId');
 
-      findRecommend(userId, reviewId);
-  });
-
-  // 삭제 버튼 클릭 시 삭제 동작 수행
-  $(document).on('click', '.delete', function() {
-      const reviewId = $(this).attr('delete-reviewId');
-      let answer = confirm("리뷰를 삭제하시겠습니까?");
-      if (answer) {
-          deleteReview(reviewId);
-          $("#submitScore").on("click");
-          $("#textBox").prop("disabled", false);
-          $("#textBox").attr("placeholder", "평점을 써주세요.");
-          $("#submitScore").on("click", submitScoreHandler);
-          $(".star").on("click", starClickHandler);
+        findRecommend(userId, reviewId);
+      } else{
+        const userConfirmed = confirm(`로그인이 필요한 서비스입니다.\n로그인 페이지로 이동하시겠습니까?`);
+        if (userConfirmed) {
+            location.href = "/user/login";
+        }
       }
-  });
+    });
 
-  // 스포일러 신고 버튼 클릭 시 신고 동작 수행
-  $(document).on('click', '.report_spoiler', function() {
-      const reviewId = $(this).attr('spoil-reviewId');
-      findReport(userId, reviewId, "SPOILER");
-  });
+    // 삭제 버튼 클릭 시 삭제 동작 수행
+    $(document).on('click', '.delete', function() {
+      if(userId){
+        const reviewId = $(this).attr('delete-reviewId');
+        let answer = confirm("리뷰를 삭제하시겠습니까?");
+        if (answer) {
+            deleteReview(reviewId);
+            $("#submitScore").on("click");
+            $("#textBox").prop("disabled", false);
+            $("#textBox").attr("placeholder", "평점을 써주세요.");
+            $("#submitScore").on("click", submitScoreHandler);
+            $(".star").on("click", starClickHandler);
+        }
+      } else{
+        const userConfirmed = confirm(`로그인이 필요한 서비스입니다.\n로그인 페이지로 이동하시겠습니까?`);
+        if (userConfirmed) {
+        location.href = "/user/login";
+        }
+      }
+    });
 
-  // 욕.비방 신고 버튼 클릭 시 신고 동작 수행
-  $(document).on('click', '.report_badword', function() {
-      const reviewId = $(this).attr('badword-reviewId');
-      findReport(userId, reviewId, "BADWORD");
-  });
+    // 스포일러 신고 버튼 클릭 시 신고 동작 수행
+    $(document).on('click', '.report_spoiler', function() {
+      if(userId){
+        const reviewId = $(this).attr('spoil-reviewId');
+        findReport(userId, reviewId, "SPOILER");
+      } else{
+        const userConfirmed = confirm(`로그인이 필요한 서비스입니다.\n로그인 페이지로 이동하시겠습니까?`);
+        if (userConfirmed) {
+            location.href = "/user/login";
+        }
+      }
+    });
+
+    // 욕.비방 신고 버튼 클릭 시 신고 동작 수행
+    $(document).on('click', '.report_badword', function() {
+      if(userId){
+        const reviewId = $(this).attr('badword-reviewId');
+        findReport(userId, reviewId, "BADWORD");
+      } else{
+        const userConfirmed = confirm(`로그인이 필요한 서비스입니다.\n로그인 페이지로 이동하시겠습니까?`);
+        if (userConfirmed) {
+        location.href = "/user/login";
+        }
+      }
+    });
 })
 
   $('#submitScore').click(function(){
@@ -121,6 +149,7 @@ function starClickHandler() {
 
 // 리뷰작성 핸들러
 function submitScoreHandler() {
+  if(userId){
   const score = $("#score").val();
   const content = $("#textBox").val().trim().replaceAll('\n', '<br>');
   const text = $("#textBox").val();
@@ -164,6 +193,12 @@ function submitScoreHandler() {
       }
     }
   });
+  }else{
+    const userConfirmed = confirm(`로그인이 필요한 서비스입니다.\n로그인 페이지로 이동하시겠습니까?`);
+    if (userConfirmed) {
+        location.href = "/user/login";
+    }
+  }
 }
 
 
