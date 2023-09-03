@@ -49,8 +49,6 @@ $(function(){
                 },
                 success:function(data)
                 {
-                    alert(data.length);
-                    console.log(data);
                     for(var i = 0; i < data.length; i++)
                     {
                         let time = data[i].trim();
