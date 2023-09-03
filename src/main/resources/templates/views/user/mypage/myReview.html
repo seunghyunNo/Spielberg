@@ -28,10 +28,10 @@
                 </tr>
             </thead>
             <tbody>
-                <tr th:each="movie.review : ${list}">
-                    <td th:text="${movie.review.username}"></td>
-                    <td><a th:href="@{'/movie/detail/'+${movie.id}}" th:text="${movie.review.content}"></a></td>
-                    <td th:text="${movie.review.showDateTime,'yyyy-MM-dd HH:mm:ss'}"></td>
+                <tr th:each="review : ${list}">
+                    <td th:text="${review.user.username}"></td>
+                    <td><a th:href="@{'/movie/detail/'+${review.movie.id}}" th:text="${review.content}"></a></td>
+                    <td th:text="${review.createdAt}"></td>
                 </tr>
             </tbody>
         </table>

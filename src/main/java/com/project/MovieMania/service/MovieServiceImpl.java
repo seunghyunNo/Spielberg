@@ -482,7 +482,7 @@ public class MovieServiceImpl implements MovieService {
 
         User user = userRepository.findById(id).orElseThrow();
 
-        List<Review> reviewList = reviewRepository.findByUser_id(id);
+        List<Review> reviewList = reviewRepository.findByUser(user);
         return reviewList;
     }
 

@@ -31,10 +31,10 @@
             <tbody>
                 <tr th:each="ticketInfo : ${list}">
 
-                    <td th:text="${ticketInfo.showInfo[0].movie.title}"></td>
+                    <td th:text="${ticketInfo.showInfo.movie.title}"></td>
                     <td th:text="${ticketInfo.ticketCode}"></td>
-                    <td th:text="${ticketInfo.priceInfo[0].price}"></td>
-                    <td th:text="${ticketInfo.showInfo[0].showDateTime,'yyyy-MM-dd HH:mm:ss'}"></td>
+                    <td th:text="${ticketInfo.priceInfo.price}"></td>
+                    <td th:text="${ticketInfo.showInfo.showDateTime}"></td>
                 </tr>
             </tbody>
         </table>
