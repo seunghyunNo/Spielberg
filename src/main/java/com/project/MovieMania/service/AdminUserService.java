@@ -10,4 +10,6 @@ public interface AdminUserService {
 	List<User> list(UserStatus userStatus);
 	
 	int statusUpdate(Long id, UserStatus userStatus);
+	
+	boolean checkAuthority();
 }

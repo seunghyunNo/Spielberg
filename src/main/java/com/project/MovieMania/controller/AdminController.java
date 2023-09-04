@@ -1,15 +1,20 @@
 package com.project.MovieMania.controller;
 
+import com.project.MovieMania.config.PrincipalDetails;
+import com.project.MovieMania.domain.Authority;
 import com.project.MovieMania.domain.Movie;
 import com.project.MovieMania.domain.ShowInfo;
+import com.project.MovieMania.domain.User;
 import com.project.MovieMania.domain.type.UserStatus;
 import com.project.MovieMania.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 
 @Controller
 @RequestMapping("/admin")
@@ -24,6 +29,8 @@ public class AdminController {
 	private TheaterService theaterService;
 	private AdminReportService reportService;
 	
+	private AdminUserService userService;
+	
 	@Autowired
 	public void setMovieService(AdminMovieService movieService){
 		this.movieService = movieService;
@@ -34,6 +41,9 @@ public class AdminController {
 	public void setTheaterService(TheaterService theaterService){ this.theaterService = theaterService; }
 	@Autowired
 	public void setReportService(AdminReportService reportService){ this.reportService = reportService; }
+	@Autowired
+	public void setUserService(AdminUserService userService){ this.userService = userService; }
+	
 	
 	@RequestMapping("/")
 	public String adminHome(){
@@ -43,9 +53,12 @@ public class AdminController {
 	// -------- movie ----------
 	@RequestMapping("/movie")
 	public String movieList(Model model){
-		model.addAttribute("list", movieService.list());
-		return "admin/movie/list";
-		
+		if(userService.checkAuthority()){
+			model.addAttribute("list", movieService.list());
+			return "admin/movie/list";
+		}else {
+			return "admin/noAuthority";
+		}
 	}
 	
 	@GetMapping("/movie/register")

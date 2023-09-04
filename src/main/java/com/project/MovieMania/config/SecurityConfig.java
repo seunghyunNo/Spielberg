@@ -34,6 +34,7 @@ public class SecurityConfig{
                 .authorizeHttpRequests(auth -> auth
 //                        .requestMatchers("/user/changePw","/user/profileUpdate","/user/myPage").hasAnyRole("MEMBER","ADMIN")
                         .requestMatchers("/user/login","/user/register","user/findUsername","user/findPw").anonymous()
+                        .requestMatchers("/admin/movie","/admin/show","/admin/user","admin/report").hasRole("ADMIN")
                         .anyRequest().permitAll()
                 )
                 .formLogin(form->form

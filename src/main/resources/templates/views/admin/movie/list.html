@@ -12,7 +12,7 @@
 	<script th:src="@{/js/admin/movie/list.js}"></script>
 </head>
 <body>
-	<!-- 헤더 작업 영역 -->
+	<th:block th:insert="~{header::header}"></th:block>
 	<div class="container">
 		<th:block th:insert="~{admin/header/navbar::adminNav}"></th:block>
 		<h2 class="my-3">영화 목록</h2>

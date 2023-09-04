@@ -22,6 +22,11 @@ select m.*, si.status from movie m LEFT JOIN show_info si on m.id = si.id;
 
 select * from user;
 
+SELECT * FROM authority;
+SELECT * FROM user_authorities ;
+
+SELECT a.name, ua.user_id FROM authority a, user_authorities ua WHERE a.id = ua.authorities_id;
+
 select * from show_info where status = "now";
 
 INSERT INTO moviedb.`user`
