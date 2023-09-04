@@ -77,8 +77,8 @@
                                     <tr>
                                         <td>
                                         </td>
-                                        <td class="r_info" th:classappend="${#lists.size(movie.showInfos) > 0} ? 'has-status' : 'no-status'">
-                                            <p th:if="${#lists.size(movie.showInfos) > 0}" th:text="${movie.showInfos[0].status}"></p>
+                                        <td class="r_info">
+                                            <p th:if="${#lists.size(movie.showInfos) > 0}">예매 가능</p>
                                             <p th:unless="${#lists.size(movie.showInfos) > 0}">상영 정보 없음</p>
                                         </td>
                                     </tr>

@@ -21,5 +21,11 @@ public class U {
 
     }
 
+    public static User getLoggedUser(){
+        PrincipalDetails userDetails = (PrincipalDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        User user = userDetails.getUser();
+        return user;
+    }
+
 
 }

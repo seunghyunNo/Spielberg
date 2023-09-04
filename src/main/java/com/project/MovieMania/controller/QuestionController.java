@@ -25,19 +25,7 @@ public class QuestionController {
     @GetMapping("/list")
     public void list(Integer page, Model model) {
 
-        User user = new User();
-        user.setId(1l);
-        user.setName("나");
-        user.setUsername("나");
-        user.setEmail("ppp@vmv.com");
-        user.setPhoneNum("01011112222");
-        user.setBirthday(LocalDate.now());
-        user.setStatus(UserStatus.ACTIVE);
-        user.setGender(Gender.MALE);
-
-        model.addAttribute("username", user.getUsername());
-
-        model.addAttribute("list", questionService.list(page, model));
+        model.addAttribute("list", questionService.list(page,  model));
 
     }
 
@@ -45,15 +33,7 @@ public class QuestionController {
     @GetMapping("/write")
     public void write(Model model){
 
-        User user = new User();
-        user.setId(1l);
-        user.setName("나");
-        user.setUsername("나");
-        user.setEmail("ppp@vmv.com");
-        user.setPhoneNum("01011112222");
-        user.setBirthday(LocalDate.now());
-        user.setStatus(UserStatus.ACTIVE);
-        user.setGender(Gender.MALE);
+        User user = U.getLoggedUser();
 
         model.addAttribute("user_id", user.getId());
         model.addAttribute("username", user.getUsername());
@@ -65,21 +45,6 @@ public class QuestionController {
     public  String writeOk(Question question,
                            Model model){
 
-        User user = new User();
-        user.setId(1l);
-        user.setName("나");
-        user.setUsername("나");
-        user.setEmail("ppp@vmv.com");
-        user.setPhoneNum("01011112222");
-        user.setBirthday(LocalDate.now());
-        user.setStatus(UserStatus.ACTIVE);
-        user.setGender(Gender.MALE);
-
-        model.addAttribute("user_id", user.getId());
-        model.addAttribute("username", user.getUsername());
-
-        question.setUser(user);
-
         int write = questionService.write(question);
         model.addAttribute("result", write);
 
@@ -90,17 +55,7 @@ public class QuestionController {
     @GetMapping("/detail/{id}")
     public String detail(@PathVariable long id, Model model){
 
-        User user = new User();
-        user.setId(1l);
-        user.setName("나");
-        user.setUsername("나");
-        user.setEmail("ppp@vmv.com");
-        user.setPhoneNum("01011112222");
-        user.setBirthday(LocalDate.now());
-        user.setStatus(UserStatus.ACTIVE);
-        user.setGender(Gender.MALE);
 
-        model.addAttribute("username", user.getUsername());
         model.addAttribute("question", questionService.detail(id));
 
         return "question/detail";
@@ -108,19 +63,6 @@ public class QuestionController {
 
     @GetMapping("/update/{id}")
     public String update(@PathVariable long id, Model model){
-
-        User user = new User();
-        user.setId(1l);
-        user.setName("나");
-        user.setUsername("나");
-        user.setEmail("ppp@vmv.com");
-        user.setPhoneNum("01011112222");
-        user.setBirthday(LocalDate.now());
-        user.setStatus(UserStatus.ACTIVE);
-        user.setGender(Gender.MALE);
-
-        model.addAttribute("user_id", user.getId());
-        model.addAttribute("username", user.getUsername());
 
         model.addAttribute("question", questionService.selectById(id));
         return "question/update";
@@ -133,18 +75,6 @@ public class QuestionController {
             Model model
     ){
 
-        User user = new User();
-        user.setId(1l);
-        user.setName("나");
-        user.setUsername("나");
-        user.setEmail("ppp@vmv.com");
-        user.setPhoneNum("01011112222");
-        user.setBirthday(LocalDate.now());
-        user.setStatus(UserStatus.ACTIVE);
-        user.setGender(Gender.MALE);
-
-        question.setUser(user);
-
         model.addAttribute("result", questionService.update(question));
         return "question/updateOk";
     }
@@ -152,17 +82,6 @@ public class QuestionController {
     @PostMapping("/answer")
     public String answerOk(Question question,
                            Model model){
-        User user = new User();
-        user.setId(1l);
-        user.setName("나");
-        user.setUsername("나");
-        user.setEmail("ppp@vmv.com");
-        user.setPhoneNum("01011112222");
-        user.setBirthday(LocalDate.now());
-        user.setStatus(UserStatus.ACTIVE);
-        user.setGender(Gender.MALE);
-
-        question.setUser(user);
 
         model.addAttribute("result", questionService.answer(question));
         return "question/answerOk";

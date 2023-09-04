@@ -15,8 +15,12 @@
       </div>
       <!-- 로그인 했을때는 username, mypage 와 로그아웃 form 보여주기 -->
       <form th:action="@{/user/logout}" method="POST" sec:authorize="Authenticated" th:with="user=${#authentication.getPrincipal().getUser()}">
+	    <sec:authorize access="hasRole('ROLE_ADMIN)'">
+	      <a th:href="@{/admin/}">Admin Page</a>
+	    </sec:authorize>
         <span class="text-light p-2">[[${user.username}]] 님 환영합니다 </span>
         <a class="btn btn-light" th:href="@{/user/myPage}">MyPage</a>
+        <a class="btn btn-light" th:href="@{/question/list}">고객센터</a>
         <span><button class="btn btn-danger" type="submit">Logout</button></span>
       </form>
     </div>
