@@ -183,7 +183,6 @@ public class UserServiceImpl implements UserService {
     @Override
     public User profileUpdate(Long userId, String name, String username, String email, String phoneNum, String password) {
 
-        // 여기에 유저정보가 다 담겨있는건가????
 
         User user = userRepository.findById(userId).orElseThrow();
 
@@ -205,7 +204,7 @@ public class UserServiceImpl implements UserService {
 
         // 비밀번호가 일치하면 아이디 삭제
         if(passwordEncoder.matches(password,getPassword)){
-//            userRepository.delete(user);    // 타입이 안맞아서 void != boolean
+
             return true;
         }else {
             return false;

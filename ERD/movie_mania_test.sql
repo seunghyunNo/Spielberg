@@ -33,6 +33,8 @@ INSERT INTO moviedb.`user`
 (birthday, created_at, updated_at, gender, phone_num, name, password, username, email, status)
 VALUES('2000-05-03', NOW(), NOW(), 'MALE', '00011112222', '나', 'ㅇㅇㅇㅇㅇ', '나', 'PPP@VVV.COM', 'ACTIVE');
 
+ 
+
 INSERT INTO movie
 (open_date, show_time, audi_cnt, movie_code, directors, genre, rate_grade, title, actors, img)
 VALUES('20240822', 0, 0, '0', '1', '1', '1', '1', '1', '1.img');
@@ -65,17 +67,8 @@ INSERT INTO movie
 (open_date, show_time, audi_cnt, movie_code, directors, genre, rate_grade, title, actors, img)
 VALUES('20240822', 0, 0, '8', '4', '4', '4', '3', '23', '3');
 
-SELECT cinema_id, theater_num FROM theater ORDER BY cinema_id, theater_num;
 
-INSERT INTO theater (cinema_id, theater_num, max_seat_column, max_seat_row)
-VALUES(1, 4, 11, 10),
-(3, 1, 15, 10),
-(3, 2, 20, 13),
-(3, 3, 18, 12),
-(3, 4, 16, 10),
-(3, 5, 20, 20),
-(2, 3, 12, 14),
-(2, 4, 20, 14);
+
 
 INSERT INTO show_info
 (movie_id, show_date_time, theater_id, status)
@@ -132,10 +125,3 @@ VALUES
   ('1988-03-12', NOW(), NOW(), 'FEMALE', '222-333-4444', 'Emily Brown', 'password111', 'emily_brown', 'emily@example.com', 'ACTIVE'),
   ('1995-11-25', NOW(), NOW(), 'MALE', '777-888-9999', 'Daniel Lee', 'password222', 'daniel_lee', 'daniel@example.com', 'ACTIVE'),
   ('1999-07-07', NOW(), NOW(), 'FEMALE', '444-555-6666', 'Olivia Wilson', 'password333', 'olivia_wilson', 'olivia@example.com', 'ACTIVE');
- 
- INSERT INTO report (`type`, review_id, user_id)
- VALUES
- ('BADWORD', 9, 1);
-
-
-
