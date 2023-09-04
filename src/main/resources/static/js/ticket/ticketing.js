@@ -59,47 +59,52 @@ $(function () {
         let writeRow = $(this).siblings("input");
         let writeColumn = $(this).parent().siblings("input");
         let crnObj = $(this);
-        $.ajax({
-            url: "/seat/check",
-            type: "POST",
-            cache: false,
-            data: {
-                "seatRow": row,
-                "seatColumn": column,
-                "showInfoId": showInfoId,
-                "userId": userId,
-            },
-            success: function (data) {
-                if (data.count == 1) {
-                    crnObj.removeClass("selectSeat");
-                    crnObj.addClass("seat");
-                    cnt--;
-                }
-                else {
-                    alert(checkRow+checkColumn);
-                    if(checkRow == row && checkColumn == column)
-                    {
+        let maxPeople = adultNum + studentNum;
+
+            $.ajax({
+                url: "/seat/check",
+                type: "POST",
+                cache: false,
+                data: {
+                    "seatRow": row,
+                    "seatColumn": column,
+                    "showInfoId": showInfoId,
+                    "userId": userId,
+                },
+                success: function (data) {
+                    if (data.count == 1) {
                         crnObj.removeClass("selectSeat");
                         crnObj.addClass("seat");
                         cnt--;
-                        checkRow = 0;
-                        checkColumn = 0;
                     }
-                    else
-                    {
-                        checkRow = row;
-                        checkColumn = column;
-                        crnObj.removeClass("seat");
-                        crnObj.addClass("selectSeat");
-                        cnt++;
-                        writeRow.val(row);
-                        writeColumn.val(column);
+                    else {
+                        if(checkRow == row && checkColumn == column)
+                        {
+                            crnObj.removeClass("selectSeat");
+                            crnObj.addClass("seat");
+                            cnt--;
+                            checkRow = 0;
+                            checkColumn = 0;
+                            writeRow.val("0");
+                            writeColumn.val("0");
+                        }
+                        else
+                        {
+                            if(maxPeople > cnt)
+                            {
+                                checkRow = row;
+                                checkColumn = column;
+                                crnObj.removeClass("seat");
+                                crnObj.addClass("selectSeat");
+                                cnt++;
+                                writeRow.val(row);
+                                writeColumn.val(column);
+                            }
+
+                        }
                     }
-
-
-                }
-            },
-        });
+                },
+            });
 
     });
     $("#purchaseBtn").click(function () {

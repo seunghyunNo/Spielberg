@@ -8,6 +8,8 @@
   history.back();
 </script>
 
+<th:block th:if="${question}" th:with="logged_user=${#authentication.principal.user}">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=600">
@@ -19,16 +21,16 @@
     <script th:src="@{/js/answer.js}"></script>
 
     <link rel="stylesheet" type="text/css" th:href="@{/css/question/question.css}">
-    <link rel="stylesheet" type="text/css" th:href="@{/css/home/header.css}">
+<!--    <link rel="stylesheet" type="text/css" th:href="@{/css/home/header.css}">-->
 
-    <title>Title</title>
+<title>Title</title>
 </head>
 <body style="margin-bottom: 200px">
-<th:block th:insert="~{common/header::header}"></th:block>
+<th:block th:insert="~{/header::header}"></th:block>
 <div class="container mt-3">
     <div class="container mt-3">
       <label>작성자:</label>
-      <div class="border bg-light rounded p-2" id="username1" th:text="${username}"></div>
+      <div class="border bg-light rounded p-2" id="username1" th:text="${question.user.username}"></div>
     </div>
     <div class="mb-3 mt-3">
       <label>제목:</label>
@@ -39,14 +41,14 @@
       <label>내용:</label>
       <div class="border bg-light rounded p-2" th:utext="${question.content}"></div>
     </div>
-    <div class="mb-3 mt-3">
+    <div class="mb-3 mt-3" sec:authorize="hasAnyRole('ADMIN')">
         <label>답변:</label>
         <div class="border bg-light rounded p-2" th:text="${question.answer}"></div>
 
         <form name="answer" th:action="@{/question/answer}" method="post" enctype="multipart/form-data">
                 <input type="hidden" name="id" th:value="${question.id}"/>
-                <input type="hidden" name="username" th:value="${username}"/>
-                <input type="hidden" name="user_id" th:value="${user_id}">
+                <input type="hidden" name="username" th:value="${question.user.username}"/>
+                <input type="hidden" name="user_id" th:value="${question.user.userid}">
                 <input type="hidden" name="title" th:value="${question.title}"/>
                 <input type="hidden" name="content" th:value="${question.content}"/>
                 <div class="container mt-3 col-lg-4 d-flex">
@@ -62,4 +64,5 @@
     </div>
 </div>
 </body>
+</th:block>
 </html>

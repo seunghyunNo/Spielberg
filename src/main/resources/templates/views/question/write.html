@@ -20,12 +20,12 @@
   <title>Write</title>
 </head>
 <body style="margin-bottom: 200px">
-<th:block th:insert="~{common/header::header}"></th:block>
-<div class="container mt-3">
+<th:block th:insert="~{/header::header}"></th:block>
+<div class="container mt-3" th:with="user=${#authentication.getPrincipal().getUser()}">
   <form th:action="@{/question/write}" method="post" enctype="multipart/form-data">
       <div class="my-3">
           <label>작성자:</label>
-          <span class="form-control" th:text="${username}"></span>
+          <span class="form-control">[[${user.username }]] ([[${user.name }]])</span>
       </div>
     <div class="my-3">
       <label>제목:</label>

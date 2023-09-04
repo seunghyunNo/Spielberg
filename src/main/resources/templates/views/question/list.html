@@ -18,7 +18,7 @@
 </head>
 <body style="margin-bottom: 200px">
 
-<th:block th:insert="~{common/header::header}"></th:block>
+<th:block th:insert="~{/header::header}"></th:block>
 
 <div class="container mt-3">
     <table class="table table-hover">
@@ -30,10 +30,10 @@
         </tr>
         </thead>
         <tbody>
-        <tr th:each="post : ${list}">
-            <td th:text="${post.id}">1</td>
-            <td><a th:href="@{'/question/detail/' + ${post.id}}" th:text="${post.title}"></a></td>
-            <td th:text="${username}"></td>
+        <tr th:each="question : ${list}">
+            <td th:text="${question.id}">1</td>
+            <td><a th:href="@{'/question/detail/' + ${question.id}}" th:text="${question.title}"></a></td>
+            <td th:text="${question.user.username}"></td>
         </tr>
         </tbody>
     </table>

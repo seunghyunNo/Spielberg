@@ -3,6 +3,8 @@
       xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
+<th:block th:if="${question}" th:with="logged_user=${#authentication.principal.user}">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=600">
@@ -20,17 +22,19 @@
   <title>Update</title>
 </head>
 <body style="margin-bottom: 200px">
-<th:block th:insert="~{common/header::header}"></th:block>
+<th:block th:insert="~{/header::header}"></th:block>
+
+
   <div class="container mt-3">
     <form th:action="@{/question/update}" method="post" enctype="multipart/form-data">
 
       <div class="mb-3 mt-3 clearfix">
+        <input type="hidden" name="id" th:value="${question.id}"/>
         <label>작성자:</label>
-        <input type="text" th:value="${user_id}">
-        <div name="username" th:text="${username}"></div>
+        <div th:text="${question.user.username}"></div>
       </div>
       <div>
-        <input type="hidden" name="id" th:value="${question.id}"/>
+        <input type="hidden" th:value="${question.id}"/>
         <label>제목:</label>
         <input type="text" class="form-control" placeholder="제목을 입력하세요" name="title" th:value="${question.title}">
       </div>
@@ -41,7 +45,7 @@
       </div>
 
       <div class="footer">
-      <button type="submit" class="btn btn-outline-dark">수정완료</button>
+      <button type="submit" class="btn btn-outline-dark" th:if="${logged_user.id == question.user.id}">수정완료</button>
       <button type="button" class="btn btn-outline-dark" onclick="history.back()">이전으로</button>
         <a th:href="@{/question/list}" class="btn btn-outline-dark">목록</a>
       </div>
@@ -49,4 +53,5 @@
     </form>
   </div>
 </body>
+</th:block>
 </html>
