@@ -96,6 +96,11 @@ public class QuestionServiceImpl implements QuestionService {
 
     @Override
     public int write(Question question) {
+
+        User user = U.getLoggedUser();
+        user = userRepository.findById(user.getId()).orElse(null);
+        question.setUser(user);
+
         questionRepository.save(question);
         return 1;
     }
