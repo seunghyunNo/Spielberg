@@ -155,8 +155,6 @@ public class UserServiceImpl implements UserService {
 
         User user = userRepository.findById(id).orElseThrow();
 
-//        List<Authority> authorityList = user.getAuthorities();
-
         return user.getAuthorities();
     }
 
