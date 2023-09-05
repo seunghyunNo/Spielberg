@@ -220,11 +220,12 @@ public class TheaterController {
         List<TicketInfo> ticketList = ticketingService.findTicket(showInfoId,user.getId(),model);
 
         String showTime = ticketList.get(0).getShowInfo().getShowDateTime().toLocalDate().toString() +"일"+ticketList.get(0).getShowInfo().getShowDateTime().toLocalTime().toString();
-//        String peopleCnt = ticketList.size() + "인";
+
+        String theaterNum = ticketList.get(0).getShowInfo().getTheater().getTheaterNum() + "관";
 
         model.addAttribute("movieName",ticketList.get(0).getShowInfo().getMovie().getTitle());
         model.addAttribute("showTime",showTime);
-//        model.addAttribute("peopleCnt",peopleCnt);
+        model.addAttribute("theaterNum",theaterNum);
         return "ticket/complete";
     }
 }
