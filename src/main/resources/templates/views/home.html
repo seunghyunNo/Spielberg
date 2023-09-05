@@ -33,7 +33,7 @@
                             <div class="d-flex">
                                 <a id="imgbox" th:href="@{'/movie/detail/' + ${movie.id}}">
                                     <img class="poster"
-                                         th:src="@{'/upload/' + ${movie.img}}"></a>
+                                         th:src="${movie.img}"></a>
                                 <table id="mvinfo">
                                     <tr>
                                         <td>

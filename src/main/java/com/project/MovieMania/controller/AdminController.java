@@ -168,7 +168,7 @@ public class AdminController {
 		return "admin/show/updateOk";
 	}
 	
-	@PostMapping("/show/delete")
+	@PostMapping("/delete")
 	public String showDelete(@RequestParam("showInfoId") Long id, Model model){
 		model.addAttribute("result", showInfoService.delete(id));
 		return "admin/show/deleteOk";

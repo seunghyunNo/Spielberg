@@ -98,31 +98,31 @@ public class TicketingServiceImpl implements TicketingService{
                 count++;
             }
         }
-
-            for (int i = 0; i < ticketInfo.size(); i++) {
-                if(check) {
+        
+        for (int x = 0; x < 7; x++) {
+            char code = (char) ((Math.random() * 26) + 65);
+            ticketCode += code;
+        }
+        for (int i = 0; i < ticketInfo.size(); i++) {
+            if(check) {
+                List<TicketInfo> codeCheck = ticketInfoRepository.findByTicketCode(ticketCode);
+                if (!codeCheck.isEmpty()) {
                     for (int x = 0; x < 7; x++) {
                         char code = (char) ((Math.random() * 26) + 65);
                         ticketCode += code;
                     }
-                    List<TicketInfo> codeCheck = ticketInfoRepository.findByTicketCode(ticketCode);
-                    if (!codeCheck.isEmpty()) {
-                        for (int x = 0; x < 7; x++) {
-                            char code = (char) ((Math.random() * 26) + 65);
-                            ticketCode += code;
-                        }
-                    }
-                    ticketInfo.get(i).setTicketCode(ticketCode);
-                    TicketInfo ticket = ticketInfo.get(i);
-                    ticketInfoRepository.saveAndFlush(ticket);
                 }
-                else
-                {
-                    ticketInfo.get(i).setTicketCode(ticketCode);
-                    TicketInfo ticket = ticketInfo.get(i);
-                    ticketInfoRepository.saveAndFlush(ticket);
-                }
+                ticketInfo.get(i).setTicketCode(ticketCode);
+                TicketInfo ticket = ticketInfo.get(i);
+                ticketInfoRepository.saveAndFlush(ticket);
             }
+            else
+            {
+                ticketInfo.get(i).setTicketCode(ticketCode);
+                TicketInfo ticket = ticketInfo.get(i);
+                ticketInfoRepository.saveAndFlush(ticket);
+            }
+        }
         String peopleCnt = count + "인";
         model.addAttribute("peopleCnt",peopleCnt);
         return ticketInfo;

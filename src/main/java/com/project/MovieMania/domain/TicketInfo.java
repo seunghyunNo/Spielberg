@@ -20,7 +20,7 @@ public class TicketInfo extends BaseEntity{
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
-	@Column(length = 20)
+	@Column
 	private String ticketCode;
 	
 	@ManyToOne

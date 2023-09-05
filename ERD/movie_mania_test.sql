@@ -18,7 +18,12 @@ select * from report;
 select * from question;
 select * from review r;
 
+UPDATE ticket_info 
+SET ticket_code='ASDFGTR'
+WHERE user_id != 1;
+
 select m.*, si.status from movie m LEFT JOIN show_info si on m.id = si.id;
+
 
 select * from user;
 
@@ -108,9 +113,9 @@ VALUES(10, 1, 2),
 (10, 1, 7);
 
 
-UPDATE `user`
-SET birthday='19800117'
-WHERE id='1';
+UPDATE price_info 
+SET name = '학생'
+WHERE id='2';
 
 INSERT INTO review (score, created_at, movie_id, updated_at, user_id, content)
 VALUES

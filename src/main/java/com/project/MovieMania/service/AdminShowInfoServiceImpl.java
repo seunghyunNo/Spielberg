@@ -70,6 +70,8 @@ public class AdminShowInfoServiceImpl implements AdminShowInfoService{
 			ShowInfo showInfo = showInfoRepository.findById(id).orElseThrow(() -> new RuntimeException());
 			showInfoRepository.delete(showInfo);
 		}catch (RuntimeException e){
+			e.getMessage();
+			e.getCause();
 			return 0;
 		}
 		return 1;

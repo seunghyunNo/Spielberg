@@ -39,7 +39,7 @@ public class TheaterRestController {
     }
 
     @PostMapping("/selectDate")
-    public List<LocalDate> selectDate(@RequestParam String cinemaName,@RequestParam String movieId)
+    public List<LocalDate> selectDate(@RequestParam String cinemaName, @RequestParam String movieId)
     {
         Long id = Long.parseLong(movieId);
         Cinema cinema = cinemaRepository.findByName(cinemaName);
@@ -49,12 +49,16 @@ public class TheaterRestController {
 
         for(int i = 0; i < showInfoList.size(); i++)
         {
-            if(showInfoList.get(i).getTheater().equals(theater.get(i)))
-            {
-                theaterInfo = showInfoList.get(i).getTheater();
-                break;
+            for(int x = 0 ; x < theater.size(); x++) {
+                
+                
+                if(showInfoList.get(i).getTheater().equals(theater.get(x))) {
+                    theaterInfo = showInfoList.get(i).getTheater();
+                    break;
+                }
             }
         }
+        System.out.println(theaterInfo);
         showInfoList.clear();
         showInfoList = showInfoService.findByMovieAndTheater(id,theaterInfo);
         List<LocalDate> dateList = new ArrayList<>();
@@ -89,10 +93,11 @@ public class TheaterRestController {
 
         for(int i = 0; i < showInfoList.size(); i++)
         {
-            if(showInfoList.get(i).getTheater().equals(theater.get(i)))
-            {
-                theaterInfo = showInfoList.get(i).getTheater();
-                break;
+            for(int x = 0; x < theater.size(); x++) {
+                if(showInfoList.get(i).getTheater().equals(theater.get(x))) {
+                    theaterInfo = showInfoList.get(i).getTheater();
+                    break;
+                }
             }
         }
         showInfoList.clear();
