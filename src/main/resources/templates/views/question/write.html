@@ -29,12 +29,12 @@
       </div>
     <div class="my-3">
       <label>제목:</label>
-      <input type="text"  class="form-control" placeholder="제목을 입력하세요" name="title" th:value="${title}">
+      <input type="text"  class="form-control" placeholder="제목을 입력하세요" name="title" th:value="${title}" required>
     </div>
 
     <div class="my-3">
       <label>내용:</label>
-      <textarea class="form-control" id="content" placeholder="내용을 입력하세요" name="content" th:utext="${content}"></textarea>
+      <textarea class="form-control" id="content" placeholder="내용을 입력하세요" name="content" th:utext="${content}" required></textarea>
     </div>
 
     <div class="footer">
