@@ -4,7 +4,7 @@ SELECT TABLE_NAME FROM information_schema.TABLES
 WHERE TABLE_SCHEMA = 'moviedb';
 
 SELECT * FROM user;
-SELECT * FROM customer_authorities;
+SELECT * FROM user_authorities;
 select * from movie;
 select * from cinema;
 select * from theater;
@@ -24,6 +24,11 @@ select * from user;
 
 SELECT * FROM authority;
 SELECT * FROM user_authorities ;
+
+INSERT INTO moviedb.user_authorities
+(authorities_id, user_id)
+VALUES(2, 5);
+
 
 SELECT a.name, ua.user_id FROM authority a, user_authorities ua WHERE a.id = ua.authorities_id;
 

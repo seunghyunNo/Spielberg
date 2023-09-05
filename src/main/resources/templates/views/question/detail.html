@@ -41,14 +41,14 @@
       <label>내용:</label>
       <div class="border bg-light rounded p-2" th:utext="${question.content}"></div>
     </div>
-    <div class="mb-3 mt-3" sec:authorize="hasAnyRole('ADMIN')">
+    <div class="mb-3 mt-3" sec:authorize="hasAnyRole('ROLE_ADMIN')">
         <label>답변:</label>
         <div class="border bg-light rounded p-2" th:text="${question.answer}"></div>
 
         <form name="answer" th:action="@{/question/answer}" method="post" enctype="multipart/form-data">
                 <input type="hidden" name="id" th:value="${question.id}"/>
                 <input type="hidden" name="username" th:value="${question.user.username}"/>
-                <input type="hidden" name="user_id" th:value="${question.user.userid}">
+                <input type="hidden" name="user_id" th:value="${question.user.id}">
                 <input type="hidden" name="title" th:value="${question.title}"/>
                 <input type="hidden" name="content" th:value="${question.content}"/>
                 <div class="container mt-3 col-lg-4 d-flex">
