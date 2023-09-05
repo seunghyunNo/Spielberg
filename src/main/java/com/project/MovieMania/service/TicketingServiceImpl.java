@@ -77,12 +77,13 @@ public class TicketingServiceImpl implements TicketingService{
     }
 
     @Override
-    public List<TicketInfo> findTicket(Long showInfoId, Long userId) {
+    public List<TicketInfo> findTicket(Long showInfoId, Long userId,Model model) {
         User user = userRepository.findById(userId).orElse(null);
         ShowInfo showInfo = showInfoRepository.findById(showInfoId).orElse(null);
         List<TicketInfo> ticketInfo = ticketInfoRepository.findByUserAndShowInfo(user,showInfo);
 
         boolean check = true;
+        int count = 0;
         String ticketCode = "";
 
         for(int i = 0; i < ticketInfo.size(); i++)
@@ -91,6 +92,10 @@ public class TicketingServiceImpl implements TicketingService{
             {
                 check = false;
                 ticketCode = ticketInfo.get(i).getTicketCode();
+            }
+            else
+            {
+                count++;
             }
         }
 
@@ -118,7 +123,8 @@ public class TicketingServiceImpl implements TicketingService{
                     ticketInfoRepository.saveAndFlush(ticket);
                 }
             }
-
+        String peopleCnt = count + "인";
+        model.addAttribute("peopleCnt",peopleCnt);
         return ticketInfo;
     }
 

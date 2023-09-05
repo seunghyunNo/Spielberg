@@ -217,14 +217,14 @@ public class TheaterController {
 
         User user = userDetails.getUser();
 
-        List<TicketInfo> ticketList = ticketingService.findTicket(showInfoId,user.getId());
+        List<TicketInfo> ticketList = ticketingService.findTicket(showInfoId,user.getId(),model);
 
         String showTime = ticketList.get(0).getShowInfo().getShowDateTime().toLocalDate().toString() +"일"+ticketList.get(0).getShowInfo().getShowDateTime().toLocalTime().toString();
-        String peopleCnt = ticketList.size() + "인";
+//        String peopleCnt = ticketList.size() + "인";
 
         model.addAttribute("movieName",ticketList.get(0).getShowInfo().getMovie().getTitle());
         model.addAttribute("showTime",showTime);
-        model.addAttribute("peopleCnt",peopleCnt);
+//        model.addAttribute("peopleCnt",peopleCnt);
         return "ticket/complete";
     }
 }
