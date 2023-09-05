@@ -115,6 +115,7 @@ public class TicketingServiceImpl implements TicketingService{
                     ticketInfo.get(i).setTicketCode(ticketCode);
                     TicketInfo ticket = ticketInfo.get(i);
                     ticketInfoRepository.saveAndFlush(ticket);
+                    check = false;
                 }
                 else
                 {
