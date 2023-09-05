@@ -27,6 +27,8 @@ select m.*, si.status from movie m LEFT JOIN show_info si on m.id = si.id;
 
 select * from user;
 
+
+
 SELECT * FROM authority;
 SELECT * FROM user_authorities ;
 

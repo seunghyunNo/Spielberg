@@ -109,6 +109,9 @@ public class TheaterController {
         seatRow.addAll(rowList);
         seatColumn.addAll(columnList);
 
+        System.out.println(seatRow);
+        System.out.println(seatColumn);
+
 
         for (int y = 0; y < seatColumn.size(); y++) {
             for (int x = 0; x < seatRow.size(); x++) {
@@ -120,20 +123,24 @@ public class TheaterController {
                 }
             }
         }
-
+        System.out.println(seatRow.size());
+        System.out.println(seatColumn.size());
+        int c= 0;
 
         if (adult > 0 && student == 0) {         // 성인만 선택
-            for (int i = 0; i < adult; i++) {
+            System.out.println("성인");
+
                 priceInfo = priceService.checkAdultNum();
                 for (int x = 0; x < seatColumn.size(); x++) {
                     for (int y = 0; y < seatRow.size(); y++) {
+                        c++;
                         ticketInfo = ticketingService.writeTicket(showInfoId, userId, priceInfo.getId());
                         seatService.writeSeat(ticketInfo, seatRow.get(y), seatColumn.get(x));
                     }
                 }
-            }
+
         } else if (student > 0 && adult == 0) {    // 학생만 선택
-            for (int i = 0; i < student; i++) {
+            System.out.println("학생");
                 priceInfo = priceService.checkStudentNum();
                 for (int x = 0; x < seatColumn.size(); x++) {
                     for (int y = 0; y < seatRow.size(); y++) {
@@ -141,9 +148,9 @@ public class TheaterController {
                         seatService.writeSeat(ticketInfo, seatRow.get(y), seatColumn.get(x));
                     }
                 }
-            }
         } else if (student > 0 && adult > 0)   // 성인 학생 각각 1명이상 선택
         {
+            System.out.println("성인학생");
             int total = student + adult;
             int count = 0;
             int adultCnt = 0;
@@ -167,7 +174,7 @@ public class TheaterController {
 
         }
 
-
+        System.out.println("카운트"+c);
 
         ShowInfo showInfo = showInfoService.findById(showInfoId, model);
 
