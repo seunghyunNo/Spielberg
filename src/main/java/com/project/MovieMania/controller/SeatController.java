@@ -6,6 +6,7 @@ import com.project.MovieMania.domain.TicketInfo;
 import com.project.MovieMania.service.SeatService;
 import com.project.MovieMania.service.TicketingService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -25,13 +26,13 @@ public class SeatController {
     private TicketingService ticketingService;
 
     @PostMapping("/check")
-    public List<QryResult> check(@RequestParam String seatRow,@RequestParam String seatColumn,
-                           @RequestParam Long userId,@RequestParam Long showInfoId)
+    public List<QryResult> check(@RequestParam String seatRow, @RequestParam String seatColumn,
+                                 @RequestParam Long userId, @RequestParam Long showInfoId, Model model)
     {
         int row = Integer.parseInt(seatRow);
         int column = Integer.parseInt(seatColumn);
         Long ticketId = 0L;
-        List<TicketInfo> ticketInfo = ticketingService.findTicket(showInfoId,userId);
+        List<TicketInfo> ticketInfo = ticketingService.findTicket(showInfoId,userId,model);
         List<QryResult> resultList = new ArrayList<>();
         for(int i = 0 ; i < ticketInfo.size(); i++) {
             ticketId = ticketInfo.get(i).getId();

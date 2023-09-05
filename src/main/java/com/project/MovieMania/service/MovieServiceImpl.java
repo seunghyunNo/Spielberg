@@ -486,49 +486,4 @@ public class MovieServiceImpl implements MovieService {
         return reviewList;
     }
 
-    @Override
-    public List<Review> findMyReviewList(Model model, Integer page, long id) {
-        if(page == null) page = 1;
-        if(page <1)page = 1;
-
-        HttpSession session = U.getSession();
-
-        Integer writePages = (Integer) session.getAttribute("writePages");
-        if(writePages==null)writePages = WRITE_PAGES;
-
-        Integer pageRows = (Integer) session.getAttribute("pageRows");
-        if(pageRows ==null) pageRows = PAGE_ROWS;
-
-        session.setAttribute("page",page);
-
-        Page<Review> pageWrites = reviewRepository.findAll(PageRequest.of(page-1,pageRows,Sort.by(Sort.Order.desc("id"))));
-
-        long cnt = pageWrites.getTotalElements();
-        int totalPage = pageWrites.getTotalPages();
-
-        if(page>totalPage)page= totalPage;
-
-        int fromRow = (page -1)*pageRows;
-
-        int startPage = (((page-1)/writePages)*writePages)+1;
-        int endPage = startPage+writePages-1;
-        if(endPage >=totalPage) endPage = totalPage;
-
-        model.addAttribute("cnt",cnt);
-        model.addAttribute("page",page);
-        model.addAttribute("totalPage",totalPage);
-        model.addAttribute("pageRows",pageRows);
-
-        model.addAttribute("url",U.getRequest().getRequestURI());
-        model.addAttribute("writePages",writePages);
-        model.addAttribute("startPage",startPage);
-        model.addAttribute("endPage",endPage);
-
-        List<Review> list = pageWrites.getContent();
-        model.addAttribute("list",list);
-
-        return list;
-    }
-
-
 }

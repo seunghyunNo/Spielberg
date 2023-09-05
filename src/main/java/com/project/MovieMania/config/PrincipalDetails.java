@@ -36,7 +36,23 @@ public class PrincipalDetails implements UserDetails {
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         Collection<GrantedAuthority> collect = new ArrayList<>();
-        return null;
+
+        List<Authority> list = userService.findAuthorityById(user.getId());
+
+        for(Authority auth : list){
+            collect.add(new GrantedAuthority() {
+                @Override
+                public String getAuthority() {
+                    return auth.getName();
+                }
+
+                @Override
+                public String toString(){
+                    return auth.getName();
+                }
+            });
+        }
+        return collect;
     }
 
     @Override

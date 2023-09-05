@@ -119,42 +119,4 @@ $(document).ready(function(){
         })
 
     })
-
-    // emailCodeCheckBtn 클릭 이벤트 함수
-
-//    function emailCodeCheckBtnHandler(){
-//           var emailCodeInput = $('#emailCodeInput').val()    // 인증번호 입력 값 가져오기
-//           var code = $('#code').val();     // 확인 버튼을 클릭할 때 입력한 인증번호 가져오기
-//
-//           if(emailCodeInput === code){
-//            $('#emailCodeCheck').hide();
-//            $('#email').prop('readonly',true);
-//            $('#email_exist').html('인증에 성공하였습니다');
-//            $('#email_exist').css('color','#00f');
-//           }else{
-//            $('#email_exist').html("인증번호가 맞지 않습니다");
-//            $('#email_exist').css("color",'#f00');
-//           }
-//    }
-
-    // 폼 제출 이벤트
-//    $('form').submit(function(event){
-//        // 이벤트 기본 동작 막기
-//        event.preventDefault();
-//
-//        // 입력한 메일
-//        var emailCodeInput = $('#emailCodeInput').val();    //인증번호 입력값 가져오기
-//        var code = $('#code').val();        // 확인버튼을 클릭할 때 인증번호 가져오기
-//
-//        if(!code|| emailCodeInput !== code){
-//            $('#email_exist').html('이메일 인증에 실패하였습니다');
-//            $('#email_exist').css('color','#f00');
-//            return;
-//        }
-//
-//        // 유효성 검사 통과
-//        $(this).unbind('submit').submit();
-//    })
-
-
 })

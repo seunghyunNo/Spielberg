@@ -1,20 +1,34 @@
 package com.project.MovieMania.service;
 
-import com.project.MovieMania.domain.Authority;
-import com.project.MovieMania.domain.User;
+import com.project.MovieMania.domain.*;
+import com.project.MovieMania.domain.DTO.ReviewDTO;
+import com.project.MovieMania.domain.DTO.UserDTO;
 import com.project.MovieMania.domain.type.UserStatus;
-import com.project.MovieMania.repository.AuthorityRepository;
-import com.project.MovieMania.repository.UserRepository;
+import com.project.MovieMania.repository.*;
+import com.project.MovieMania.util.U;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.ui.Model;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class UserServiceImpl implements UserService {
+
+    @Value("${app.pagination.write_pages}")
+    private int WRITE_PAGES;
+
+    @Value("${app.pagination.page_rows}")
+    private int PAGE_ROWS;
 
     private UserRepository userRepository;
 
@@ -23,6 +37,27 @@ public class UserServiceImpl implements UserService {
 
 
     private PasswordEncoder passwordEncoder;
+
+    private ReviewRepository reviewRepository;
+
+    private TicketInfoRepository ticketInfoRepository;
+
+    private QuestionRepository questionRepository;
+
+    @Autowired
+    public void setQuestionRepository(QuestionRepository questionRepository) {
+        this.questionRepository = questionRepository;
+    }
+
+    @Autowired
+    public void setTicketInfoRepository(TicketInfoRepository ticketInfoRepository) {
+        this.ticketInfoRepository = ticketInfoRepository;
+    }
+
+    @Autowired
+    public void setReviewRepository(ReviewRepository reviewRepository) {
+        this.reviewRepository = reviewRepository;
+    }
 
     @Autowired
     public void setPasswordEncoder(PasswordEncoder passwordEncoder) {
@@ -120,8 +155,6 @@ public class UserServiceImpl implements UserService {
 
         User user = userRepository.findById(id).orElseThrow();
 
-//        List<Authority> authorityList = user.getAuthorities();
-
         return user.getAuthorities();
     }
 
@@ -148,7 +181,6 @@ public class UserServiceImpl implements UserService {
     @Override
     public User profileUpdate(Long userId, String name, String username, String email, String phoneNum, String password) {
 
-        // 여기에 유저정보가 다 담겨있는건가????
 
         User user = userRepository.findById(userId).orElseThrow();
 
@@ -170,7 +202,7 @@ public class UserServiceImpl implements UserService {
 
         // 비밀번호가 일치하면 아이디 삭제
         if(passwordEncoder.matches(password,getPassword)){
-//            userRepository.delete(user);    // 타입이 안맞아서 void != boolean
+
             return true;
         }else {
             return false;
@@ -184,6 +216,49 @@ public class UserServiceImpl implements UserService {
 
         userRepository.delete(user);
         return 1;
+    }
+
+    @Override
+    public List<ReviewDTO> findReview(Long id) {
+
+        User user = userRepository.findById(id).orElseThrow();
+
+        List<Review> reviews = reviewRepository.findByUser(user);
+
+        return reviews.stream().map(this::convertReviewDTO).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<TicketInfo> findTicketList(Long id) {
+
+        User user = userRepository.findById(id).orElseThrow();
+
+        List<TicketInfo> ticketInfos = ticketInfoRepository.findByUser(user);
+
+        return ticketInfos;
+    }
+
+    @Override
+    public List<Question> findQuestionList(Long id) {
+        User user = userRepository.findById(id).orElseThrow();
+
+        List<Question> questionList = questionRepository.findByUser(user);
+
+        return questionList;
+    }
+
+
+    private ReviewDTO convertReviewDTO(Review review){
+        ReviewDTO reviewDTO = new ReviewDTO();
+
+        reviewDTO.setId(review.getId());
+        reviewDTO.setContent(review.getContent());
+        reviewDTO.setScore(review.getScore());
+        reviewDTO.setCreatedAt(review.getCreatedAt());
+
+
+
+        return reviewDTO;
     }
 
 

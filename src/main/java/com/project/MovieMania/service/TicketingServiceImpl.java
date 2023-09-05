@@ -77,12 +77,13 @@ public class TicketingServiceImpl implements TicketingService{
     }
 
     @Override
-    public List<TicketInfo> findTicket(Long showInfoId, Long userId) {
+    public List<TicketInfo> findTicket(Long showInfoId, Long userId,Model model) {
         User user = userRepository.findById(userId).orElse(null);
         ShowInfo showInfo = showInfoRepository.findById(showInfoId).orElse(null);
         List<TicketInfo> ticketInfo = ticketInfoRepository.findByUserAndShowInfo(user,showInfo);
 
         boolean check = true;
+        int count = 0;
         String ticketCode = "";
 
         for(int i = 0; i < ticketInfo.size(); i++)
@@ -91,6 +92,10 @@ public class TicketingServiceImpl implements TicketingService{
             {
                 check = false;
                 ticketCode = ticketInfo.get(i).getTicketCode();
+            }
+            else
+            {
+                count++;
             }
         }
 
@@ -118,7 +123,8 @@ public class TicketingServiceImpl implements TicketingService{
                     ticketInfoRepository.saveAndFlush(ticket);
                 }
             }
-
+        String peopleCnt = count + "인";
+        model.addAttribute("peopleCnt",peopleCnt);
         return ticketInfo;
     }
 
@@ -150,65 +156,13 @@ public class TicketingServiceImpl implements TicketingService{
 
         User user = userRepository.findById(id).orElseThrow();
 
-        // user를 찾는게 아니라 유저의 아이디를 찾는건가???
-        List<TicketInfo> ticketInfos = ticketInfoRepository.findByUser_id(id);
+        List<TicketInfo> ticketInfos = ticketInfoRepository.findByUser(user);
 
         return ticketInfos;
     }
 
 
-    // 마이페이지 내 예매 목록 보여주는 곳
-    @Override
-    public List<TicketInfo> findMyTicketList(Model model, Integer page, long id) {
-        if(page== null|| page<1){
-            page=1;
-        }
-        HttpSession session = U.getSession();
-        Integer writePage = (Integer) session.getAttribute("writePage");
-        Integer pageRows = (Integer) session.getAttribute("pageRows");
-        if(writePage==null){
-            writePage=WRITE_PAGES;
-        }
-        if(pageRows==null){
-            pageRows=PAGE_ROWS;
-        }
-        session.setAttribute("page",page);
 
-        Page<TicketInfo> pageWrites = ticketInfoRepository.findAll(PageRequest.of(page - 1, pageRows, Sort.by(Sort.Order.desc("id"))));
-
-        long count = pageWrites.getTotalElements();
-        int totalPage= pageWrites.getTotalPages();
-
-        if(page>totalPage){
-            page=totalPage;
-        }
-
-        int fromRow = (page-1) * pageRows ;
-        if(page==0){
-            fromRow=0;
-        }
-
-        // 페이징에 표시할 시작페이지와 마지막 페이지 계산
-        int start= (((page-1)/ writePage) * writePage) + 1;
-        int end=start+writePage-1;
-        if(end >= totalPage)end=totalPage;
-
-        model.addAttribute("count",count);
-        model.addAttribute("page",page);
-        model.addAttribute("totalPage",totalPage);
-        model.addAttribute("pageRows",pageRows);
-
-        model.addAttribute("url",U.getRequest().getRequestURI());
-        model.addAttribute("writePage",writePage);
-        model.addAttribute("start",start);
-        model.addAttribute("end",end);
-
-
-        List<TicketInfo> list = pageWrites.getContent();
-        model.addAttribute("list",list);
-
-        return list;
-    }
 
 
 }

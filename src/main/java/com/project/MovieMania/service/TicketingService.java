@@ -9,14 +9,12 @@ public interface TicketingService {
 
     TicketInfo writeTicket(Long showInfoId,Long userId,Long priceId);
 
-    List<TicketInfo> findTicket(Long showInfoId, Long userId);
+    List<TicketInfo> findTicket(Long showInfoId, Long userId,Model model);
 
     List<TicketInfo> findShowInfoTicket(Long showInfoId);
 
     List<TicketInfo> findBuyTicket(Long showInfoId,Long userId);
 
     List<TicketInfo> findMyTicketInfo(Long id);
-
-    List<TicketInfo> findMyTicketList(Model model, Integer page,long id);
 
 }
