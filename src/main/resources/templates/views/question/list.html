@@ -19,8 +19,7 @@
 <body style="margin-bottom: 200px">
 
 <th:block th:insert="~{/header::header}"></th:block>
-
-<div class="container mt-3">
+<div class="container mt-3" th:with="logged_user=${#authentication.getPrincipal().getUser()}">
     <table class="table table-hover">
         <thead class="table-success">
         <tr>
@@ -32,7 +31,15 @@
         <tbody>
         <tr th:each="question : ${list}">
             <td th:text="${question.id}">1</td>
-            <td><a th:href="@{'/question/detail/' + ${question.id}}" th:text="${question.title}"></a></td>
+            <td>
+                <a th:href="@{'/question/detail/' + ${question.id}}" th:text="${question.title}"
+                   sec:authorize="hasAnyRole('ROLE_ADMIN')"></a>
+                <a th:href="@{'/question/detail/' + ${question.id}}" th:text="${question.title}"
+                   th:if="${logged_user.id == question.user.id}"
+                   sec:authorize="hasAnyRole('ROLE_MEMBER')"></a>
+                <p th:unless="${logged_user.id == question.user.id}" th:text="${question.title}"
+                   sec:authorize="hasAnyRole('ROLE_MEMBER')"></p>
+            </td>
             <td th:text="${question.user.username}"></td>
         </tr>
         </tbody>
