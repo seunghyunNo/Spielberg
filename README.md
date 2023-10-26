@@ -71,6 +71,11 @@ https://www.youtube.com/watch?v=FEPbQUiGDfA&list=PLedGoSru79485D5R8urw0FMMciGUqG
 - DataBase(DB): SQL, Oracle, Mysql, DBeaver
 - Project tool: intellij, Visual Studio Code, Git, Github, Maven
 
+
+# 프로젝트 소개
+
+---
+
 ![image](https://github.com/seunghyunNo/Spielberg/assets/138773698/4a1f1062-2d3d-4423-98db-3d3c0e2853ec)
 
 ![image](https://github.com/seunghyunNo/Spielberg/assets/138773698/3b38fc27-9932-463c-b73a-197b64d3b2ca)
