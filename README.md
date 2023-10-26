@@ -70,3 +70,20 @@ https://www.youtube.com/watch?v=FEPbQUiGDfA&list=PLedGoSru79485D5R8urw0FMMciGUqG
     
 - DataBase(DB): SQL, Oracle, Mysql, DBeaver
 - Project tool: intellij, Visual Studio Code, Git, Github, Maven
+
+![image](https://github.com/seunghyunNo/Spielberg/assets/138773698/4a1f1062-2d3d-4423-98db-3d3c0e2853ec)
+
+![image](https://github.com/seunghyunNo/Spielberg/assets/138773698/3b38fc27-9932-463c-b73a-197b64d3b2ca)
+![image](https://github.com/seunghyunNo/Spielberg/assets/138773698/bda8f87e-6cf3-4d5a-8107-3faed493fe5c)
+![image](https://github.com/seunghyunNo/Spielberg/assets/138773698/5d665a19-b794-4789-9893-fdaaf3d8c5c7)
+
+![image](https://github.com/seunghyunNo/Spielberg/assets/138773698/faf49f03-48d8-47de-b26a-1ee90d14a231)
+
+![image](https://github.com/seunghyunNo/Spielberg/assets/138773698/e35659d1-86a9-4fd2-bad7-fcb2fba071e1)
+
+
+![image](https://github.com/seunghyunNo/Spielberg/assets/138773698/8aa9e04e-0566-4274-9b8d-67696c0c8b32)
+
+
+
+
