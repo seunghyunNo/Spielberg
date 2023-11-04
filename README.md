@@ -44,13 +44,14 @@ https://github.com/june276/Spielberg
 
 개요 : 영화 별 리뷰와 함께 예매 시스템을 도입한 웹 어플리케이션입니다. 영화 누적 관객 수 및 평론, 평점, 그리고 예매율, 예매율에 관한 통계또한 확인할 수 있습니다. 관리자가 영화 및 상영 정보, 회원들을 관리할 수 있으며, 각 리뷰에 대한 신고목록또한 조회 가능합니다.
 
+맡은 기능 구현 : 
+회원가입 및 로그인과 로그아웃, 아이디 저장 및 로그인 유지 구현, 마이페이지 구현, 회원정보 수정 및 탈퇴 구현
+
+
 사용기술 :
 
 Java 17, Spring Boot 3.1.2, HTML5, CSS, JavaScript, jQuery, Gradle, Lombok, Spring Security, Thymeleaf, MySQL, Spring Data JPA,SpringDevTools, Validation
 
-시연 영상
-
-https://www.youtube.com/watch?v=FEPbQUiGDfA&list=PLedGoSru79485D5R8urw0FMMciGUqGRqa&index=2
 
 ## Experiences
 
@@ -75,6 +76,12 @@ https://www.youtube.com/watch?v=FEPbQUiGDfA&list=PLedGoSru79485D5R8urw0FMMciGUqG
 # 프로젝트 소개
 
 ---
+
+ERD
+
+![image](https://github.com/seunghyunNo/Spielberg/assets/138773698/49e66f9a-b5b6-4673-855a-355d392283b8)
+
+
 
 ![image](https://github.com/seunghyunNo/Spielberg/assets/138773698/4a1f1062-2d3d-4423-98db-3d3c0e2853ec)
 
