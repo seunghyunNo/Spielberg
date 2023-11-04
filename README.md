@@ -36,7 +36,7 @@ github : [**https://github.com/seunghyunNo**](https://github.com/seunghyunNo)
 - AWS - EC2
 - MySQL
 
-- ## MovieMania
+## MovieMania
 
 https://github.com/june276/Spielberg
 
